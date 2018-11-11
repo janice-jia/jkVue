@@ -73,7 +73,7 @@
                 </a> -->
             </div>
             <div class="jk-cont">
-                
+                <div style="height:2000px;"></div>
                 <!-- <div class="jk-cont-item jkFlex">
                     <a href="houseInfo.html" class="houseLink"></a>
                     <div class="jk-cont-item-media">
@@ -412,6 +412,7 @@
 
 <script type="text/ecmascript-6">
 import bottomCom from './bottomCom.vue';
+import indexJs from '../js/index'
 
 import menuImg1 from '../assets/menu-item-1.png';
 import menuImg2 from '../assets/menu-item-2.png';
@@ -428,7 +429,15 @@ export default {
         }
     },
     created () {
-        this.getHouseList(this.currentPage)
+        this.getHouseList(this.currentPage);
+        //吸顶条效果
+        indexJs.fixed(200);
+        
+    },
+    mounted(){
+        indexJs.flexible(750,750);
+        // 首页展示筛选效果
+        indexJs.clickShowTab();
     },
     components: {
         bottomCom
