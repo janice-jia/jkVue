@@ -218,7 +218,7 @@
         </div>
         <!-- 内容 end-->
 
-        <!-- <bottomCom></bottomCom>    -->
+        <bottomCom></bottomCom>   
         
         
     </div>
@@ -410,20 +410,37 @@
 
 </template>
 
-<script>
-import bottomCom from './bottom.vue';
+<script type="text/ecmascript-6">
+import bottomCom from './bottomCom.vue';
 
 import menuImg1 from '../assets/menu-item-1.png';
-import menuImg2 from '../assets/menu-item-1.png';
-import menuImg3 from '../assets/menu-item-1.png';
+import menuImg2 from '../assets/menu-item-2.png';
+import menuImg3 from '../assets/menu-item-3.png';
 export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-        menuImg1: menuImg1,
-        menuImg2: menuImg2,
-        menuImg3: menuImg3,
+    name: 'index',
+    data () {
+        return {
+            menuImg1: menuImg1,
+            menuImg2: menuImg2,
+            menuImg3: menuImg3,
+            currentPage: 1,
+            totalItems: 0
+        }
+    },
+    created () {
+        this.getHouseList(this.currentPage)
+    },
+    components: {
+        bottomCom
+    },
+    methods: {
+        getHouseList(currentPage) {
+            this.$http.get('/api/API.ashx?apicommand=gethousepage').then(function (data) {
+                console.info('data',data)
+            }, function (response) {
+                console.info(response)
+            })
+        }
     }
-  }
 }
 </script>

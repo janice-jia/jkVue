@@ -22,9 +22,9 @@
 
 <script>
 export default {
-  name: 'bottom',
+  name: 'bottomCom',
   data () {
-
+      return {}
   }
 }
 </script>
