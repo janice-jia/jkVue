@@ -12,7 +12,6 @@
         <div class="jk-menu jkFlex">
             <div class="jk-menu-item jkFlexItem">
                 <a href="">
-                    
                     <img :src="menuImg1" alt="整租" />
                     <p>整租</p>
                 </a>
@@ -73,7 +72,6 @@
                 </a> -->
             </div>
             <div class="jk-cont">
-                <div style="height:2000px;"></div>
                 <!-- <div class="jk-cont-item jkFlex">
                     <a href="houseInfo.html" class="houseLink"></a>
                     <div class="jk-cont-item-media">
@@ -266,9 +264,9 @@
                     <!-- 附近 start-->
                     <div class="jk-screen-cont jkFlexItem tl">
                         <ul class="jk-screen-ui">
-                            <li class="showTabItem shover" id="near" onclick="showTab('near')">附近</li>
-                            <li class="showTabItem" id="area" onclick="showTab('area')">区域</li>
-                            <li class="showTabItem" id="subWay" onclick="showTab('subWay')">地铁</li>
+                            <li class="showTabItem shover" id="near" @click="showTab('near')">附近</li>
+                            <li class="showTabItem" id="area" @click="showTab('area')">区域</li>
+                            <!-- <li class="showTabItem" id="subWay" @click="showTab('subWay')">地铁</li> -->
                             <input type="hidden" name="screenType" id="screenType">
                         </ul>
                     </div>
@@ -425,30 +423,32 @@ export default {
             menuImg2: menuImg2,
             menuImg3: menuImg3,
             currentPage: 1,
-            totalItems: 0
+            totalItems: 0,
+            hoseListAll:[]
         }
     },
     created () {
-        this.getHouseList(this.currentPage);
+        console.info('this.$router',this.$router)
         //吸顶条效果
         indexJs.fixed(200);
+        
+        //上拉加载
+        indexJs.addHostList()
         
     },
     mounted(){
         indexJs.flexible(750,750);
         // 首页展示筛选效果
         indexJs.clickShowTab();
+         //默认显示 附近
+        indexJs.showTab('near');
     },
     components: {
         bottomCom
     },
     methods: {
-        getHouseList(currentPage) {
-            this.$http.get('/api/API.ashx?apicommand=gethousepage').then(function (data) {
-                console.info('data',data)
-            }, function (response) {
-                console.info(response)
-            })
+        showTab(type){
+            indexJs.showTab(type);
         }
     }
 }

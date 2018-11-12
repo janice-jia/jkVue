@@ -6,10 +6,13 @@ import router from './router'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 // import 'lib-flexible/flexible'
+import VueScroller from 'vue-scroller'
+
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(VueResource)
+Vue.use(VueScroller)
 
 /* eslint-disable no-new */
 new Vue({
