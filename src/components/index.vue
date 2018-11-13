@@ -11,19 +11,19 @@
         <!-- 导航 start-->
         <div class="jk-menu jkFlex">
             <div class="jk-menu-item jkFlexItem">
-                <a href="">
+                <a href="/?renttype=整租">
                     <img :src="menuImg1" alt="整租" />
                     <p>整租</p>
                 </a>
             </div>
             <div class="jk-menu-item jkFlexItem">
-                <a href="">
+                <a href="/?renttype=合租">
                     <img :src="menuImg2" alt="合租" />
                     <p>合租</p>
                 </a>
             </div>
             <div class="jk-menu-item jkFlexItem">
-                <a href="">
+                <a href="/?renttype=短租">
                     <img :src="menuImg3" alt="短租" />
                     <p>短租</p>
                 </a>
@@ -34,24 +34,37 @@
         <!-- 筛选 nav start-->
         <div class="jk-screen" id="screenMenu">
             <div class="jk-screen-menu jkFlex">
-                <div class="jk-screen-menu-item screen-menu-hover">
+                <!-- <div class="jk-screen-menu-item screen-menu-hover"> -->
+                <div v-bind:class="[areaTyprStr=='区域' ? 'jk-screen-menu-item' : 'jk-screen-menu-item  screen-menu-hover']">
                     <p class="jkScreenNav menuArea" data-show-screen="Area">
-                        <span class="overEllipsis screen-menu-width">区域</span>
+                        <span class="overEllipsis screen-menu-width">
+                            <!-- 区域 -->
+                            {{areaTyprStr}}
+                        </span>
                     </p>
                 </div>
-                <div class="jk-screen-menu-item">
+                <div v-bind:class="[priceTyprStr=='租金' ? 'jk-screen-menu-item' : 'jk-screen-menu-item  screen-menu-hover']">
                     <p class="jkScreenNav menuPrice" data-show-screen="Price">
-                        <span class="overEllipsis screen-menu-width">租金</span>
+                        <span class="overEllipsis screen-menu-width">
+                            <!-- 租金 -->
+                            {{priceTyprStr}}
+                        </span>
                     </p>
                 </div>
-                <div class="jk-screen-menu-item">
+                <div v-bind:class="[hostTyprStr=='户型' ? 'jk-screen-menu-item' : 'jk-screen-menu-item  screen-menu-hover']">
                     <p class="jkScreenNav menuHouseType"  data-show-screen="HouseType">
-                        <span class="overEllipsis screen-menu-width">户型</span>
+                        <span class="overEllipsis screen-menu-width">
+                            <!-- 户型 -->
+                            {{hostTyprStr}}
+                        </span>
                     </p>
                 </div>
-                <div class="jk-screen-menu-item">
+                <div v-bind:class="[screenTyprStr=='筛选' ? 'jk-screen-menu-item' : 'jk-screen-menu-item  screen-menu-hover']">
                     <p class="jkScreenNav menuScreen" data-show-screen="Screen">
-                        <span class="overEllipsis screen-menu-width">筛选</span>
+                        <span class="overEllipsis screen-menu-width">
+                            <!-- 筛选 -->
+                            {{screenTyprStr}}
+                        </span>
                     </p>
                 </div>
                 <div class="jk-screen-menu-item">
@@ -65,194 +78,63 @@
 
         <!-- 内容 start-->
         <div class="content">
-            <div class="jk-banner">
+            <!-- <div class="jk-banner">
                 此处预留banner位置
-                <!-- <a href="">
+                <a href="">
                         <img src="./images/cont-item.jpg" alt="" />
-                </a> -->
-            </div>
+                </a>
+            </div> -->
             <div class="jk-cont">
-                <scroller
-                        :on-refresh="refresh"
-                        :on-infinite="infinite"
-                        ref="my_scroller">
-                    <div class="jk-cont-item jkFlex" v-for="item in hoseListAll">
+                <scroll-list :heights="heightList" :remain="10" @toBottom="onBottom" @scrolling="onScroll">
+                    <div class="jk-cont-item jkFlex" 
+                                v-for="(item,index) in hoseListAll" 
+                                :key="index"
+                                :style="{height: item.itemHeight + 'px', 'line-height': item.itemHeight + 'px'}">
                         <a href="houseInfo.html" class="houseLink"></a>
                         <div class="jk-cont-item-media">
-                            <img :src="item.thumbnailurl" alt="" />
+                            <img :src="'http://admin.9kuaiz.com'+item.thumbnailurl" alt="" />
                         </div>
                         <div class="jk-cont-item-main jkFlexItem">
                             <div class="jk-cont-item-tit oneLine">
-                                <!--合租。丰西北里3居室-南卧-->
+                                <!-- 合租。丰西北里3居室-南卧 -->
                                 {{item.community}}
                             </div>
                             <div class="jk-cont-item-price oneLine">
-                                1700元/月
+                                <!-- 1700元/月 -->
+                                {{item.rent + '元/月'}}
                             </div>
                             <div class="jk-cont-item-desc oneLine">
-                                15m²|南|看丹桥
+                                <!-- 15m²|南|看丹桥 -->
+                                {{item.area+'m²'}}{{'|'+item.direction}}{{'|'+item.POI?item.POI:''}}
                             </div>
                             <div class="jk-cont-item-tag oneLine">
-                                押一付一|独立卫浴|有阳台
+                                <!-- 押一付一|独立卫浴|有阳台 -->
+                                {{item.housefeature}}
                             </div>
                         </div>
                     </div>
-                    <!-- content goes here -->
-
-                </scroller>
-                <!-- <div class="jk-cont-item jkFlex">
-                    <a href="houseInfo.html" class="houseLink"></a>
-                    <div class="jk-cont-item-media">
-                        <img src="./images/cont-item.jpg" alt="" />
+                </scroll-list>
+                <div class="jk-null jk-null-nopadding" v-if="!hoseListAll || hoseListAll.length==0">
+                    <div class="jk-null-tit">
+                        暂无房源信息
                     </div>
-                    <div class="jk-cont-item-main jkFlexItem">
-                        <div class="jk-cont-item-tit oneLine">
-                            合租。丰西北里3居室-南卧
-                        </div>
-                        <div class="jk-cont-item-price oneLine">
-                            1700元/月
-                        </div>
-                        <div class="jk-cont-item-desc oneLine">
-                            15m²|南|看丹桥
-                        </div>
-                        <div class="jk-cont-item-tag oneLine">
-                            押一付一|独立卫浴|有阳台
-                        </div>
-                    </div>
+                    <!-- <div class="jk-null-desc">
+                            有合适的房子快来发布吧
+                    </div> -->
                 </div>
-                <div class="jk-cont-item jkFlex">
-                    <a href="houseInfo.html" class="houseLink"></a>
-                    <div class="jk-cont-item-media">
-                        <img src="./images/cont-item.jpg" alt="" />
-                    </div>
-                    <div class="jk-cont-item-main jkFlexItem">
-                        <div class="jk-cont-item-tit oneLine">
-                            合租。丰西北里3居室-南卧
-                        </div>
-                        <div class="jk-cont-item-price oneLine">
-                            1700元/月
-                        </div>
-                        <div class="jk-cont-item-desc oneLine">
-                            15m²|南|看丹桥
-                        </div>
-                        <div class="jk-cont-item-tag oneLine">
-                            押一付一|独立卫浴|有阳台
-                        </div>
-                    </div>
-                </div>
-                <div class="jk-cont-item jkFlex">
-                    <a href="houseInfo.html" class="houseLink"></a>
-                    <div class="jk-cont-item-media">
-                        <img src="./images/cont-item.jpg" alt="" />
-                    </div>
-                    <div class="jk-cont-item-main jkFlexItem">
-                        <div class="jk-cont-item-tit oneLine">
-                            合租。丰西北里3居室-南卧
-                        </div>
-                        <div class="jk-cont-item-price oneLine">
-                            1700元/月
-                        </div>
-                        <div class="jk-cont-item-desc oneLine">
-                            15m²|南|看丹桥
-                        </div>
-                        <div class="jk-cont-item-tag oneLine">
-                            押一付一|独立卫浴|有阳台
-                        </div>
-                    </div>
-                </div>
-                <div class="jk-cont-item jkFlex">
-                    <a href="houseInfo.html" class="houseLink"></a>
-                    <div class="jk-cont-item-media">
-                        <img src="./images/cont-item.jpg" alt="" />
-                    </div>
-                    <div class="jk-cont-item-main jkFlexItem">
-                        <div class="jk-cont-item-tit oneLine">
-                            合租。丰西北里3居室-南卧
-                        </div>
-                        <div class="jk-cont-item-price oneLine">
-                            1700元/月
-                        </div>
-                        <div class="jk-cont-item-desc oneLine">
-                            15m²|南|看丹桥
-                        </div>
-                        <div class="jk-cont-item-tag oneLine">
-                            押一付一|独立卫浴|有阳台
-                        </div>
-                    </div>
-                </div>
-                <div class="jk-cont-item jkFlex">
-                    <a href="houseInfo.html" class="houseLink"></a>
-                    <div class="jk-cont-item-media">
-                        <img src="./images/cont-item.jpg" alt="" />
-                    </div>
-                    <div class="jk-cont-item-main jkFlexItem">
-                        <div class="jk-cont-item-tit oneLine">
-                            合租。丰西北里3居室-南卧
-                        </div>
-                        <div class="jk-cont-item-price oneLine">
-                            1700元/月
-                        </div>
-                        <div class="jk-cont-item-desc oneLine">
-                            15m²|南|看丹桥
-                        </div>
-                        <div class="jk-cont-item-tag oneLine">
-                            押一付一|独立卫浴|有阳台
-                        </div>
-                    </div>
-                </div>
-                <div class="jk-cont-item jkFlex">
-                    <a href="houseInfo.html" class="houseLink"></a>
-                    <div class="jk-cont-item-media">
-                        <img src="./images/cont-item.jpg" alt="" />
-                    </div>
-                    <div class="jk-cont-item-main jkFlexItem">
-                        <div class="jk-cont-item-tit oneLine">
-                            合租。丰西北里3居室-南卧
-                        </div>
-                        <div class="jk-cont-item-price oneLine">
-                            1700元/月
-                        </div>
-                        <div class="jk-cont-item-desc oneLine">
-                            15m²|南|看丹桥
-                        </div>
-                        <div class="jk-cont-item-tag oneLine">
-                            押一付一|独立卫浴|有阳台
-                        </div>
-                    </div>
-                </div>
-                <div class="jk-cont-item jkFlex">
-                    <a href="houseInfo.html" class="houseLink"></a>
-                    <div class="jk-cont-item-media">
-                        <img src="./images/cont-item.jpg" alt="" />
-                    </div>
-                    <div class="jk-cont-item-main jkFlexItem">
-                        <div class="jk-cont-item-tit oneLine">
-                            合租。丰西北里3居室-南卧
-                        </div>
-                        <div class="jk-cont-item-price oneLine">
-                            1700元/月
-                        </div>
-                        <div class="jk-cont-item-desc oneLine">
-                            15m²|南|看丹桥
-                        </div>
-                        <div class="jk-cont-item-tag oneLine">
-                            押一付一|独立卫浴|有阳台
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
         <!-- 内容 end-->
 
         <bottomCom></bottomCom>   
         
-        
+  
     </div>
 
 
     <!-- 筛选 弹层 start-->
     <div class="jkScreen" id="jkScreen">
-        <form action="./index.html">
+        <form action="/">
             <!-- 筛选 nav start-->
             <div class="jk-screen">
                 <div class="jk-screen-menu jkFlex">
@@ -432,6 +314,7 @@
     </div>
     <!-- 筛选 弹层 end-->
       
+
 </div>
 
 </template>
@@ -443,6 +326,8 @@ import indexJs from '../js/index'
 import menuImg1 from '../assets/menu-item-1.png';
 import menuImg2 from '../assets/menu-item-2.png';
 import menuImg3 from '../assets/menu-item-3.png';
+
+import scrollList from 'vue-scroll-list';
 export default {
     name: 'index',
     data () {
@@ -450,20 +335,33 @@ export default {
             menuImg1: menuImg1,
             menuImg2: menuImg2,
             menuImg3: menuImg3,
+            heightList:[],
             hoseListAll:[],
-            lastPage: false,
-            totalItems: 0,
-            itemsPerPage: 10,
-            currentPage: 1,
+            totalItems: 11,  //总条数
+            pagesize: 10,   //没有显示条数
+            pageindex:1,  //当前页码
+            currentPage: 1, //当前页码
+            loading: false, 
+            count:0,
+
+            renttype:'', //房源类型  用于查询
+
+            hostTyprStr:'户型', //户型选中的筛选，用于首页展示
+            priceTyprStr:'租金', //租金选中的筛选，用于首页展示
+            areaTyprStr:'区域', //区域选中的筛选，用于首页展示
+            screenTyprStr:'筛选', //筛选选中的筛选，用于首页展示
         }
     },
     created () {
-        console.info('this.$router',this.$router)
+        console.info('this.$router.query',this.$route.query)
+        //设置查询条件
+        this.setQuery();
+
         //吸顶条效果
         indexJs.fixed(200);
         
         //上拉加载
-        // indexJs.addHostList()
+        this.created();
         
     },
     mounted(){
@@ -472,37 +370,98 @@ export default {
         indexJs.clickShowTab();
          //默认显示 附近
         indexJs.showTab('near');
+
+        var priceType = ["不限","≤500元","500-1000","1000-1500","2000-3000","3000-4000","合4000-5000租","≥5000"];
+        indexJs.getSelectData(priceType, 'priceType','tagItem', 'priceTypeVal','shover', true, '不限');
+
+        var rentType = ["不限","整租","合租","短租"];
+        indexJs.getSelectData(rentType, 'rentType','jk-ca-tag', 'rentTypeVal','tag-hover', true, '不限');
+
+        var rentHoseType = ["不限","1室","2室","3室","4+室"];
+        indexJs.getSelectData(rentHoseType, 'rentHoseType','jk-ca-tag', 'rentHoseTypeVal','tag-hover', true, '不限');
+
+        var rentRequire = ["不限","只限女生","半年起租","一家人"];
+        indexJs.getSelectData(rentRequire, 'rentRequire','jk-ca-tag', 'rentRequireVal','tag-hover', true, '不限');
+
+        var rendToward = ["不限","东","南","西","北","南北"];
+        indexJs.getSelectData(rendToward, 'rendToward','jk-ca-tag', 'rendTowardVal','tag-hover', true, '不限');
+
+
+        var rentFeature = ["不限","临高铁","押一付一","配套齐全","精装修","普通装修","南北通透","有阳台","首次出租","随时看房","女生合租","男生合租"];
+        indexJs.getSelectData(rentFeature, 'rentFeature','jk-ca-tag', 'rentFeatureVal','tag-hover', true, '不限');
     },
     components: {
-        bottomCom
+        bottomCom,
+        scrollList
     },
     methods: {
         showTab(type){
             indexJs.showTab(type);
         },
-        infinite:function(){
-            console.log('infinite')
-            this.$http.get('/api/API.ashx?apicommand=gethousepage&renttype=整租&pagesize=10&pageindex=1').then(function (data) {
+        setQuery(){
+            if(this.$route.query.row1Val || this.$route.query.row2Val || this.$route.query.row3Val){
+                this.areaTyprStr = (this.$route.query.row1Val ? this.$route.query.row1Val : '') 
+                + (this.$route.query.row2Val ? this.$route.query.row2Val : '')
+                 + (this.$route.query.row3Val ? this.$route.query.row3Val : '')
+            }
+
+            // 房源出租类型
+            if(this.$route.query.renttype){
+                this.renttype = this.$route.query.renttype; 
+                this.hostTyprStr = this.$route.query.renttype; 
+            }
+            if(this.$route.query.rentTypeVal){
+                if(this.$route.query.rentTypeVal != '不限') this.renttype = this.$route.query.rentTypeVal; 
+                this.hostTyprStr = this.$route.query.rentTypeVal; 
+            }
+
+            // 租金
+            if(this.$route.query.priceTypeVal) {
+                // this.priceTypeVal = this.$route.query.priceTypeVal;
+                this.priceTyprStr = this.$route.query.priceTypeVal;
+            } 
+
+            // 筛选
+            if(this.$route.query.rentRequireVal){
+                this.screenTyprStr = this.$route.query.rentRequireVal;
+            }
+        
+        },
+        createData:function(){
+            console.log('refresh')
+            
+            this.$http.get('/api/API.ashx?apicommand=gethousepage&renttype='+this.renttype+'&pagesize='+this.pagesize+'&pageindex='+this.pageindex).then(function (data) {
                 this.totalItems = data.body.count;
+                this.loading = true;
+                this.pageindex++;
+
+                let size = window.__createSize || 40;
+                this.count += size;
                 if (data.body) {
                     for (var i = 0; i < data.body.list.length; i++) {
+                        // data.body.list[i].itemHeight = 100
                         this.hoseListAll.push(data.body.list[i])
+                        this.heightList.push(100);
                     }
                 }
-                this.currentPage = data.body.currentPage
-                this.lastPage = data.body.lastPage
-                this.totalItems = data.body.totalItems
-
-                if (this.hoseListAll.length >= this.totalItems) {
-                    this.$refs.my_scroller.finishInfinite(true);
-                } else {
-                    this.$refs.my_scroller.finishInfinite(false);
-                }
+                this.$emit('update:count', this.count);
+                window.__stopLoadData = true;
+                console.info('this.hoseListAll',this.hoseListAll)
             })
         },
-        refresh:function(){
-            console.log('refresh')
-            this.$refs.my_scroller.finishPullToRefresh()
+        onScroll(event) {
+            this.currentPosition = event.target.scrollTop;
+            window.__showScrollEvent && console.log(event);
+        },
+        created() {
+            window.__createSize = 40;
+            window.__stopLoadData = false;
+            window.__showScrollEvent = true;
+            this.createData();
+        },
+        onBottom: function(){
+            console.log('[demo]:page to bottom.');
+            !window.__stopLoadData && this.createData();
         }
     }
 }

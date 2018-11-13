@@ -1,6 +1,6 @@
 import zepto from './zepto.min'
 import flexible from './flexible_css'
-import dropload from './dropload'
+
 export default {
     // designWidth:设计稿的实际宽度值，需要根据实际设置
     // maxWidth:制作稿的最大宽度值，需要根据实际设置
@@ -181,7 +181,7 @@ export default {
                 if(isRadio){
                     //获取当前点击tag的id
                     var _thisI = $(this).attr('data-id');
-                    console.info('_thisI', _thisI)
+                    // console.info('_thisI', _thisI)
                     tagEle.each(function () {
                         $(this).removeClass(selectClass);
                     })
@@ -200,7 +200,7 @@ export default {
                 }else{
                     //获取当前点击tag的id
                     var _thisI = $(this).attr('data-id');
-                    console.info('_thisI', _thisI)
+                    // console.info('_thisI', _thisI)
                     $(tagEle[_thisI]).addClass(selectClass)
                     //根据当前选中tag匹配是否已选
                     var s = returnData.join(",").indexOf(tagItem[_thisI]);
@@ -214,7 +214,7 @@ export default {
                     } else{
                         returnData.push(tagItem[_thisI])
                     }
-                    console.info('returnData' ,returnData);
+                    // console.info('returnData' ,returnData);
                     $("#"+returnTagDataId).val(returnData.join(" "));
                 }
 
@@ -230,10 +230,10 @@ export default {
         var tabItemEle = $('.showTabItem');
         tabItemEle.removeClass('shover');
         var THIS = this;
-        console.info('THIS',THIS)
+        // console.info('THIS',THIS)
         $('#screenType'). val($('#'+type).html());
         $('.addRow').remove();
-        console.info('type', type)
+        // console.info('type', type)
         if(type == 'near'){
             // 默认附近
             //请求区域数据
@@ -300,7 +300,7 @@ export default {
             }
         }
         
-        console.info('tagList', tagList);
+        // console.info('tagList', tagList);
         jkScreenItem +='</ul>'+
                         '<input type="hidden" name="row'+rowNum+'Val" id="row'+rowNum+'Val" />'+
                         '</div>';
@@ -321,98 +321,6 @@ export default {
                 THIS.addRow(rowData[s].child, 1, 2);
             }
         }
-    },
-
-    addHostList(){
-        var counter = 0;
-        // 每页展示4个
-        var num = 10;
-        var pageStart = 0,pageEnd = 0;
-
-        // dropload
-        $('.content').dropload({
-            scrollArea : window,
-            loadDownFn : function(me){
-                console.info('me',me)
-                var test = 0;
-                $.ajax({
-                    type: 'GET',
-                    url: '/api/API.ashx?apicommand=gethousepage&renttype=整租&pagesize=10&pageindex=1',
-                    success: function(data){
-                        // var data = eval("("+data+")");
-                        var result = '';
-                        counter++;
-                        pageEnd = num * counter;
-                        pageStart = pageEnd - num;
-
-                        for(var i = pageStart; i < pageEnd; i++){
-                            
-                            // result += '<div class="jk-cont-item jkFlex">'+
-                            //         '<a href="houseInfo.html" class="houseLink"></a>'+
-                            //         '<div class="jk-cont-item-media">'+
-                            //             '<img src="./images/cont-item.jpg" alt="" />'+
-                            //         '</div>'+
-                            //         '<div class="jk-cont-item-main jkFlexItem">'+
-                            //             '<div class="jk-cont-item-tit oneLine">'+
-                            //                 '合租。丰西北里3居室-南卧'+
-                            //             '</div>'+
-                            //             '<div class="jk-cont-item-price oneLine">'+
-                            //                 '1700元/月'+
-                            //             '</div>'+
-                            //             '<div class="jk-cont-item-desc oneLine">'+
-                            //                 '15m²|南|看丹桥'+
-                            //             '</div>'+
-                            //             '<div class="jk-cont-item-tag oneLine">'+
-                            //                 '押一付一|独立卫浴|有阳台'+
-                            //             '</div>'+
-                            //         '</div>'+
-                            //     '</div>';
-                            result += '<div class="jk-cont-item jkFlex">'+
-                                    '<a href="houseInfo.html" class="houseLink"></a>'+
-                                    '<div class="jk-cont-item-media">'+
-                                        '<img src="./images/cont-item.jpg" alt="" />'+
-                                    '</div>'+
-                                    '<div class="jk-cont-item-main jkFlexItem">'+
-                                        '<div class="jk-cont-item-tit oneLine">'+
-                                            '合租。丰西北里3居室-南卧'+
-                                        '</div>'+
-                                        '<div class="jk-cont-item-price oneLine">'+
-                                            '1700元/月'+
-                                        '</div>'+
-                                        '<div class="jk-cont-item-desc oneLine">'+
-                                            '15m²|南|看丹桥'+
-                                        '</div>'+
-                                        '<div class="jk-cont-item-tag oneLine">'+
-                                            '押一付一|独立卫浴|有阳台'+
-                                        '</div>'+
-                                    '</div>'+
-                                '</div>';
-
-                            if((i + 1) >= data.list.length){
-                                console.info('无数据啦');
-                                // 锁定
-                                me.lock();
-                                // 无数据
-                                me.noData();
-                                break;
-                            }
-                        }
-                        // 为了测试，延迟1秒加载
-                        // setTimeout(function(){
-                            $('.jk-cont').append(result);
-                            // 每次数据加载完，必须重置
-                            me.resetload();
-                        // },1000);
-                    },
-                    error: function(xhr, type){
-                        console.info('下拉加载ajax出错啦！');
-                        // 即使加载出错，也得重置
-                        me.resetload();
-                    }
-                });
-            }
-            
-        });
     }
 }
 
