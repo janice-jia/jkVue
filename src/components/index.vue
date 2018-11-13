@@ -72,6 +72,34 @@
                 </a> -->
             </div>
             <div class="jk-cont">
+                <scroller
+                        :on-refresh="refresh"
+                        :on-infinite="infinite"
+                        ref="my_scroller">
+                    <div class="jk-cont-item jkFlex" v-for="item in hoseListAll">
+                        <a href="houseInfo.html" class="houseLink"></a>
+                        <div class="jk-cont-item-media">
+                            <img :src="item.thumbnailurl" alt="" />
+                        </div>
+                        <div class="jk-cont-item-main jkFlexItem">
+                            <div class="jk-cont-item-tit oneLine">
+                                <!--合租。丰西北里3居室-南卧-->
+                                {{item.community}}
+                            </div>
+                            <div class="jk-cont-item-price oneLine">
+                                1700元/月
+                            </div>
+                            <div class="jk-cont-item-desc oneLine">
+                                15m²|南|看丹桥
+                            </div>
+                            <div class="jk-cont-item-tag oneLine">
+                                押一付一|独立卫浴|有阳台
+                            </div>
+                        </div>
+                    </div>
+                    <!-- content goes here -->
+
+                </scroller>
                 <!-- <div class="jk-cont-item jkFlex">
                     <a href="houseInfo.html" class="houseLink"></a>
                     <div class="jk-cont-item-media">
@@ -422,9 +450,11 @@ export default {
             menuImg1: menuImg1,
             menuImg2: menuImg2,
             menuImg3: menuImg3,
-            currentPage: 1,
+            hoseListAll:[],
+            lastPage: false,
             totalItems: 0,
-            hoseListAll:[]
+            itemsPerPage: 10,
+            currentPage: 1,
         }
     },
     created () {
@@ -433,7 +463,7 @@ export default {
         indexJs.fixed(200);
         
         //上拉加载
-        indexJs.addHostList()
+        // indexJs.addHostList()
         
     },
     mounted(){
@@ -449,6 +479,30 @@ export default {
     methods: {
         showTab(type){
             indexJs.showTab(type);
+        },
+        infinite:function(){
+            console.log('infinite')
+            this.$http.get('/api/API.ashx?apicommand=gethousepage&renttype=整租&pagesize=10&pageindex=1').then(function (data) {
+                this.totalItems = data.body.count;
+                if (data.body) {
+                    for (var i = 0; i < data.body.list.length; i++) {
+                        this.hoseListAll.push(data.body.list[i])
+                    }
+                }
+                this.currentPage = data.body.currentPage
+                this.lastPage = data.body.lastPage
+                this.totalItems = data.body.totalItems
+
+                if (this.hoseListAll.length >= this.totalItems) {
+                    this.$refs.my_scroller.finishInfinite(true);
+                } else {
+                    this.$refs.my_scroller.finishInfinite(false);
+                }
+            })
+        },
+        refresh:function(){
+            console.log('refresh')
+            this.$refs.my_scroller.finishPullToRefresh()
         }
     }
 }

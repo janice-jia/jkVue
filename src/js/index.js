@@ -1,7 +1,6 @@
 import zepto from './zepto.min'
 import flexible from './flexible_css'
 import dropload from './dropload'
-import houseList from './json'
 export default {
     // designWidth:设计稿的实际宽度值，需要根据实际设置
     // maxWidth:制作稿的最大宽度值，需要根据实际设置
@@ -252,16 +251,7 @@ export default {
                 datatype: "JSON", 
                 contentType: "application/json", 
                 success: function (data) {
-                    console.info('data--typeof', typeof data)
-                    // data = [
-                    //     {name:"test1",child:['test1-1','test1-2','test1-3']},
-                    //     {name:"test2",child:['test2-1','test2-2','test2-3']},
-                    //     {name:"test3",child:['test3-1','test3-2','test3-3']}
-                    // ];
-                    data = [{name:"丛台区",child:['国际会展中心','创鑫','三十一中','房管局','三广','鑫港','丛台','丛台公园','达康路','滏西桥','光明桥','红星','华龙','康德','联纺路','龙湖公园','棉三','三广','市委','苏曹','万达商场','新世纪','学步桥','亚太世纪花园','樱花','一招','展览路','中华北','中华桥']},{name:"邯山区",child:['赵都新城','火车站','新一中','亚森','长湖桥','车管所','滏阳公园','钢苑','干河沟','邯钢路','邯山','矿院','罗城头','贸易路','明珠广场','南湖公园','农林路','汽车西站','三龙','十塑','新丹兰','移动大厦','中华南','中心医院','渚河路']},{name:"复兴区",child:['复兴商贸城','人民西路','赵王宾馆','箭岭路','岭北医院','百家村','复兴','光华街','建设大街','联纺西路','岭北医院 ','岭南路','前进大街','王朗','赵苑公园']},{name:"峰峰矿区",child:[]},{name:"武安市",child:[]},{name:"邯郸县",child:[]},{name:"临漳县",child:[]},{name:"成安县",child:[]},{name:"大名县",child:[]},{name:"涉县",child:[]},{name:"磁县",child:[]},{name:"肥乡县",child:[]},{name:"永年县",child:[]},{name:"邱县",child:[]},{name:"鸡泽县",child:[]},{name:"广平县",child:[]},{name:"馆陶县",child:[]},{name:"魏县",child:[]},{name:"曲周县",child:[]},{name:"高开区",child:['新中心医院','火车东站','金都饭店','新四中','康业温泉','新科园','鑫域国际','拉德芳斯']},{name:"其他区县",child:[]}]
-                    // 区域
-                    var areaData = data;
-                    console.info('areaData====', areaData)
+                    var areaData = eval("("+data+")");
                     //渲染区域dom及click事件
                     THIS.addRow(areaData, 2, 1);
                 },
@@ -349,6 +339,7 @@ export default {
                     type: 'GET',
                     url: '/api/API.ashx?apicommand=gethousepage&renttype=整租&pagesize=10&pageindex=1',
                     success: function(data){
+                        // var data = eval("("+data+")");
                         var result = '';
                         counter++;
                         pageEnd = num * counter;
@@ -396,11 +387,8 @@ export default {
                                         '</div>'+
                                     '</div>'+
                                 '</div>';
-                                data = {}
-                                data.lists = [1,2,3,4,5,6,7,8,9]
-           
-                            console.info(data);
-                            if((i + 1) >= data.lists.length){
+
+                            if((i + 1) >= data.list.length){
                                 console.info('无数据啦');
                                 // 锁定
                                 me.lock();
