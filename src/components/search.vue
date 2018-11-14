@@ -2,8 +2,8 @@
 
     <div class="jk-wap">
         <div class="jk-searchbox">
-            <form action="./index.html">
-                <input type="text" placeholder="您想住哪？" id="searchVal" value="海淀"/>
+            <form action="/">
+                <input type="text" placeholder="您想住哪？" id="searchVal" name="keyword" value="海淀"/>
                 <a class="jk-search-clear" id="clearSearch" href="javascript:;"></a>
             </form>
         </div>
@@ -41,5 +41,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-
+    import indexJs from '../js/index'
+    export default {
+        name: 'search',
+        mounted(){
+            indexJs.initSearch();
+        }
+    }
 </script>

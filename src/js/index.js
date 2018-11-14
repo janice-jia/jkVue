@@ -321,6 +321,24 @@ export default {
                 THIS.addRow(rowData[s].child, 1, 2);
             }
         }
+    },
+    initSearch(){
+        //点击搜索框后X，清空搜索框内容
+        $('#clearSearch').click(function(){
+            $('#searchVal').val('');
+        });
+    
+        //推荐搜索点击之后，更改input框搜索内容
+        $('.searchArr').click(function(){
+            var searchVal = $(this).find('.jk-search-tit').html();
+            $('#searchVal').val(searchVal);
+        })
+    
+        //清空历史
+        $('#clearBtn').click(function(){
+            $("#searchList").html('');
+        })
     }
+    
 }
 
