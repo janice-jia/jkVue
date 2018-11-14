@@ -84,49 +84,55 @@
                         <img src="./images/cont-item.jpg" alt="" />
                 </a>
             </div> -->
-            <div class="jk-cont">
-                <scroll-list :heights="heightList" :remain="10" @toBottom="onBottom" @scrolling="onScroll">
-                    <div class="jk-cont-item jkFlex" 
-                                v-for="(item,index) in hoseListAll" 
-                                :key="index"
-                                :style="{height: item.itemHeight + 'px', 'line-height': item.itemHeight + 'px'}">
-                        <a href="houseInfo.html" class="houseLink"></a>
-                        <div class="jk-cont-item-media">
-                            <img :src="'http://admin.9kuaiz.com'+item.thumbnailurl" alt="" />
+            <div class="jk-scrollerWrap">
+                <div class="jk-cont">
+                    <scroller
+                            :on-refresh="refresh"
+                            :on-infinite="infinite"
+                            ref="myscroller">
+                        <div class="jk-cont-item jkFlex"
+                             v-for="(item,index) in hoseListAll"
+                             :key="index"
+                             :style="{height: item.itemHeight + 'px', 'line-height': item.itemHeight + 'px'}">
+                            <a href="houseInfo.html" class="houseLink"></a>
+                            <div class="jk-cont-item-media">
+                                <img :src="'http://admin.9kuaiz.com'+item.thumbnailurl" alt="" />
+                            </div>
+                            <div class="jk-cont-item-main jkFlexItem">
+                                <div class="jk-cont-item-tit oneLine">
+                                    <!-- 合租。丰西北里3居室-南卧 -->
+                                    {{item.community}}
+                                </div>
+                                <div class="jk-cont-item-price oneLine">
+                                    <!-- 1700元/月 -->
+                                    {{item.rent + '元/月'}}
+                                </div>
+                                <div class="jk-cont-item-desc oneLine">
+                                    <!-- 15m²|南|看丹桥 -->
+                                    {{item.area+'m²'}}{{'|'+item.direction}}{{'|'+item.POI?item.POI:''}}
+                                </div>
+                                <div class="jk-cont-item-tag oneLine">
+                                    <!-- 押一付一|独立卫浴|有阳台 -->
+                                    {{item.housefeature}}
+                                </div>
+                            </div>
                         </div>
-                        <div class="jk-cont-item-main jkFlexItem">
-                            <div class="jk-cont-item-tit oneLine">
-                                <!-- 合租。丰西北里3居室-南卧 -->
-                                {{item.community}}
-                            </div>
-                            <div class="jk-cont-item-price oneLine">
-                                <!-- 1700元/月 -->
-                                {{item.rent + '元/月'}}
-                            </div>
-                            <div class="jk-cont-item-desc oneLine">
-                                <!-- 15m²|南|看丹桥 -->
-                                {{item.area+'m²'}}{{'|'+item.direction}}{{'|'+item.POI?item.POI:''}}
-                            </div>
-                            <div class="jk-cont-item-tag oneLine">
-                                <!-- 押一付一|独立卫浴|有阳台 -->
-                                {{item.housefeature}}
-                            </div>
+                    </scroller>
+
+                    <div class="jk-null jk-null-nopadding" v-if="!hoseListAll || hoseListAll.length==0">
+                        <div class="jk-null-tit">
+                            暂无房源信息
                         </div>
+                        <!-- <div class="jk-null-desc">
+                                有合适的房子快来发布吧
+                        </div> -->
                     </div>
-                </scroll-list>
-                <div class="jk-null jk-null-nopadding" v-if="!hoseListAll || hoseListAll.length==0">
-                    <div class="jk-null-tit">
-                        暂无房源信息
-                    </div>
-                    <!-- <div class="jk-null-desc">
-                            有合适的房子快来发布吧
-                    </div> -->
                 </div>
             </div>
         </div>
         <!-- 内容 end-->
 
-        <bottomCom></bottomCom>   
+        <bottomCom></bottomCom>
         
   
     </div>
@@ -327,7 +333,6 @@ import menuImg1 from '../assets/menu-item-1.png';
 import menuImg2 from '../assets/menu-item-2.png';
 import menuImg3 from '../assets/menu-item-3.png';
 
-import scrollList from 'vue-scroll-list';
 export default {
     name: 'index',
     data () {
@@ -337,7 +342,7 @@ export default {
             menuImg3: menuImg3,
             heightList:[],
             hoseListAll:[],
-            totalItems: 11,  //总条数
+            totalItems: 0,  //总条数
             pagesize: 10,   //没有显示条数
             pageindex:1,  //当前页码
             currentPage: 1, //当前页码
@@ -359,10 +364,6 @@ export default {
 
         //吸顶条效果
         indexJs.fixed(200);
-        
-        //上拉加载
-        this.created();
-        
     },
     mounted(){
         indexJs.flexible(750,750);
@@ -391,8 +392,7 @@ export default {
         indexJs.getSelectData(rentFeature, 'rentFeature','jk-ca-tag', 'rentFeatureVal','tag-hover', true, '不限');
     },
     components: {
-        bottomCom,
-        scrollList
+        bottomCom
     },
     methods: {
         showTab(type){
@@ -427,41 +427,32 @@ export default {
             }
         
         },
-        createData:function(){
-            console.log('refresh')
-            
-            this.$http.get('/api/API.ashx?apicommand=gethousepage&renttype='+this.renttype+'&pagesize='+this.pagesize+'&pageindex='+this.pageindex).then(function (data) {
-                this.totalItems = data.body.count;
-                this.loading = true;
-                this.pageindex++;
-
-                let size = window.__createSize || 40;
-                this.count += size;
-                if (data.body) {
-                    for (var i = 0; i < data.body.list.length; i++) {
-                        // data.body.list[i].itemHeight = 100
-                        this.hoseListAll.push(data.body.list[i])
-                        this.heightList.push(100);
+        refresh:function(done){
+            // console.log('refresh')
+            // if(this.totalItems==0 || this.hoseListAll.length>=this.totalItems){
+            //     this.$refs.myscroller.finishInfinite(2);
+            // }
+        },
+        infinite: function (done) {
+            console.log('infinite')
+            console.info('this.totalItems', this.totalItems)
+            console.info('this.hoseListAll.length', this.hoseListAll.length)
+            if(this.totalItems==0 || this.hoseListAll.length <= this.totalItems){
+                this.$http.get('/api/API.ashx?apicommand=gethousepage&renttype='+this.renttype+'&pagesize='+this.pagesize+'&pageindex='+this.pageindex).then(function (data) {
+                    this.totalItems = data.body.count;
+                    if (data.body) {
+                        for (var i = 0; i < data.body.list.length; i++) {
+                            this.hoseListAll.push(data.body.list[i])
+                        }
                     }
-                }
-                this.$emit('update:count', this.count);
-                window.__stopLoadData = true;
-                console.info('this.hoseListAll',this.hoseListAll)
-            })
-        },
-        onScroll(event) {
-            this.currentPosition = event.target.scrollTop;
-            window.__showScrollEvent && console.log(event);
-        },
-        created() {
-            window.__createSize = 40;
-            window.__stopLoadData = false;
-            window.__showScrollEvent = true;
-            this.createData();
-        },
-        onBottom: function(){
-            console.log('[demo]:page to bottom.');
-            !window.__stopLoadData && this.createData();
+                    //表示这次异步加载数据完成，加载下一次
+                    done()
+                })
+                this.pageindex++;
+            }else{
+                //没有数据了
+                this.$refs.myscroller.finishInfinite();
+            }
         }
     }
 }
