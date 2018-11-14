@@ -3,7 +3,7 @@
 <div class="jk-wap">
         <!-- 搜索 start-->
         <div class="jk-search jkFlex">
-            <a href="changeCity.html" class="jk-search-address">北京</a>
+            <a href="javascript:;" class="jk-search-address">邯郸</a>
             <input class="jk-search-text jkFlexItem" id="searchText" type="text" placeholder="您想住哪？"/>
         </div>
         <!-- 搜索 end-->
@@ -67,7 +67,7 @@
                         </span>
                     </p>
                 </div>
-                <div class="jk-screen-menu-item">
+                <div v-bind:class="[this.$route.query.asctype ? 'jk-screen-menu-item' : 'jk-screen-menu-item  screen-menu-hover']">
                     <p class="jkScreenNav menuSort" data-show-screen="Sort">
                         <span class="sort-icon">&nbsp;</span>
                     </p>
@@ -96,7 +96,7 @@
                              :style="{height: item.itemHeight + 'px', 'line-height': item.itemHeight + 'px'}">
                             <a href="houseInfo.html" class="houseLink"></a>
                             <div class="jk-cont-item-media">
-                                <img :src="'http://admin.9kuaiz.com'+item.thumbnailurl" alt="" />
+                                <img :src="imgWenSiteUrl+item.thumbnailurl" alt="" />
                             </div>
                             <div class="jk-cont-item-main jkFlexItem">
                                 <div class="jk-cont-item-tit oneLine">
@@ -307,10 +307,11 @@
                 <div class="jk-screen-box jkFlex">
                     <div class="jk-screen-cont jkFlexItem">
                         <ul class="jk-screen-ui">
-                            <li class="shover"><button name="paixu" type="submit" value="price0">默认排序</button></li>
-                            <li><button name="paixu" type="submit" value="price1">价格从低到高</button></li>
-                            <li><button name="paixu" type="submit" value="price2">价格从高到低</button></li>
-                            <li><button name="paixu" type="submit" value="price3">发布从新到旧</button></li>
+                            <li class="shover"><button name="paixu" type="submit">默认排序</button></li>
+                            <li><button name="asctype" type="submit" value="rentace">价格从低到高</button></li>
+                            <li><button name="asctype" type="submit" value="rentdesc">价格从高到低</button></li>
+                            <li><button name="asctype" type="submit" value="adddatetimeace">发布从新到旧</button></li>
+                            <li><button name="asctype" type="submit" value="adddatetimedesc">发布从就到新</button></li>
                         </ul>
                     </div>
                 </div>
@@ -328,10 +329,12 @@
 <script type="text/ecmascript-6">
 import bottomCom from './bottomCom.vue';
 import indexJs from '../js/index'
+import config from '../js/config'
 
 import menuImg1 from '../assets/menu-item-1.png';
 import menuImg2 from '../assets/menu-item-2.png';
 import menuImg3 from '../assets/menu-item-3.png';
+
 
 export default {
     name: 'index',
@@ -340,6 +343,7 @@ export default {
             menuImg1: menuImg1,
             menuImg2: menuImg2,
             menuImg3: menuImg3,
+            imgWenSiteUrl:config.config.imgWenSiteUrl,
             heightList:[],
             hoseListAll:[],
             totalItems: 0,  //总条数
@@ -348,8 +352,13 @@ export default {
             currentPage: 1, //当前页码
             loading: false, 
             count:0,
+            
 
             renttype:'', //房源类型  用于查询
+            asctype:'', //房源排序   用于查询
+            ascfiled:'', //房源排序字段   用于查询
+            rentstart:'',//房源租金起始
+            rentend:'',//房源租金截止
 
             hostTyprStr:'户型', //户型选中的筛选，用于首页展示
             priceTyprStr:'租金', //租金选中的筛选，用于首页展示
@@ -366,7 +375,6 @@ export default {
         indexJs.fixed(200);
     },
     mounted(){
-        indexJs.flexible(750,750);
         // 首页展示筛选效果
         indexJs.clickShowTab();
          //默认显示 附近
@@ -419,26 +427,85 @@ export default {
             if(this.$route.query.priceTypeVal) {
                 // this.priceTypeVal = this.$route.query.priceTypeVal;
                 this.priceTyprStr = this.$route.query.priceTypeVal;
+                var priceTypeVal = this.$route.query.priceTypeVal;
+                if(priceTypeVal == '≤500'){
+                    this.rentstart = 0
+                    this.rentend = 500
+                }else if(priceTypeVal == '500-1000'){
+                    this.rentstart = 500
+                    this.rentend = 1000
+                }else if(priceTypeVal == '100-1500'){
+                    this.rentstart = 1000
+                    this.rentend = 1500
+                }else if(priceTypeVal == '1500-2000'){
+                    this.rentstart = 1500
+                    this.rentend = 2000
+                }else if(priceTypeVal == '2000-3000'){
+                    this.rentstart = 2000
+                    this.rentend = 3000
+                }else if(priceTypeVal == '3000-4000'){
+                    this.rentstart = 3000
+                    this.rentend = 4000
+                }else if(priceTypeVal == '4000-5000'){
+                    this.rentstart = 4000
+                    this.rentend = 5000
+                }else if(priceTypeVal == '≥5000'){
+                    this.rentstart = 0
+                    this.rentend = 5000
+                }else{
+                    this.rentstart = ''
+                    this.rentend = ''
+                }
+                
             } 
 
             // 筛选
             if(this.$route.query.rentRequireVal){
                 this.screenTyprStr = this.$route.query.rentRequireVal;
             }
+
+            //排序
+            if(this.$route.query.asctype){
+                if(this.$route.query.asctype == 'rentace'){
+                    this.asctype = 'ace'
+                    this.ascfiled = 'rent'
+                }else if(this.$route.query.asctype == 'rentdesc'){
+                    this.asctype = 'desc'
+                    this.ascfiled = 'rent'
+                }else if(this.$route.query.asctype == 'adddatetimeace'){
+                    this.asctype = 'ace'
+                    this.ascfiled = 'adddatetime'
+                }else if(this.$route.query.asctype == 'adddatetimedesc'){
+                    this.asctype = 'desc'
+                    this.ascfiled = 'adddatetime'
+                }else{
+                    this.asctype = ''
+                    this.ascfiled = ''
+                }
+            }
+            
         
         },
-        refresh:function(done){
-            // console.log('refresh')
-            // if(this.totalItems==0 || this.hoseListAll.length>=this.totalItems){
-            //     this.$refs.myscroller.finishInfinite(2);
-            // }
+        refresh:function(){
+            console.log('refresh')
+            this.$refs.myscroller.finishPullToRefresh();
         },
         infinite: function (done) {
             console.log('infinite')
-            console.info('this.totalItems', this.totalItems)
-            console.info('this.hoseListAll.length', this.hoseListAll.length)
-            if(this.totalItems==0 || this.hoseListAll.length <= this.totalItems){
-                this.$http.get('/api/API.ashx?apicommand=gethousepage&renttype='+this.renttype+'&pagesize='+this.pagesize+'&pageindex='+this.pageindex).then(function (data) {
+            if(this.totalItems==0 || this.hoseListAll.length < this.totalItems){
+                var apiUrl = '';
+                apiUrl = '/api/API.ashx';
+                var queryData = {}
+                queryData.apicommand = 'gethousepage'; 
+                queryData.renttype = this.renttype; //类型
+                queryData.pagesize = this.pagesize;  //每页显示
+                queryData.asctype = this.asctype;  //排序类型
+                queryData.ascfiled = this.ascfiled;  //排序字段
+                queryData.rentstart = this.rentstart;  //租金起始
+                queryData.rentend = this.rentend;  //租金截止
+                queryData.pageindex = this.pageindex; //第几页
+
+                this.$http.get(apiUrl,{params:queryData}).then(function (data) {
                     this.totalItems = data.body.count;
                     if (data.body) {
                         for (var i = 0; i < data.body.list.length; i++) {
@@ -451,7 +518,7 @@ export default {
                 this.pageindex++;
             }else{
                 //没有数据了
-                this.$refs.myscroller.finishInfinite();
+                this.$refs.myscroller.finishInfinite(2);
             }
         }
     }
