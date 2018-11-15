@@ -1,5 +1,6 @@
 import zepto from './zepto.min'
 import flexible from './flexible_css'
+import swiper from './swiper.min'
 
 export default {
     // designWidth:设计稿的实际宽度值，需要根据实际设置
@@ -338,6 +339,43 @@ export default {
         $('#clearBtn').click(function(){
             $("#searchList").html('');
         })
+    },
+    //房源信息幻燈片
+    showHouseInfoTopSwiper(){
+    	// 顶部轮播图
+        var swiper = new Swiper('#slideTop', {
+            pagination: '.swiper-pagination',
+            slidesPerView: 1,
+            autoplay:3000,
+            speed:500,
+            paginationClickable: true,
+            autoplayDisableOnInteraction: false,
+            pagination: '.swiper-pagination-top',
+            paginationType: 'custom',
+            initialSlide:0,
+            paginationCustomRender: function ( swiper, current, total ) {
+                var _html = '';
+                for ( var i = 1; i <= total; i++ ) {
+                    if ( current == i ) {
+                        _html += '<span class="swiper-pagination-customs swiper-pagination-customs-active">'+i+'</span>';
+                    }
+                }
+                _html += '<span class="swiper-pagination-customs">/'+total+'</span>';
+                    return _html; //返回所有的页码html
+                },
+                onReachEnd: function ( swiper ) {
+                    console.log( '到了最后一个slide' );
+            }
+        });
+    },
+    //房源信息左滑效果
+    showHouseInfoLeftSwiper(){
+    	var swiper = new Swiper('#slideCenter', {
+            pagination: '.swiper-pagination',
+            slidesPerView: 2,
+            paginationClickable: true,
+            spaceBetween: 20
+        });
     }
     
 }

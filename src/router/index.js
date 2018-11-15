@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import search from '@/components/search'
 import index from '@/components/index'
+import houseInfo from '@/components/houseInfo'
 
 Vue.use(Router)
 
@@ -17,6 +18,11 @@ export default new Router({
       path: '/search',
       name: 'search',
       component: search
+    },
+    {
+    	path: '/houseInfo/:houseid',
+    	name:'houseInfo',
+    	component: houseInfo
     }
   ]
 })
