@@ -95,7 +95,7 @@
                              v-for="(item,index) in hoseListAll"
                              :key="index"
                              :style="{height: item.itemHeight + 'px', 'line-height': item.itemHeight + 'px'}">
-                            <a href="houseInfo.html" class="houseLink"></a>
+                            <router-link class="houseLink" :to="{name: 'houseInfo', params: {houseid: item.houseid}}"></router-link>
                             <div class="jk-cont-item-media">
                                 <img :src="imgWenSiteUrl+item.thumbnailurl" alt="" />
                             </div>
@@ -133,11 +133,9 @@
             </div>
         </div>
         <!-- 内容 end-->
-
-        <bottomCom></bottomCom>
-        
   
     </div>
+    <bottomCom></bottomCom>
 
 
     <!-- 筛选 弹层 start-->
@@ -365,6 +363,8 @@ export default {
             houserequire: '',  //出租要求    用于查询
             direction: '',  //朝向    用于查询
             housefeature: '',  //房源特色    用于查询
+            county:"",     //市
+            POI:"",        //地标
 
             keyword:'',//搜索关键字    用于手动输入查询
             
@@ -373,7 +373,13 @@ export default {
             priceTyprStr:'租金', //租金选中的筛选，用于首页展示
             areaTyprStr:'区域', //区域选中的筛选，用于首页展示
             screenTyprStr:'筛选', //筛选选中的筛选，用于首页展示
+
+            areaData:[]  //区域数组
         }
+    },
+    beforeCreated(){
+        // //获取城市列表
+        // this.getCity();
     },
     created () {
         console.info('this.$router.query',this.$route.query)
@@ -387,13 +393,16 @@ export default {
         // 首页展示筛选效果
         indexJs.clickShowTab();
          //默认显示 附近
-        indexJs.showTab('area');
+        //  console.info('this.areaData======',this.areaData)
+        // indexJs.showTab('area', this.areaData);
+         //获取城市列表
+        this.getCity();
 
         var priceType = ["不限","≤500元","500-1000","1000-1500","2000-3000","3000-4000","合4000-5000租","≥5000"];
         indexJs.getSelectData(priceType, 'priceType','tagItem', 'priceTypeVal','shover', true, '不限');
 
         var rentType = ["不限","整租","合租","短租"];
-        indexJs.getSelectData(rentType, 'rentType','jk-ca-tag', 'rentTypeVal','tag-hover', true, '不限');
+        indexJs.getSelectData(rentType, 'rentType','jk-ca-tag', 'rentTypeVal','tag-hover', true, this.renttype ? this.renttype : '不限');
 
         var rentHoseType = ["不限","1室","2室","3室","4+室"];
         indexJs.getSelectData(rentHoseType, 'rentHoseType','jk-ca-tag', 'rentHoseTypeVal','tag-hover', true, '不限');
@@ -412,15 +421,53 @@ export default {
         bottomCom
     },
     methods: {
+        getCity(){
+            var THIS = this;
+             //请求区域数据
+            this.$http.get("/api/API.ashx?apicommand=getregion&parentid=607").then(function (data) {
+                var areaData = eval("("+data.bodyText+")");
+                this.areaData = areaData;
+                // this.areaData = [
+                //     {name:"test1",id:'1',child:['test1-1','test1-2','test1-3']},
+                //     {name:"test2",id:'2',child:['test2-1','test2-2','test2-3']},
+                //     {name:"test3",id:'3',child:['test3-1','test3-2','test3-3']}
+                // ]
+                indexJs.showTab('area', this.areaData);
+
+                //设置区域搜索显示
+                if(THIS.$route.query.row1Val || THIS.$route.query.row2Val || THIS.$route.query.row3Val){
+                    var row1Val = '';
+                    if(THIS.$route.query.row1Val){
+                        THIS.areaData.forEach(function(item){
+                            if(item.id == THIS.$route.query.row1Val) row1Val = item.name
+                        });
+                    }
+                    
+                    THIS.areaTyprStr = row1Val
+                    + (THIS.$route.query.row2Val ? THIS.$route.query.row2Val : '')
+                    + (THIS.$route.query.row3Val ? THIS.$route.query.row3Val : '')
+                }
+            }).then(function(){
+                console.info('获取区域error')
+            })
+        },
         showTab(type){
-            indexJs.showTab(type);
+            indexJs.showTab(type,this.areaData);
         },
         setQuery(){
-            if(this.$route.query.row1Val || this.$route.query.row2Val || this.$route.query.row3Val){
-                this.areaTyprStr = (this.$route.query.row1Val ? this.$route.query.row1Val : '') 
-                + (this.$route.query.row2Val ? this.$route.query.row2Val : '')
-                 + (this.$route.query.row3Val ? this.$route.query.row3Val : '')
-            }
+            // if(this.$route.query.row1Val || this.$route.query.row2Val || this.$route.query.row3Val){
+            //     var row1Val = '';
+            //     if(this.$route.query.row1Val){
+            //         console.info('this.areaData111',this.areaData)
+            //         this.areaData.forEach(function(item){
+            //             if(item.id == this.$route.query.row1Val) row1Val = item.name
+            //         });
+            //     }
+                
+            //     this.areaTyprStr = row1Val
+            //     + (this.$route.query.row2Val ? this.$route.query.row2Val : '')
+            //      + (this.$route.query.row3Val ? this.$route.query.row3Val : '')
+            // }
 
             // 房源出租类型
             if(this.$route.query.renttype){
@@ -437,6 +484,11 @@ export default {
                 }else{
                     this.hostTyprStr = '不限'
                 }
+            }
+
+            if(this.$route.query.row1Val || this.$route.query.row2Val){
+                this.county = this.$route.query.row1Val;     //市
+                this.POI = this.$route.query.row2Val;        //地标
             }
 
             // 租金
@@ -555,6 +607,11 @@ export default {
                     queryData.houserequire = this.houserequire;  //出租要求
                     queryData.direction = this.direction;  //朝向
                     queryData.housefeature = this.housefeature;  //房源特色
+
+                    queryData.province = 113; //省份
+                    queryData.city = 607;      //城市
+                    queryData.county= this.county;     //市
+                    queryData.POI= this.POI;        //地标
 
                     queryData.pageindex = this.pageindex; //第几页
                 }

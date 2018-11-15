@@ -169,8 +169,9 @@ export default {
             $("#"+returnTagDataId).val(radioDefault);
             $(tagEle[s]).addClass(selectClass);
         }else{
-            $("#"+returnTagDataId).val(tagItem[0]);
-            $(tagEle[0]).addClass(selectClass);
+            //默认是否第一项
+            // $("#"+returnTagDataId).val(tagItem[0]);
+            // $(tagEle[0]).addClass(selectClass);
         }
 
         //给每一个tag绑定点击事件
@@ -186,8 +187,7 @@ export default {
                         $(this).removeClass(selectClass);
                     })
                     $(tagEle[_thisI]).addClass(selectClass);
-                    //设置当前选中的值
-                    $("#"+returnTagDataId).val($(tagEle[_thisI]).html());
+                    
 
 
                     //首页筛选二级单独处理
@@ -195,6 +195,12 @@ export default {
                         $('#row2').remove();
                         if(rowData && rowData[_thisI].child)
                         THIS.addRow(rowData[_thisI].child, 1, 2);
+                        //设置当前选中的值
+                        $("#"+returnTagDataId).val($(tagEle[_thisI]).attr('data-select-val'));
+                        
+                    }else{
+                        //设置当前选中的值
+                        $("#"+returnTagDataId).val($(tagEle[_thisI]).html());
                     }
 
                 }else{
@@ -226,7 +232,7 @@ export default {
 
 
     // 区域切换
-    showTab(type){
+    showTab(type,areaData){
         var tabItemEle = $('.showTabItem');
         tabItemEle.removeClass('shover');
         var THIS = this;
@@ -243,23 +249,8 @@ export default {
             
         }else if(type == 'area'){
             $(tabItemEle[1]).addClass('shover');
-
-            //请求区域数据
-            $.ajax({ 
-                type: "get", 
-                url: "/api/API.ashx?apicommand=getregion&parentid=607", 
-                datatype: "JSON", 
-                contentType: "application/json", 
-                success: function (data) {
-                    var areaData = eval("("+data+")");
-                    //渲染区域dom及click事件
-                    THIS.addRow(areaData, 2, 1);
-                },
-                error:function(){
-                    console.info('error')
-                }
-            })
-
+             //渲染区域dom及click事件
+             THIS.addRow(areaData, 2, 1);
 
         }else if(type == 'subWay'){
             $(tabItemEle[2]).addClass('shover');
@@ -291,12 +282,14 @@ export default {
         // 判断需要追加几行
         if(addNum == 1){
             for(var i=0; i<rowData.length; i++){
-                jkScreenItem += '<li class="tagItem" data-id="'+i+'">'+rowData[i]+'</li>';
+                jkScreenItem += '<li class="tagItem" data-id="'+i+'" '+dataselectval+'>'+rowData[i]+'</li>';
             }
         }else{
             for(var i=0; i<rowData.length; i++){
                 tagList.push(rowData[i].name);
-                jkScreenItem += '<li class="tagItem" data-id="'+i+'">'+rowData[i].name+'</li>';
+                var dataselectval = '';
+                if(rowData[i].id) dataselectval = ' data-select-val="'+rowData[i].id+'"';
+                jkScreenItem += '<li class="tagItem" data-id="'+i+'" '+dataselectval+'>'+rowData[i].name+'</li>';
             }
         }
         
