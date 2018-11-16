@@ -3,6 +3,9 @@ import Router from 'vue-router'
 import search from '@/components/search'
 import index from '@/components/index'
 import houseInfo from '@/components/houseInfo'
+import mine from '@/components/mine'
+import mineCollect from '@/components/mineCollect'
+import houseManage from '@/components/houseManage'
 
 Vue.use(Router)
 
@@ -23,6 +26,21 @@ export default new Router({
     	path: '/houseInfo/:houseid',
     	name:'houseInfo',
     	component: houseInfo
+    },
+    {
+    	path: '/mine',
+    	name:'mine',
+    	component: mine
+    },
+    {
+    	path: '/mine/collect',
+    	name:'mineCollect',
+    	component: mineCollect
+    },
+    {
+    	path: '/mine/houseManage',
+    	name:'houseManage',
+    	component: houseManage
     }
   ]
 })

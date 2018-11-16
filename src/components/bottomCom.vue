@@ -2,17 +2,17 @@
     <!-- 底部导航 start-->
     <div class="jk-nav jkFlex">
         <div class="jk-nav-item jkFlexItem nav-hover">
-            <a class="nav-link" href="./index.html"></a>
+            <router-link class="houseLink" :to="{name: 'index'}"></router-link>
             <div class="jk-nav-item-icon nav-icon01"></div>
             <p>首页</p>
         </div>
         <div class="jk-nav-item jkFlexItem">
-            <a class="nav-link" href="publish.html"></a>
+            <router-link class="houseLink" :to="{name: 'publish'}"></router-link>
             <div class="jk-nav-item-icon nav-icon02"></div>
             <p>发布</p>
         </div>
         <div class="jk-nav-item jkFlexItem">
-            <a class="nav-link" href="./my.html"></a>
+            <router-link class="houseLink" :to="{name: 'mine'}"></router-link>
             <div class="jk-nav-item-icon nav-icon03"></div>
             <p>我</p>
         </div>
