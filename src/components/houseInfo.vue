@@ -12,10 +12,12 @@
     </div>
     <div class="jk-house">
         <div class="jk-house-name">
-            整租·新潮嘉园二区1室1厅1卫
+            <!--整租·新潮嘉园二区1室1厅1卫-->
+            {{houseInfoAll.renttype+'·'}}{{houseInfoAll.community}}{{houseInfoAll.housestructure}}
         </div>
         <div class="jk-house-price">
-            3000元/每月
+            <!--3000元/每月-->
+            {{houseInfoAll.rent+'元/每月'}}
         </div>
         <div class="jk-house-tagbox tag-parent">
             <div class="jk-tag-4"><p class="jk-ca-tag">随时看房</p></div>
@@ -27,40 +29,67 @@
         </div>
 
         <div class="jk-house-desc jkFlex">
-            <p class="jkFlexItem">73m³</p>
-            <p class="jkFlexItem">1室1厅1卫</p>
-            <p class="jkFlexItem">南</p>
+            <p class="jkFlexItem">
+            	<!--73m³-->
+            	{{houseInfoAll.area+'m²'}}
+            </p>
+            <p class="jkFlexItem">
+            	<!--1室1厅1卫-->
+            	{{houseInfoAll.housestructure}}
+            </p>
+            <p class="jkFlexItem">
+            	<!--南-->
+            	{{houseInfoAll.direction}}
+            </p>
         </div>
 
         <div class="jk-house-desc1">
             <div class="houseinfo">
                 <div class="houseinfoitem">
                     <span class="desclabel">装修</span>
-                    <span class="desccon">暂无数据</span>
+                    <span class="desccon">
+                    	<!--暂无数据-->
+                    	{{houseInfoAll.decorated}}
+                    </span>
                 </div>
                 <div  class="houseinfoitem">
                     <span class="desclabel">楼层</span>
-                    <span class="desccon">高层/15层</span>
+                    <span class="desccon">
+                    	<!--高层/15层-->
+                    	{{houseInfoAll.floorcount+'层'}}
+                    </span>
                 </div>
             </div>
             <div class="houseinfo">
                 <div class="houseinfoitem">
                         <span class="desclabel">类型</span>
-                        <span class="desccon">暂无数据</span>
+                        <span class="desccon">
+                        	<!--暂无数据-->
+                        	{{houseInfoAll.housetype}}
+                        </span>
                 </div>
                 <div class="houseinfoitem">
                         <span class="desclabel">电梯</span>
-                        <span class="desccon">有</span>
+                        <span class="desccon">
+                        	<!--有-->
+                        	{{houseInfoAll.elevator}}
+                        </span>
                 </div>
             </div>
             <div class="houseinfo">
                 <div class="houseinfoitem">
                         <span class="desclabel">车位</span>
-                        <span class="desccon">无</span>
+                        <span class="desccon">
+                        	<!--无-->
+                        	{{houseInfoAll.carport}}
+                        </span>
                 </div>
                 <div class="houseinfoitem">
                         <span class="desclabel">入住</span>
-                        <span class="desccon">2018.10.12</span>
+                        <span class="desccon">
+                        	<!--2018.10.12-->
+                        	{{houseInfoAll.checkin}}
+                        </span>
                 </div>
             </div>
             <div class="houseinfo">
@@ -396,13 +425,28 @@
 				houseBanner3:houseBanner3,
 				houseBanner4:houseBanner4,
 				mapImg:mapImg,
+				houseInfoAll:{},//房源详细信息
+				houseId:''
 			}
 		},
 		created(){
-			
+			//获取当前房源所有详细信息
+			var url_getHouseInfo='';
+			url_getHouseInfo='?apicommand=gethouseinfo';
+			this.houseId=this.$route.params.houseid;
+			this.$http.get('/api/API.ashx',{
+				params:{
+					apicommand:'gethouseinfo',
+					houseid:this.houseId
+				}
+			}).then(function(data){
+				this.houseInfoAll=data.body.houseinfo[0];
+			})
 		},
 		mounted(){
+			//顶部轮播图
 			indexJs.showHouseInfoTopSwiper();
+			//底部房源推荐轮播图
 			indexJs.showHouseInfoLeftSwiper();
 		},
 		methods:{
