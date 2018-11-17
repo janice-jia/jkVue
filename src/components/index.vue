@@ -67,7 +67,7 @@
                         </span>
                     </p>
                 </div>
-                <div v-bind:class="[this.$route.query.asctype ? 'jk-screen-menu-item' : 'jk-screen-menu-item  screen-menu-hover']">
+                <div v-bind:class="[isSortClass ? 'jk-screen-menu-item screen-menu-hover' : 'jk-screen-menu-item']">
                     <p class="jkScreenNav menuSort" data-show-screen="Sort">
                         <span class="sort-icon">&nbsp;</span>
                     </p>
@@ -354,6 +354,7 @@ export default {
             currentPage: 1, //当前页码
             loading: false, 
             count:0,
+            isSortClass:this.getSortClass(),
             
 
             renttype:'', //房源类型  用于查询
@@ -474,17 +475,17 @@ export default {
             // 房源出租类型
             if(this.$route.query.renttype){
                 this.renttype = this.$route.query.renttype; 
-                this.hostTyprStr = this.$route.query.renttype; 
+                if(this.$route.query.searchType == 'HouseType') this.hostTyprStr = this.$route.query.renttype;
             }
             if(this.$route.query.rentTypeVal){
-                if(this.$route.query.rentTypeVal != '不限') this.renttype = this.$route.query.rentTypeVal; 
-                
+                if(this.$route.query.rentTypeVal != '不限') this.renttype = this.$route.query.rentTypeVal;
+
                 if(this.$route.query.rentTypeVal != '不限'){
-                    this.hostTyprStr = this.$route.query.rentTypeVal; 
+                    if(this.$route.query.searchType == 'HouseType') this.hostTyprStr = this.$route.query.rentTypeVal;
                 }else if(this.$route.query.rentHoseTypeVal != '不限'){
-                    this.hostTyprStr = this.$route.query.rentHoseTypeVal; 
+                    if(this.$route.query.searchType == 'HouseType') this.hostTyprStr = this.$route.query.rentHoseTypeVal;
                 }else{
-                    this.hostTyprStr = '不限'
+                    if(this.$route.query.searchType == 'HouseType') this.hostTyprStr = '不限'
                 }
             }
 
@@ -496,18 +497,15 @@ export default {
             // 租金
             if(this.$route.query.priceTypeVal) {
                 // this.priceTypeVal = this.$route.query.priceTypeVal;
-                this.priceTyprStr = this.$route.query.priceTypeVal;
+                if(this.$route.query.searchType == 'Price') this.priceTyprStr = this.$route.query.priceTypeVal;
                 var priceTypeVal = this.$route.query.priceTypeVal;
-                console.info('priceTypeVal',  priceTypeVal)
-                console.info('priceTypeVal==typeof', typeof priceTypeVal)
-                console.info('priceTypeVal比较', priceTypeVal == '≤500元')
-                if(priceTypeVal == '≤500'){
+                if(priceTypeVal === '≤500元'){
                     this.rentstart = 0
                     this.rentend = 500
                 }else if(priceTypeVal == '500-1000'){
                     this.rentstart = 500
                     this.rentend = 1000
-                }else if(priceTypeVal == '100-1500'){
+                }else if(priceTypeVal == '1000-1500'){
                     this.rentstart = 1000
                     this.rentend = 1500
                 }else if(priceTypeVal == '1500-2000'){
@@ -525,9 +523,6 @@ export default {
                 }else if(priceTypeVal == '≥5000'){
                     this.rentstart = 5000
                     this.rentend = 100000
-                }else{
-                    this.rentstart = ''
-                    this.rentend = ''
                 }
                 
             } 
@@ -538,13 +533,12 @@ export default {
             }
 
             // 筛选
-            if(this.$route.query.rentRequireVal){
-                
+            if(this.$route.query.rentRequireVal && (this.$route.query.searchType == 'Screen')){
                 if(this.$route.query.rentRequireVal !='不限')
                     this.screenTyprStr = this.$route.query.rentRequireVal;
-                else  if(this.$route.query.rentFeatureVal != '不限') 
+                else  if(this.$route.query.rentFeatureVal != '不限')
                     this.screenTyprStr = this.$route.query.rentFeatureVal;
-                else if(this.$route.query.rendTowardVal != '不限') 
+                else if(this.$route.query.rendTowardVal != '不限')
                     this.screenTyprStr = this.$route.query.rendTowardVal;
                 else
                     this.screenTyprStr = '不限';
@@ -614,6 +608,7 @@ export default {
                         queryData.city = 607;      //城市
                         queryData.county= this.county;     //市
                         queryData.POI= this.POI;        //地标
+                        queryData.renttype = ''; //类型
                     }else if(searchType == 'Price'){
                         queryData.rentstart = this.rentstart;  //租金起始
                         queryData.rentend = this.rentend;  //租金截止
@@ -656,6 +651,15 @@ export default {
         },
         goSearchPage(){
             this.$router.push({name: 'search'});
+        },
+        getSortClass(){
+            console.info('classthis.$route.query.asctype',this.$route.query.asctype)
+            console.info('classthis.$route.query.searchType',this.$route.query.searchType)
+            if(this.$route.query.asctype && (this.$route.query.searchType=='Sort')){
+                return true
+            }else{
+                return false
+            }
         }
     }
 }
