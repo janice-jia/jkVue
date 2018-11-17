@@ -141,6 +141,8 @@
     <!-- 筛选 弹层 start-->
     <div class="jkScreen" id="jkScreen">
         <form action="/">
+            <!--筛选的类型 Area区域 Price租金 HouseType户型 Screen筛选 Sort排序-->
+            <input type="hidden" name="searchType" id="searchType">
             <!-- 筛选 nav start-->
             <div class="jk-screen">
                 <div class="jk-screen-menu jkFlex">
@@ -382,7 +384,7 @@ export default {
         // this.getCity();
     },
     created () {
-        console.info('this.$router.query',this.$route.query)
+        // console.info('this.$router.query',this.$route.query)
         //设置查询条件
         this.setQuery();
 
@@ -496,6 +498,9 @@ export default {
                 // this.priceTypeVal = this.$route.query.priceTypeVal;
                 this.priceTyprStr = this.$route.query.priceTypeVal;
                 var priceTypeVal = this.$route.query.priceTypeVal;
+                console.info('priceTypeVal',  priceTypeVal)
+                console.info('priceTypeVal==typeof', typeof priceTypeVal)
+                console.info('priceTypeVal比较', priceTypeVal == '≤500元')
                 if(priceTypeVal == '≤500'){
                     this.rentstart = 0
                     this.rentend = 500
@@ -587,7 +592,6 @@ export default {
         },
         infinite: function (done) {
             console.log('infinite')
-            console.info('this.totalItems:'+this.totalItems+'this.hoseListAll.length'+this.hoseListAll.length+'this.totalItems'+this.totalItems)
             if(this.totalItems==0 && this.hoseListAll.length <= this.totalItems){
                 var apiUrl = '';
                 apiUrl = '/api/API.ashx';
@@ -597,26 +601,38 @@ export default {
                 if(this.keyword){
                     queryData.keyword = this.keyword; //类型
                 }else{
-                    queryData.renttype = this.renttype; //类型
+                    /**
+                     * 根据筛选类型设置参数
+                     * Area区域 Price租金 HouseType户型 Screen筛选 Sort排序
+                     */
+                    var searchType = this.$route.query.searchType;
+                    if(this.$route.query.renttype){
+                        queryData.renttype = this.renttype; //类型
+                    }
+                    if(searchType == 'Area'){
+                        queryData.province = 113; //省份
+                        queryData.city = 607;      //城市
+                        queryData.county= this.county;     //市
+                        queryData.POI= this.POI;        //地标
+                    }else if(searchType == 'Price'){
+                        queryData.rentstart = this.rentstart;  //租金起始
+                        queryData.rentend = this.rentend;  //租金截止
+                    }else if(searchType == 'HouseType'){
+                        queryData.housestructure = this.housestructure;  //户型
+                    }else if(searchType == 'Screen'){
+                        queryData.houserequire = this.houserequire;  //出租要求
+                        queryData.direction = this.direction;  //朝向
+                        queryData.housefeature = this.housefeature;  //房源特色
+                    }else if(searchType == 'Sort'){
+                        queryData.asctype = this.asctype;  //排序类型
+                        queryData.ascfiled = this.ascfiled;  //排序字段
+                    }
                     queryData.pagesize = this.pagesize;  //每页显示
-                    queryData.asctype = this.asctype;  //排序类型
-                    queryData.ascfiled = this.ascfiled;  //排序字段
-                    queryData.rentstart = this.rentstart;  //租金起始
-                    queryData.rentend = this.rentend;  //租金截止
-                    queryData.housestructure = this.housestructure;  //户型
-                    queryData.houserequire = this.houserequire;  //出租要求
-                    queryData.direction = this.direction;  //朝向
-                    queryData.housefeature = this.housefeature;  //房源特色
-
-                    queryData.province = 113; //省份
-                    queryData.city = 607;      //城市
-                    queryData.county= this.county;     //市
-                    queryData.POI= this.POI;        //地标
-
                     queryData.pageindex = this.pageindex; //第几页
                 }
                 
-
+                console.info('查询类型searchType：', searchType)
+                console.info('查询条件queryData：', queryData)
                 this.$http.get(apiUrl,{params:queryData}).then(function (data) {
                     if(data.body.count == 0){
                         this.$refs.myscroller.finishInfinite(2);

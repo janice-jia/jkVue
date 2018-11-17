@@ -96,7 +96,9 @@ export default {
                     e.stopPropagation();
                 },false);
                 var ScreenItemId = this.getAttribute('data-show-screen');
-                
+                //设置当前筛选的类型
+                $('#searchType').val(ScreenItemId)
+
                 //判断是否是排序，如果是排序设置高度
                 if(ScreenItemId == 'Sort'){
                     $('#jkScreen').height('auto');
