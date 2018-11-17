@@ -19,10 +19,10 @@
         <div class="jk-info-link">
             <ul>
                 <li class="jk-info-linkItem" v-show="islandlord">
-                    <router-link class="item1" :to="{name: 'houseManage'}">房源管理</router-link>
+                    <router-link class="item1" :to="{name: 'minehouseList'}">房源管理</router-link>
                 </li>
                 <li class="jk-info-linkItem">
-                     <router-link class="item1" :to="{name: 'mineCollect'}">我的收藏</router-link>
+                     <router-link class="item2" :to="{name: 'mineCollect'}">我的收藏</router-link>
                 </li>
                 <li class="jk-info-linkItem">
                     <a href="myOrderLookList.html" class="item3">我的约看</a>

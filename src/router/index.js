@@ -5,7 +5,8 @@ import index from '@/components/index'
 import houseInfo from '@/components/houseInfo'
 import mine from '@/components/mine'
 import mineCollect from '@/components/mineCollect'
-import houseManage from '@/components/houseManage'
+import minehouseList from '@/components/minehouseList'
+import minehousePublisManage from  '@/components/minehousePublisManage'
 
 Vue.use(Router)
 
@@ -38,9 +39,14 @@ export default new Router({
     	component: mineCollect
     },
     {
-    	path: '/mine/houseManage',
-    	name:'houseManage',
-    	component: houseManage
+    	path: '/mine/minehouseList',
+    	name:'minehouseList',
+    	component: minehouseList
+    },
+    {
+      path: '/mine/minehousepublishmanage/:publishType',
+      name:'minehousePublisManage',
+      component: minehousePublisManage
     }
   ]
 })
