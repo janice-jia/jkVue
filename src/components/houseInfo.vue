@@ -223,8 +223,12 @@
                 <div class="jk-recommend-item swiper-slide" 
                 v-for="(item,index) in houseRecommandAll" 
                 :key="index">
-                    <a class="houseLink" href=""></a>
-                    <div class="jk-recommend-img"><img src="../assets/recommend.jpg" alt="房源推荐" /></div>
+                    <!--<a class="houseLink" href=""></a>-->
+                    <router-link class="houseLink" :to="{name:'houseInfo',params:{houseid:item.houseid}}" ></router-link>
+                    <div class="jk-recommend-img">
+                    	<!--<img src="../assets/recommend.jpg" alt="房源推荐" />-->
+                    	<img :src="imgWenSiteUrl+item.thumbnailurl" alt="房源推荐" />
+                    </div>
                     <div class="jk-recommend-con">
                         <div class="jk-recommend-conTit">
                             <!-- 新悦家园4居室-北卧 -->
@@ -300,9 +304,9 @@
                     <p class="jk-shareleftitemimg"><img src="../assets/icon-share.png" alt="分享" /></p>
                     <p class="jk-shareleftitemTit">分享</p>
                 </div>
-                <div class="jk-shareleftitem jkFlexItem">
-                    <a href="" class="houseLink"></a>
-                    <p class="jk-shareleftitemimg jk-like jklikehover"></p>
+                <div class="jk-shareleftitem jkFlexItem" @click="collect();">
+                    <p class="jk-shareleftitemimg" 
+                    	v-bind:class="collectStatus?'jklikehover':'jk-like'"></p>
                     <p class="jk-shareleftitemTit">收藏</p>
                 </div>
             </div>
@@ -311,7 +315,10 @@
                     <button class="jk-call" id="callBtn" @click="call();">拨打电话</button>
                 </div>
                 <div class="jk-sharerightitem">
-                    <a class="jk-look" href="myOrderLook.html">预约看房</a>
+                	<a class="jk-look" href="myOrderLook.html"></a>
+                	<!--<router-link class="jk-look" :to="{name:'mineOrderLook',params:{houseid:item.houseid}}" >
+                		预约看房
+                	</router-link>-->
                 </div>
             </div>
         </div>
@@ -324,7 +331,7 @@
                     <button class="jkBottomBtn2" id="callCancelBtn">取消</button>
                 </div>
                 <div class="jkFlexItem">
-                    <a v-bind:href="telNumber">
+                    <a v-bind:href="houseInfoAll.contactsmobile">
                         <button class="jkBottomBtn2">立即拨打</button>
                     </a>
                 </div>
@@ -360,7 +367,7 @@
     import mapImg from '../assets/map.jpg';
 	
     import indexJs from	'../js/index';
-    import configJs from '../js/config'
+    import configJs from '../js/config'; 
     
 	export default{
 		name:'houseInfo',
@@ -373,9 +380,11 @@
 				mapImg:mapImg,
 				houseInfoAll:{},//房源详细信息
                 houseId:'',
+                userId:configJs.config.userId,
                 houseFeatures:[],
                 houseRecommandAll:[],//推荐房源
-                telNumber:'tel:'+configJs.config.telNumber
+                collectStatus:false,//收藏状态
+                imgWenSiteUrl:configJs.config.imgWenSiteUrl,//图片路径前缀
 
 			}
 		},
@@ -385,24 +394,29 @@
 			this.$http.get('/api/API.ashx',{
 				params:{
 					apicommand:'gethouseinfo',
-					houseid:this.houseId
+					houseid:this.houseId,
+					userid:this.userId
 				}
 			}).then(function(data){
                 this.houseInfoAll=data.body.houseinfo[0];
                 this.houseFeatures=this.splitStr(this.houseInfoAll.housefeature);
+                 //获取当前房源是否被收藏
+	            if(this.houseInfoAll.collectid){
+	            	this.collectStatus=true;
+	            }else{
+	            	this.collectStatus=false;
+	            }
             })
             //获取推荐房源
             this.$http.get('/api/API.ashx?apicommand=getrecommend').then(function(data){
                 if(data.body){
                     for(i=0;i<data.body.houselist.length;i++){
-                        // var recommandHouseFeatures=[],
                         data.houselist[i].housefeature=this.splitStr(data.houseList[i].housefeature);
                         this.houseRecommandAll.push(data.houselist[i]);
-                        // this.recommandHouseFeatures=this.splitStr(data.houseList[i].housefeature);
                     }
                 }
             })
-            
+
 		},
 		mounted(){
 			//顶部轮播图
@@ -421,6 +435,44 @@
 			//分享
 			share(){
 				 $("#weCharBottom").show();
+           },
+            //收藏
+            collect(){
+            	if(this.collectStatus==false){
+            		this.$http.get('/api/API.ashx',{
+		            	params:{
+		            		apicommand:'collect',
+		            		houseid:this.houseId,
+		            		userid:this.userId
+		            	}
+		            }).then(function(data){
+		            	console.info(data);
+			          	if(data.body.result=='Y'){
+			          		this.collectStatus=true;
+			          	}else if(data.body.result=='N'){
+			          		this.collectStatus=false;
+			          	}
+		            })
+	            }else{
+	            	this.$http.get('/api/API.ashx',{
+		            	params:{
+		            		apicommand:'collectcancel',
+		            		houseid:this.houseId,
+		            		userid:this.userId
+		            	}
+		            }).then(function(data){
+		            	console.info(data);
+//		            	var collectData=eval("("+data.bodyText+")");
+//		            	var collectData=JSON.parse(data.bodyText);
+//		            	console.info(collectData);
+//			          	if(data.body.result=='Y'){
+			          		this.collectStatus=false;
+//			          	}else if(data.body.result=='N'){
+//			          		this.collectStatus=true;
+//			          	}
+		            })
+	            }
+	            
             },
             //判断字段是否包含
             iscontains(str,substr){
