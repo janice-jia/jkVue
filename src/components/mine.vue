@@ -31,7 +31,7 @@
                     <a href="./myAuthentication.html" class="item4">我的认证</a>
                 </li>
                 <li class="jk-info-linkItem">
-                    <a href="tel:123456789" class="item5">联系客服</a>
+                    <a href="'tel:'+telNumber" class="item5">联系客服</a>
                 </li>
                 <li class="jk-info-linkItem">
                     <a href="advice.html" class="item6">意见反馈</a>
@@ -49,12 +49,14 @@
 <script type="text/ecmascript-6">
 import bottomCom from './bottomCom.vue';
 import avatar from '../assets/avatar.jpg';
+import indexJs from '../js/index'
 export default {
     name: 'mine',
     data () {
         return {
             avatar:avatar,
-            islandlord: false
+            islandlord: false,
+            telNumber: indexJs.telNumber
         }
     },
     components: {
