@@ -7,7 +7,10 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 // import 'lib-flexible/flexible'
 import VueScroller from 'vue-scroller'
-
+// 引入全部组件
+import Mint from 'mint-ui';
+Vue.use(Mint);
+import 'mint-ui/lib/style.css';
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
