@@ -310,10 +310,10 @@
                     <div class="jk-screen-cont jkFlexItem">
                         <ul class="jk-screen-ui">
                             <li class="shover"><button name="paixu" type="submit">默认排序</button></li>
-                            <li><button name="asctype" type="submit" value="rentace">价格从低到高</button></li>
+                            <li><button name="asctype" type="submit" value="rentasc">价格从低到高</button></li>
                             <li><button name="asctype" type="submit" value="rentdesc">价格从高到低</button></li>
-                            <li><button name="asctype" type="submit" value="adddatetimeace">发布从新到旧</button></li>
-                            <li><button name="asctype" type="submit" value="adddatetimedesc">发布从就到新</button></li>
+                            <li><button name="asctype" type="submit" value="adddatetimeasc">发布从新到旧</button></li>
+                            <li><button name="asctype" type="submit" value="adddatetimedesc">发布从旧到新</button></li>
                         </ul>
                     </div>
                 </div>
@@ -546,14 +546,14 @@ export default {
 
             //排序
             if(this.$route.query.asctype){
-                if(this.$route.query.asctype == 'rentace'){
-                    this.asctype = 'ace'
+                if(this.$route.query.asctype == 'rentasc'){
+                    this.asctype = 'asc'
                     this.ascfiled = 'rent'
                 }else if(this.$route.query.asctype == 'rentdesc'){
                     this.asctype = 'desc'
                     this.ascfiled = 'rent'
-                }else if(this.$route.query.asctype == 'adddatetimeace'){
-                    this.asctype = 'ace'
+                }else if(this.$route.query.asctype == 'adddatetimeasc'){
+                    this.asctype = 'asc'
                     this.ascfiled = 'adddatetime'
                 }else if(this.$route.query.asctype == 'adddatetimedesc'){
                     this.asctype = 'desc'
@@ -625,6 +625,7 @@ export default {
                     queryData.pagesize = this.pagesize;  //每页显示
                     queryData.pageindex = this.pageindex; //第几页
                 }
+                if(queryData.renttype == undefined) queryData.renttype = ''
                 
                 console.info('查询类型searchType：', searchType)
                 console.info('查询条件queryData：', queryData)
