@@ -19,13 +19,12 @@
             <!--3000元/每月-->
             {{houseInfoAll.rent+'元/每月'}}
         </div>
-        <div class="jk-house-tagbox tag-parent">
-            <div class="jk-tag-4"><p class="jk-ca-tag">随时看房</p></div>
-            <div class="jk-tag-4"><p class="jk-ca-tag">配套齐全</p></div>
-            <div class="jk-tag-4"><p class="jk-ca-tag">南北通透</p></div>
-            <div class="jk-tag-4"><p class="jk-ca-tag">独立卫浴</p></div>
-            <div class="jk-tag-4"><p class="jk-ca-tag">押一付一</p></div>
-            <div class="jk-tag-4"><p class="jk-ca-tag">有阳台</p></div>
+       
+        <div class="jk-house-tagbox tag-parent" >
+            <div class="jk-tag-4" v-for="item in houseFeatures" :key="item"><p class="jk-ca-tag">
+                <!-- 随时看房 -->
+                {{item}}
+                </p></div>
         </div>
 
         <div class="jk-house-desc jkFlex">
@@ -104,7 +103,8 @@
         <div class="jk-house-tit">房源配置</div>
 
         <div class="jk-house-configTag">
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'宽带')">
                 <p class="jk-house-conimg">
                     <img src="../assets/config-wifi.png" alt="宽带" />
                 </p>
@@ -112,7 +112,8 @@
                     宽带
                 </p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'床')">
                 <p class="jk-house-conimg">
                     <img src="../assets/config-bed.png" alt="床" />
                 </p>
@@ -120,7 +121,8 @@
                     床
                 </p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'衣柜')">
                 <p class="jk-house-conimg">
                     <img src="../assets/config-wardrobe.png" alt="衣柜" />
                 </p>
@@ -128,7 +130,8 @@
                     衣柜
                 </p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'沙发')">
                 <p class="jk-house-conimg">
                     <img src="../assets/config-sofa.png" alt="沙发" />
                 </p>
@@ -136,57 +139,72 @@
                     沙发
                 </p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'桌椅')">
                 <p class="jk-house-conimg"><img src="../assets/config-tables.png" alt="桌椅" /></p>
                 <p class="jk-house-conTit">桌椅</p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'电视')">
                 <p class="jk-house-conimg"><img src="../assets/config-tv.png" alt="电视" /></p>
                 <p class="jk-house-conTit">电视</p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'空调')">
                 <p class="jk-house-conimg"><img src="../assets/config-air-conditioner.png" alt="空调" /></p>
                 <p class="jk-house-conTit">空调</p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'洗衣机')">
                 <p class="jk-house-conimg"><img src="../assets/config-washingMmachine.png" alt="洗衣机" /></p>
                 <p class="jk-house-conTit">洗衣机</p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'冰箱')">
                 <p class="jk-house-conimg"><img src="../assets/config-refrigerator.png" alt="冰箱" /></p>
                 <p class="jk-house-conTit">冰箱</p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'暖气')"> 
                 <p class="jk-house-conimg"><img src="../assets/config-heating.png" alt="暖气" /></p>
                 <p class="jk-house-conTit">暖气</p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'热水器')">
                 <p class="jk-house-conimg"><img src="../assets/config-calorifier.png" alt="热水器" /></p>
                 <p class="jk-house-conTit">热水器</p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'燃气灶')">
                 <p class="jk-house-conimg"><img src="../assets/config-gas-stove.png" alt="燃气灶" /></p>
                 <p class="jk-house-conTit">燃气灶</p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'抽油烟机')">
                 <p class="jk-house-conimg"><img src="../assets/config-kitchen-ventilator.png" alt="抽油烟机" /></p>
                 <p class="jk-house-conTit">抽油烟机</p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'独卫')">
                 <p class="jk-house-conimg"><img src="../assets/config-private-bathroom.png" alt="独卫" /></p>
                 <p class="jk-house-conTit">独卫</p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'阳台')">
                 <p class="jk-house-conimg"><img src="../assets/config-balcony.png" alt="阳台" /></p>
                 <p class="jk-house-conTit">阳台</p>
             </div>
-            <div class="jk-house-config-tag-item">
+            <div class="jk-house-config-tag-item" 
+            v-if="iscontains(houseInfoAll.housecontent,'可做饭')">
                 <p class="jk-house-conimg"><img src="../assets/config-cook.png" alt="可做饭" /></p>
                 <p class="jk-house-conTit">可做饭</p>
             </div>
         </div>
 
-        <div class="jk-house-tit">新潮嘉园A区04楼</div>
+        <!-- <div class="jk-house-tit">
+            新潮嘉园A区04楼
+            {{houseInfoAll.title}}
+        </div>
         <div class="jk-house-map">
             <img :src="mapImg" alt=""/>
         </div>
@@ -195,37 +213,52 @@
                 <li>距离八通线梨园直线距离400m</li>
                 <li>距离八通线梨园直线距离400m</li>
             </ul>
-        </div>
+        </div> -->
 
 
         <div class="jk-house-tit">房源推荐</div>
         <div class="jk-recommend swiper-container" id="slideCenter">
             <div class="swiper-wrapper">
                 <!-- 房源推荐 item start -->
-                <div class="jk-recommend-item swiper-slide">
+                <div class="jk-recommend-item swiper-slide" 
+                v-for="(item,index) in houseRecommandAll" 
+                :key="index">
                     <a class="houseLink" href=""></a>
                     <div class="jk-recommend-img"><img src="../assets/recommend.jpg" alt="房源推荐" /></div>
                     <div class="jk-recommend-con">
-                        <div class="jk-recommend-conTit">新悦家园4居室-北卧</div>
-                        <div class="jk-recommend-conDesc">
-                            <span>4室1厅</span>
-                            <span>14.9m³</span>
+                        <div class="jk-recommend-conTit">
+                            <!-- 新悦家园4居室-北卧 -->
+                            {{item.title}}
                         </div>
-                        <div class="jk-recommend-conPrice">1860元/月</div>
+                        <div class="jk-recommend-conDesc">
+                            <span>
+                                <!-- 4室1厅 -->
+                                {{item.housestructure}}
+                            </span>
+                            <span>
+                                <!-- 14.9m³ -->
+                                {{item.area+'m²'}}
+                            </span>
+                        </div>
+                        <div class="jk-recommend-conPrice">
+                            <!-- 1860元/月 -->
+                            {{item.rent}}
+                        </div>
                         <div class="jk-recommend-tag tag-parent">
-                            <div class="jk-tag-2 ">
-                                <p class="jk-ca-tag">离地铁近</p>
+                            <div class="jk-tag-2 " 
+                            v-for="featureItem in item.housefeature" 
+                            :key="featureItem">
+                                <p class="jk-ca-tag">
+                                    <!-- 离地铁近 -->
+                                    {{featureItem}}
+                                </p>
                             </div>
-                            <div class="jk-tag-2">
-                                <p class="jk-ca-tag">首次出租</p>
-                            </div>
-                            
                         </div>
                     </div>
                 </div>
                 <!-- 房源推荐 item end -->
                 <!-- 房源推荐 item start -->
-                <div class="jk-recommend-item swiper-slide">
+                <!-- <div class="jk-recommend-item swiper-slide">
                     <a class="houseLink" href=""></a>
                     <div class="jk-recommend-img"><img src="../assets/recommend.jpg" alt="房源推荐" /></div>
                     <div class="jk-recommend-con">
@@ -245,98 +278,8 @@
                             
                         </div>
                     </div>
-                </div>
-                <!-- 房源推荐 item start -->
-                <div class="jk-recommend-item swiper-slide">
-                    <a class="houseLink" href=""></a>
-                    <div class="jk-recommend-img"><img src="../assets/recommend.jpg" alt="房源推荐" /></div>
-                    <div class="jk-recommend-con">
-                        <div class="jk-recommend-conTit">新悦家园4居室-北卧</div>
-                        <div class="jk-recommend-conDesc">
-                            <span>4室1厅</span>
-                            <span>14.9m³</span>
-                        </div>
-                        <div class="jk-recommend-conPrice">1860元/月</div>
-                        <div class="jk-recommend-tag tag-parent">
-                            <div class="jk-tag-2 ">
-                                <p class="jk-ca-tag">离地铁近</p>
-                            </div>
-                            <div class="jk-tag-2">
-                                <p class="jk-ca-tag">首次出租</p>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
+                </div> -->
                 <!-- 房源推荐 item end -->
-                <!-- 房源推荐 item start -->
-                <div class="jk-recommend-item swiper-slide">
-                    <a class="houseLink" href=""></a>
-                    <div class="jk-recommend-img"><img src="../assets/recommend.jpg" alt="房源推荐" /></div>
-                    <div class="jk-recommend-con">
-                        <div class="jk-recommend-conTit">新悦家园4居室-北卧</div>
-                        <div class="jk-recommend-conDesc">
-                            <span>4室1厅</span>
-                            <span>14.9m³</span>
-                        </div>
-                        <div class="jk-recommend-conPrice">1860元/月</div>
-                        <div class="jk-recommend-tag tag-parent">
-                            <div class="jk-tag-2 ">
-                                <p class="jk-ca-tag">离地铁近</p>
-                            </div>
-                            <div class="jk-tag-2">
-                                <p class="jk-ca-tag">首次出租</p>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                <!-- 房源推荐 item end -->
-                <!-- 房源推荐 item start -->
-                <div class="jk-recommend-item swiper-slide">
-                    <a class="houseLink" href=""></a>
-                    <div class="jk-recommend-img"><img src="../assets/recommend.jpg" alt="房源推荐" /></div>
-                    <div class="jk-recommend-con">
-                        <div class="jk-recommend-conTit">新悦家园4居室-北卧</div>
-                        <div class="jk-recommend-conDesc">
-                            <span>4室1厅</span>
-                            <span>14.9m³</span>
-                        </div>
-                        <div class="jk-recommend-conPrice">1860元/月</div>
-                        <div class="jk-recommend-tag tag-parent">
-                            <div class="jk-tag-2 ">
-                                <p class="jk-ca-tag">离地铁近</p>
-                            </div>
-                            <div class="jk-tag-2">
-                                <p class="jk-ca-tag">首次出租</p>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                <!-- 房源推荐 item end -->
-                <!-- 房源推荐 item start -->
-                <div class="jk-recommend-item swiper-slide">
-                    <a class="houseLink" href=""></a>
-                    <div class="jk-recommend-img"><img src="../assets/recommend.jpg" alt="房源推荐" /></div>
-                    <div class="jk-recommend-con">
-                        <div class="jk-recommend-conTit">新悦家园4居室-北卧</div>
-                        <div class="jk-recommend-conDesc">
-                            <span>4室1厅</span>
-                            <span>14.9m³</span>
-                        </div>
-                        <div class="jk-recommend-conPrice">1860元/月</div>
-                        <div class="jk-recommend-tag tag-parent">
-                            <div class="jk-tag-2 ">
-                                <p class="jk-ca-tag">离地铁近</p>
-                            </div>
-                            <div class="jk-tag-2">
-                                <p class="jk-ca-tag">首次出租</p>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -381,7 +324,9 @@
                     <button class="jkBottomBtn2" id="callCancelBtn">取消</button>
                 </div>
                 <div class="jkFlexItem">
-                    <button class="jkBottomBtn2">立即拨打</button>
+                    <a v-bind:href="telNumber">
+                        <button class="jkBottomBtn2">立即拨打</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -412,10 +357,11 @@
 	import houseBanner2 from '../assets/house-banner.jpg';
 	import houseBanner3 from '../assets/house-banner.jpg';
 	import houseBanner4 from '../assets/house-banner.jpg';
-	import mapImg from '../assets/map.jpg';
-
+    import mapImg from '../assets/map.jpg';
 	
-	import indexJs from	'../js/index'
+    import indexJs from	'../js/index';
+    import configJs from '../js/config'
+    
 	export default{
 		name:'houseInfo',
 		data(){
@@ -426,13 +372,15 @@
 				houseBanner4:houseBanner4,
 				mapImg:mapImg,
 				houseInfoAll:{},//房源详细信息
-				houseId:''
+                houseId:'',
+                houseFeatures:[],
+                houseRecommandAll:[],//推荐房源
+                telNumber:'tel:'+configJs.config.telNumber
+
 			}
 		},
 		created(){
 			//获取当前房源所有详细信息
-			var url_getHouseInfo='';
-			url_getHouseInfo='?apicommand=gethouseinfo';
 			this.houseId=this.$route.params.houseid;
 			this.$http.get('/api/API.ashx',{
 				params:{
@@ -440,8 +388,21 @@
 					houseid:this.houseId
 				}
 			}).then(function(data){
-				this.houseInfoAll=data.body.houseinfo[0];
-			})
+                this.houseInfoAll=data.body.houseinfo[0];
+                this.houseFeatures=this.splitStr(this.houseInfoAll.housefeature);
+            })
+            //获取推荐房源
+            this.$http.get('/api/API.ashx?apicommand=getrecommend').then(function(data){
+                if(data.body){
+                    for(i=0;i<data.body.houselist.length;i++){
+                        // var recommandHouseFeatures=[],
+                        data.houselist[i].housefeature=this.splitStr(data.houseList[i].housefeature);
+                        this.houseRecommandAll.push(data.houselist[i]);
+                        // this.recommandHouseFeatures=this.splitStr(data.houseList[i].housefeature);
+                    }
+                }
+            })
+            
 		},
 		mounted(){
 			//顶部轮播图
@@ -460,8 +421,15 @@
 			//分享
 			share(){
 				 $("#weCharBottom").show();
-			}
-			
+            },
+            //判断字段是否包含
+            iscontains(str,substr){
+                return new RegExp(substr).test(str);
+            },
+            // 分割houseFeatures字段
+            splitStr(str){
+                return str.split(',');
+            }
 		}
 	}
 	
