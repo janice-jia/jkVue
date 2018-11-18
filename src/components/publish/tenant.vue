@@ -302,10 +302,9 @@
     import { Picker,Popup,DatetimePicker,MessageBox , Swipe, SwipeItem} from 'mint-ui';
     Vue.component(Picker.name, Picker,Popup.name, Popup,
         DatetimePicker.name, DatetimePicker,Swipe.name, Swipe,SwipeItem.name, SwipeItem);
-
+    // uploadApi = '/Ajax/UploadImg.ashx';
     let apiUrl = '/api/API.ashx',
-        // uploadApi = '/Ajax/UploadImg.ashx';
-        uploadApi = 'http://admin.9kuaiz.com/Ajax/UploadImg.ashx?command=webuploadhouseimg';
+        uploadApi = 'http://admin.9kuaiz.com/Ajax/UploadImg.ashx';
 
     export default {
         name: "tenant",
@@ -576,7 +575,8 @@
                 };
                 if(this.sendImgArr.length>0){
                     console.log(sendData,'qwr');
-                    this.$http.post(uploadApi,{params:sendData}).then(function (data) {
+                    console.info('uploadApi', uploadApi);
+                    this.$http.post(uploadApi,{params:sendData},{headers:{'Content-Type':'json'}}).then(function (data) {
                         this.picVal = [];
                         let resData = data.data;
                         this.houseId = resData.houseid;
