@@ -338,7 +338,8 @@
                 </div>
                 <div class="jk-sharerightitem">
                 	<!--<a class="jk-look" href="myOrderLook.html"></a>-->
-                	<router-link class="jk-look" :to="{name:'mineOrderLook',params:{houseid:houseInfoAll.houseid}}" >
+                	<router-link class="jk-look" 
+                		:to="!orderLookStatus?{name:'mineOrderLook',params:{houseid:houseInfoAll.houseid}}:{name:'mineOrderInfo',params:{houseid:houseInfoAll.houseid}}" >
                 		预约看房
                 	</router-link>
                 </div>
@@ -406,6 +407,7 @@
                 houseFeatures:[],
                 houseRecommandAll:[],//推荐房源
                 collectStatus:false,//收藏状态
+                orderLookStatus:false,//是否已经约看
                 imgWenSiteUrl:configJs.config.imgWenSiteUrl,//图片路径前缀
 
 			}
@@ -422,6 +424,7 @@
 			}).then(function(data){
                 this.houseInfoAll=data.body.houseinfo[0];
                 this.houseFeatures=this.splitStr(this.houseInfoAll.housefeature);
+                this.houseInfoAll.checkin=this.splitStr(this.houseInfoAll.checkin,' ')[0];
                  //获取当前房源是否被收藏
 	            if(this.houseInfoAll.collectid){
 	            	this.collectStatus=true;
@@ -433,10 +436,25 @@
             this.$http.get('/api/API.ashx?apicommand=getrecommend').then(function(data){
                 if(data.body){
                     for(i=0;i<data.body.houselist.length;i++){
-                        data.houselist[i].housefeature=this.splitStr(data.houseList[i].housefeature);
+                        data.houselist[i].housefeature=this.splitStr(data.houseList[i].housefeature,',');
                         this.houseRecommandAll.push(data.houselist[i]);
                     }
                 }
+            })
+            //查看是否已经约看当前房源
+            this.$http.get('/api/API.ashx',{
+            	params:{
+            		apicommand:'isappointment',
+            		houseid:this.houseId,
+            		userid:this.userId
+            	}
+            }).then(function(data){
+            	console.info(data.body.result)
+                 if(data.body.result=="Y"){
+	            	this.orderLookStatus=true;
+	            }else{
+	            	this.orderLookStatus=false;
+	            }
             })
 
 		},
@@ -497,8 +515,8 @@
                 return new RegExp(substr).test(str);
             },
             // 分割houseFeatures字段
-            splitStr(str){
-                return str.split(',');
+            splitStr(str,style){
+                return str.split(style);
             }
 		}
 	}

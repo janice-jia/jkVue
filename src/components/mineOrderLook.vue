@@ -116,8 +116,7 @@
 			this.$http.get('/api/API.ashx',{
 				params:{
 					apicommand:'gethousebasic',
-					houseid:this.houseId,
-					userid:this.userId
+					houseid:this.houseId
 				}
 			}).then(function(data){
 				this.houseBasicInfo=data.body.houseinfo[0];
@@ -165,7 +164,7 @@
 							realname:this.realname,
 							sex:this.sex,
 							mobile:this.mobile
-	
+
 					}).then(function(data){
 						if(data.body.result=='Y'){
 							console.info('Success!');
