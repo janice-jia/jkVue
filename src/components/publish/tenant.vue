@@ -531,7 +531,8 @@
                 Mi = Mi < 10 ? '0' + Mi : Mi;
                 let S = Date.getSeconds();
                 S = S < 10 ? '0' + S : S;
-                return Y + '-' + M + '-' + D + ' ' + H + ':' + Mi + ':' + S;
+                // return Y + '-' + M + '-' + D + ' ' + H + ':' + Mi + ':' + S;
+                return Y + '-' + M + '-' + D;
             },
             //获取入住时间
             handleConfirm (data) {
@@ -693,7 +694,8 @@
        padding: .3rem;
     }
     .usi-btn-cancel, .usi-btn-sure{
-        font-size: 16px;
+        font-size: 14px;
+        font-weight: normal;
     }
     .usi-btn-cancel{
         color: rgb(153,153,153);
@@ -703,7 +705,7 @@
     }
     /*修改选择时间的样式*/
     .mint-datetime-picker .mint-datetime-action{
-        font-size: 16px!important;
+        font-size: 14px!important;
         text-align: justify!important;
     }
     .mint-datetime-picker .mint-datetime-confirm{
@@ -760,5 +762,6 @@
         width: 100%;
         height: 5.62rem;
     }
+
 
 </style>
