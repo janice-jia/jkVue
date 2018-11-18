@@ -402,23 +402,24 @@ export default {
         this.getCity();
 
         var priceType = ["不限","≤500元","500-1000","1000-1500","2000-3000","3000-4000","合4000-5000租","≥5000"];
-        indexJs.getSelectData(priceType, 'priceType','tagItem', 'priceTypeVal','shover', true, '不限');
+        indexJs.getSelectData(priceType, 'priceType','tagItem', 'priceTypeVal','shover', true, this.$route.query.priceTypeVal ? this.$route.query.priceTypeVal : '不限');
 
         var rentType = ["不限","整租","合租","短租"];
+        console.info('this.renttype', this.renttype);
         indexJs.getSelectData(rentType, 'rentType','jk-ca-tag', 'rentTypeVal','tag-hover', true, this.renttype ? this.renttype : '不限');
 
         var rentHoseType = ["不限","1室","2室","3室","4+室"];
-        indexJs.getSelectData(rentHoseType, 'rentHoseType','jk-ca-tag', 'rentHoseTypeVal','tag-hover', true, '不限');
+        indexJs.getSelectData(rentHoseType, 'rentHoseType','jk-ca-tag', 'rentHoseTypeVal','tag-hover', true, this.housestructure ? this.housestructure : '不限');
 
         var rentRequire = ["不限","只限女生","半年起租","一家人"];
-        indexJs.getSelectData(rentRequire, 'rentRequire','jk-ca-tag', 'rentRequireVal','tag-hover', true, '不限');
+        indexJs.getSelectData(rentRequire, 'rentRequire','jk-ca-tag', 'rentRequireVal','tag-hover', true, this.houserequire ? this.houserequire : '不限');
 
         var rendToward = ["不限","东","南","西","北","南北"];
-        indexJs.getSelectData(rendToward, 'rendToward','jk-ca-tag', 'rendTowardVal','tag-hover', true, '不限');
+        indexJs.getSelectData(rendToward, 'rendToward','jk-ca-tag', 'rendTowardVal','tag-hover', true, this.direction ? this.direction : '不限');
 
 
         var rentFeature = ["不限","临高铁","押一付一","配套齐全","精装修","普通装修","南北通透","有阳台","首次出租","随时看房","女生合租","男生合租"];
-        indexJs.getSelectData(rentFeature, 'rentFeature','jk-ca-tag', 'rentFeatureVal','tag-hover', true, '不限');
+        indexJs.getSelectData(rentFeature, 'rentFeature','jk-ca-tag', 'rentFeatureVal','tag-hover', true, this.housefeature ? this.housefeature : '不限');
     },
     components: {
         bottomCom
@@ -430,12 +431,13 @@ export default {
             this.$http.get("/api/API.ashx?apicommand=getregion&parentid=607").then(function (data) {
                 var areaData = eval("("+data.bodyText+")");
                 this.areaData = areaData;
-                // this.areaData = [
-                //     {name:"test1",id:'1',child:['test1-1','test1-2','test1-3']},
-                //     {name:"test2",id:'2',child:['test2-1','test2-2','test2-3']},
-                //     {name:"test3",id:'3',child:['test3-1','test3-2','test3-3']}
-                // ]
-                indexJs.showTab('area', this.areaData);
+                var row1Default = '';
+                for(var i=0; i < this.areaData.length; i++){
+                    if(this.areaData[i].id == this.county){
+                        row1Default = this.areaData[i].name;
+                    }
+                }
+                indexJs.showTab('area', this.areaData, row1Default, this.POI);
 
                 //设置区域搜索显示
                 if(THIS.$route.query.row1Val || THIS.$route.query.row2Val || THIS.$route.query.row3Val){
@@ -458,34 +460,21 @@ export default {
             indexJs.showTab(type,this.areaData);
         },
         setQuery(){
-            // if(this.$route.query.row1Val || this.$route.query.row2Val || this.$route.query.row3Val){
-            //     var row1Val = '';
-            //     if(this.$route.query.row1Val){
-            //         console.info('this.areaData111',this.areaData)
-            //         this.areaData.forEach(function(item){
-            //             if(item.id == this.$route.query.row1Val) row1Val = item.name
-            //         });
-            //     }
-                
-            //     this.areaTyprStr = row1Val
-            //     + (this.$route.query.row2Val ? this.$route.query.row2Val : '')
-            //      + (this.$route.query.row3Val ? this.$route.query.row3Val : '')
-            // }
 
             // 房源出租类型
             if(this.$route.query.renttype){
                 this.renttype = this.$route.query.renttype; 
-                if(this.$route.query.searchType == 'HouseType') this.hostTyprStr = this.$route.query.renttype;
+                this.hostTyprStr = this.$route.query.renttype;
             }
             if(this.$route.query.rentTypeVal){
                 if(this.$route.query.rentTypeVal != '不限') this.renttype = this.$route.query.rentTypeVal;
 
                 if(this.$route.query.rentTypeVal != '不限'){
-                    if(this.$route.query.searchType == 'HouseType') this.hostTyprStr = this.$route.query.rentTypeVal;
+                    this.hostTyprStr = this.$route.query.rentTypeVal;
                 }else if(this.$route.query.rentHoseTypeVal != '不限'){
-                    if(this.$route.query.searchType == 'HouseType') this.hostTyprStr = this.$route.query.rentHoseTypeVal;
+                    this.hostTyprStr = this.$route.query.rentHoseTypeVal;
                 }else{
-                    if(this.$route.query.searchType == 'HouseType') this.hostTyprStr = '不限'
+                    this.hostTyprStr = '不限'
                 }
             }
 
@@ -497,7 +486,7 @@ export default {
             // 租金
             if(this.$route.query.priceTypeVal) {
                 // this.priceTypeVal = this.$route.query.priceTypeVal;
-                if(this.$route.query.searchType == 'Price') this.priceTyprStr = this.$route.query.priceTypeVal;
+                this.priceTyprStr = this.$route.query.priceTypeVal;
                 var priceTypeVal = this.$route.query.priceTypeVal;
                 if(priceTypeVal === '≤500元'){
                     this.rentstart = 0
@@ -533,7 +522,7 @@ export default {
             }
 
             // 筛选
-            if(this.$route.query.rentRequireVal && (this.$route.query.searchType == 'Screen')){
+            if(this.$route.query.rentRequireVal){
                 if(this.$route.query.rentRequireVal !='不限')
                     this.screenTyprStr = this.$route.query.rentRequireVal;
                 else  if(this.$route.query.rentFeatureVal != '不限')
@@ -585,78 +574,63 @@ export default {
             this.$refs.myscroller.finishPullToRefresh();
         },
         infinite: function (done) {
-            console.log('infinite')
-            if(this.totalItems==0 && this.hoseListAll.length <= this.totalItems){
-                var apiUrl = '';
-                apiUrl = '/api/API.ashx';
-                var queryData = {}
-                // 是否是手动输入查询
-                queryData.apicommand = 'gethousepage'; 
-                if(this.keyword){
-                    queryData.keyword = this.keyword; //类型
-                }else{
-                    /**
-                     * 根据筛选类型设置参数
-                     * Area区域 Price租金 HouseType户型 Screen筛选 Sort排序
-                     */
-                    var searchType = this.$route.query.searchType;
-                    if(this.$route.query.renttype){
-                        queryData.renttype = this.renttype; //类型
-                    }
-                    if(searchType == 'Area'){
-                        queryData.province = 113; //省份
-                        queryData.city = 607;      //城市
-                        queryData.county= this.county;     //市
-                        queryData.POI= this.POI;        //地标
-                        queryData.renttype = ''; //类型
-                    }else if(searchType == 'Price'){
-                        queryData.rentstart = this.rentstart;  //租金起始
-                        queryData.rentend = this.rentend;  //租金截止
-                    }else if(searchType == 'HouseType'){
-                        queryData.housestructure = this.housestructure;  //户型
-                    }else if(searchType == 'Screen'){
-                        queryData.houserequire = this.houserequire;  //出租要求
-                        queryData.direction = this.direction;  //朝向
-                        queryData.housefeature = this.housefeature;  //房源特色
-                    }else if(searchType == 'Sort'){
-                        queryData.asctype = this.asctype;  //排序类型
-                        queryData.ascfiled = this.ascfiled;  //排序字段
-                    }
-                    queryData.pagesize = this.pagesize;  //每页显示
-                    queryData.pageindex = this.pageindex; //第几页
-                }
-                if(queryData.renttype == undefined) queryData.renttype = ''
-                
-                console.info('查询类型searchType：', searchType)
-                console.info('查询条件queryData：', queryData)
-                this.$http.get(apiUrl,{params:queryData}).then(function (data) {
-                    if(data.body.count == 0){
-                        this.$refs.myscroller.finishInfinite(2);
-                    }else{
-                        //表示这次异步加载数据完成，加载下一次
-                        done()
-                    }
-                    this.totalItems = data.body.count;
-                    if (data.body) {
-                        for (var i = 0; i < data.body.list.length; i++) {
-                            this.hoseListAll.push(data.body.list[i])
-                        }
-                    }
-                    
-                })
-                this.pageindex++;
+            var THIS = this;
+            var apiUrl = '';
+            apiUrl = '/api/API.ashx';
+            var queryData = {}
+            // 是否是手动输入查询
+            queryData.apicommand = 'gethousepage'; 
+            if(this.keyword){
+                queryData.keyword = this.keyword; //类型
             }else{
-                //没有数据了
-                this.$refs.myscroller.finishInfinite(2);
+                /**
+                    * 根据筛选类型设置参数
+                    * Area区域 Price租金 HouseType户型 Screen筛选 Sort排序
+                    */
+                var searchType = this.$route.query.searchType;
+                queryData.renttype = this.renttype; //类型
+                queryData.province = 113; //省份
+                queryData.city = 607;      //城市
+                queryData.county= this.county;     //市
+                queryData.POI= this.POI;        //地标
+                queryData.renttype = ''; //类型
+                queryData.rentstart = this.rentstart;  //租金起始
+                queryData.rentend = this.rentend;  //租金截止
+                queryData.housestructure = this.housestructure;  //户型
+                queryData.houserequire = this.houserequire;  //出租要求
+                queryData.direction = this.direction;  //朝向
+                queryData.housefeature = this.housefeature;  //房源特色
+                queryData.asctype = this.asctype;  //排序类型
+                queryData.ascfiled = this.ascfiled;  //排序字段
+                queryData.pagesize = this.pagesize;  //每页显示
+                queryData.pageindex = this.pageindex; //第几页
             }
+            if(queryData.renttype == undefined) queryData.renttype = ''
+            
+            this.$http.get(apiUrl,{params:queryData}).then(function (data) {
+                if (data.body) {
+                    for (var i = 0; i < data.body.list.length; i++) {
+                        this.hoseListAll.push(data.body.list[i])
+                    }
+                }
+
+                this.pageindex++;
+                if(!data.body || data.body.count == 0 || (this.hoseListAll.length >=data.body.count)){
+                    // this.$refs.myscroller.finishInfinite(2);
+                    // this.$refs.myscroller.finishPullToRefresh();
+                    done(true);
+                }else{
+                    //表示这次异步加载数据完成，加载下一次
+                    done()
+                }
+                
+            })
         },
         goSearchPage(){
             this.$router.push({name: 'search'});
         },
         getSortClass(){
-            console.info('classthis.$route.query.asctype',this.$route.query.asctype)
-            console.info('classthis.$route.query.searchType',this.$route.query.searchType)
-            if(this.$route.query.asctype && (this.$route.query.searchType=='Sort')){
+            if(this.$route.query.asctype){
                 return true
             }else{
                 return false
