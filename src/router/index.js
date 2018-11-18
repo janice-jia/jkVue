@@ -8,6 +8,7 @@ import mineCollect from '@/components/mineCollect'
 import minehouseList from '@/components/minehouseList'
 import minehousePublisManage from  '@/components/minehousePublisManage'
 import mineOrderlist from '@/components/mineOrderlist'
+import mineOrderInfo from '@/components/mineOrderInfo';
 import mineAuthentication from '@/components/mineAuthentication';
 import mineAuthenticationEdit from '@/components/mineAuthenticationEdit'
 
@@ -61,6 +62,11 @@ export default new Router({
       path:'/mine/myorderlist',
       name:'mineOrderlist',
       component: mineOrderlist
+    },
+    {
+      path: '/mine/mineOrderInfo/:houseid',
+      name: 'mineOrderInfo',
+      component:mineOrderInfo
     },
     {
       path: '/mine/authentication',

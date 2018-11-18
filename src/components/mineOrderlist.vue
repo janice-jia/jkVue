@@ -13,22 +13,27 @@
             <div class="jk-cont-item jkFlex" 
                 v-for="(item, index) in orderList"
                 :key="index">
-                <router-link class="houseLink" :to="{name: 'houseInfo', params: {houseid: item.houseid}}"></router-link>
+                <router-link class="houseLink" :to="{name: 'mineOrderInfo', params: {houseid: item.houseid}}"></router-link>
                 <div class="jk-cont-item-media">
                     <!-- <img src="./images/cont-item.jpg" alt="" /> -->
+                    <img :src="imgWenSiteUrl+item.thumbnailurl" alt="" />
                 </div>
                 <div class="jk-cont-item-main jkFlexItem">
                     <div class="jk-cont-item-tit oneLine">
-                        合租。丰西北里3居室-南卧
+                        <!-- 合租。丰西北里3居室-南卧 -->
+                        {{item.renttype+'.'}}{{item.community}}{{item.housestructure}}
                     </div>
                     <div class="jk-cont-item-desc oneLine">
-                        15m²| 2/6
+                        {{item.area}}m² | {{item.floor}}/{{item.floorcount}}
                     </div>
                     <div class="jk-cont-item-price oneLine">
-                        2000元/月
+                        <!-- 2000元/月 -->
+                        {{item.rent + '元/月'}}
                     </div>
                     <div class="jk-cont-item-tag oneLine">
-                        <a href="myOrderLookInfo.html" class="jk-tag-Link"> 查看</a>
+                        <router-link class="jk-tag-Link" :to="{name: 'mineOrderInfo', params: {houseid: item.houseid}}">
+                            查看
+                        </router-link>
                     </div>
                 </div>
             </div>
