@@ -169,6 +169,11 @@ export default {
         if(isRadio && radioDefault){
             //根据当前选中tag匹配默认值  设置默认值及默认选中class
             var s = tagItem.join(",").indexOf(radioDefault);
+            
+            for(var i=0; i<tagItem.length; i++){
+                if(tagItem[i] == radioDefault) s = i;
+            }
+            
             $("#"+returnTagDataId).val(radioDefault);
             $(tagEle[s]).addClass(selectClass);
         }else{
@@ -235,7 +240,7 @@ export default {
 
 
     // 区域切换
-    showTab(type,areaData){
+    showTab(type,areaData,row1Default, row2Default){
         var tabItemEle = $('.showTabItem');
         tabItemEle.removeClass('shover');
         var THIS = this;
@@ -253,7 +258,7 @@ export default {
         }else if(type == 'area'){
             $(tabItemEle[1]).addClass('shover');
              //渲染区域dom及click事件
-             THIS.addRow(areaData, 2, 1);
+             THIS.addRow(areaData, 2, 1, row1Default, row2Default);
 
         }else if(type == 'subWay'){
             $(tabItemEle[2]).addClass('shover');
@@ -273,7 +278,7 @@ export default {
         }
     },
 
-    addRow(rowData, addNum,rowNum){
+    addRow(rowData, addNum,rowNum, row1Default, row2Default){
         var THIS = this;
         var bg = 'screenBg';
         if(addNum != 1){
@@ -285,20 +290,33 @@ export default {
         // 判断需要追加几行
         if(addNum == 1){
             for(var i=0; i<rowData.length; i++){
-                jkScreenItem += '<li class="tagItem" data-id="'+i+'" '+dataselectval+'>'+rowData[i]+'</li>';
+                if(rowData[i] == row2Default) 
+                    jkScreenItem += '<li class="tagItem shover" data-id="'+i+'" '+dataselectval+'>'+rowData[i]+'</li>';
+                else
+                    jkScreenItem += '<li class="tagItem" data-id="'+i+'" '+dataselectval+'>'+rowData[i]+'</li>';
             }
         }else{
             for(var i=0; i<rowData.length; i++){
                 tagList.push(rowData[i].name);
                 var dataselectval = '';
                 if(rowData[i].id) dataselectval = ' data-select-val="'+rowData[i].id+'"';
-                jkScreenItem += '<li class="tagItem" data-id="'+i+'" '+dataselectval+'>'+rowData[i].name+'</li>';
+
+                if(rowData[i].name == row1Default) 
+                    jkScreenItem += '<li class="tagItem shover" data-id="'+i+'" '+dataselectval+'>'+rowData[i].name+'</li>';
+                else
+                    jkScreenItem += '<li class="tagItem" data-id="'+i+'" '+dataselectval+'>'+rowData[i].name+'</li>';
             }
         }
         
         // console.info('tagList', tagList);
-        jkScreenItem +='</ul>'+
-                        '<input type="hidden" name="row'+rowNum+'Val" id="row'+rowNum+'Val" />'+
+        jkScreenItem +='</ul>';
+        if(row1Default || row2Default){
+            var defauleVal = row1Default || row2Default;
+            jkScreenItem +='<input type="hidden" name="row'+rowNum+'Val" id="row'+rowNum+'Val" value="'+defauleVal+'"/>';
+        }else{
+            jkScreenItem +='<input type="hidden" name="row'+rowNum+'Val" id="row'+rowNum+'Val"/>';
+        }
+        
                         '</div>';
         $('#jkScreenArea').append(jkScreenItem);
 
@@ -314,7 +332,7 @@ export default {
             var s = tagList.join(",").indexOf(val);
 
             if(s >= 0 && rowData[s].child && rowData[s].child.length>0){
-                THIS.addRow(rowData[s].child, 1, 2);
+                THIS.addRow(rowData[s].child, 1, 2, undefined, row2Default);
             }
         }
     },
