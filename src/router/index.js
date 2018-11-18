@@ -7,6 +7,10 @@ import mine from '@/components/mine'
 import mineCollect from '@/components/mineCollect'
 import minehouseList from '@/components/minehouseList'
 import minehousePublisManage from  '@/components/minehousePublisManage'
+import mineOrderlist from '@/components/mineOrderlist'
+import mineAuthentication from '@/components/mineAuthentication';
+import mineAuthenticationEdit from '@/components/mineAuthenticationEdit'
+
 //发布 by zqy
 import publish from '@/components/publish/publish'
 import shared from '@/components/publish/shared'
@@ -34,7 +38,7 @@ export default new Router({
     	component: houseInfo
     },
     {
-    	path: '/mine',
+    	path: '/mine/type/:type',
     	name:'mine',
     	component: mine
     },
@@ -52,6 +56,21 @@ export default new Router({
       path: '/mine/minehousepublishmanage/:publishType',
       name:'minehousePublisManage',
       component: minehousePublisManage
+    },
+    {
+      path:'/mine/myorderlist',
+      name:'mineOrderlist',
+      component: mineOrderlist
+    },
+    {
+      path: '/mine/authentication',
+      name:'mineAuthentication',
+      component: mineAuthentication
+    },
+    {
+      path: '/mine/authentication/edit',
+      name:'mineAuthenticationEdit',
+      component: mineAuthenticationEdit
     },
     {
         path: '/publish',

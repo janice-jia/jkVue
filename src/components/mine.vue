@@ -2,7 +2,7 @@
 <div>
     <div class="jk-my">
         <div class="jk-avatar">
-            <a href="javaacript:;" class="jk-change-my" @click="islandlord = !islandlord">
+            <a href="javaacript:;" class="jk-change-my" @click="goMine">
                 转为{{islandlord ? '房东' : '租客'}}
             </a>
             <div class="jk-avatar-img">
@@ -18,17 +18,17 @@
         <!-- link -->
         <div class="jk-info-link">
             <ul>
-                <li class="jk-info-linkItem" v-show="islandlord">
+                <li class="jk-info-linkItem" v-show="!islandlord">
                     <router-link class="item1" :to="{name: 'minehouseList'}">房源管理</router-link>
                 </li>
                 <li class="jk-info-linkItem">
                      <router-link class="item2" :to="{name: 'mineCollect'}">我的收藏</router-link>
                 </li>
                 <li class="jk-info-linkItem">
-                    <a href="myOrderLookList.html" class="item3">我的约看</a>
+                    <router-link class="item3" :to="{name: 'mineOrderlist'}">我的约看</router-link>
                 </li>
-                <li class="jk-info-linkItem" v-show="islandlord">
-                    <a href="./myAuthentication.html" class="item4">我的认证</a>
+                <li class="jk-info-linkItem" v-show="!islandlord">
+                    <router-link class="item4" :to="{name: 'mineAuthentication'}">我的认证</router-link>
                 </li>
                 <li class="jk-info-linkItem">
                     <a v-bind:href="telNumber" class="item5">联系客服</a>
@@ -63,7 +63,30 @@ export default {
         bottomCom
     },
     created (){
-        console.info(config.config.telNumber)
+        this.islandlordFn();
+    },
+    watch: {
+        '$route' (to, from) {
+            this.islandlordFn();
+        }
+    },
+    methods:{
+        islandlordFn(){
+            if(this.$route.params.type == '1'){
+                this.islandlord = true
+            }else{
+                this.islandlord = false
+            }
+        },
+        goMine(){
+            var typeM = 1;
+            if(this.islandlord){
+                typeM='2';
+            } else{
+                typeM='1'
+            }
+            this.$router.push({name: 'mine', params:{'type':typeM}});
+        }
     }
 }
 </script>

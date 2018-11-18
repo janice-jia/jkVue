@@ -12,7 +12,7 @@
             <p>发布</p>
         </div>
         <div  v-bind:class="[routeName=='mine' ? 'jk-nav-item jkFlexItem nav-hover' : 'jk-nav-item jkFlexItem']">
-            <router-link class="houseLink" :to="{name: 'mine'}"></router-link>
+            <router-link class="houseLink" :to="{name: 'mine', params: {type: '1'}}"></router-link>
             <div class="jk-nav-item-icon nav-icon03"></div>
             <p>我</p>
         </div>

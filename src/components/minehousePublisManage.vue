@@ -2,7 +2,7 @@
     <div class="jk-wap">
         <div class="jk-cont">
 
-            <!-- 我的约看 -->
+            <!--  -->
             <div class="jk-cont-item jkFlex">
                 <a href="#" class="houseLink"></a>
                 <div class="jk-cont-item-media">
@@ -19,14 +19,14 @@
                         2000元/月
                     </div>
                     <div class="jk-cont-item-tag oneLine" v-show="publishType == 1">
-                        <a href="#" class="jk-tag-Link"> 立即认证</a>
+                        <a href="#" class="jk-tag-Link" v-show="!isauth"> 立即认证</a>
                         <a href="#" class="jk-tag-Link"> 发布</a>
                     </div>
                 </div>
             </div>
 
             <!-- 我的约看 -->
-            <div class="jk-cont-item jkFlex">
+            <!-- <div class="jk-cont-item jkFlex">
                 <a href="#" class="houseLink"></a>
                 <div class="jk-cont-item-media">
                     <img :src="contItem" alt="" />
@@ -46,30 +46,44 @@
                         <a href="#" class="jk-tag-Link"> 发布</a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import contItem from '../assets/cont-item.jpg';
+    import configJs from "../js/config";
     export default {
         name: 'minehousePublisManage',
         data () {
             return{
                 contItem:contItem,
                 publishType:this.$route.params.publishType,
+                isauth:false,
+                houseList:[]
                 // iconRight:iconRight
             }
         },
         created () {
-            this.getList()
+            this.getList();
+            this.isauthFn();
+            
         },
         methods: {
+            isauthFn(){
+                this.$http.get('/api/API.ashx?apicommand=isauth&userid='+configJs.config.userId).then(function(data) {
+                    if(data == 'Y'){
+                        this.isauth = true;
+                    }else{
+                        this.isauth = false;
+                    }
+                })
+            },
             getList(){
-                // this.$http.get('/API.ashx?apicommand=publishhouse?userid=1').then(function (data) {
-                //
-                // })
+                this.$http.get('/api/API.ashx?apicommand=publishhouse?userid='+configJs.config.userId).then(function (data) {
+                    this.houseList = data.body.houseList;
+                })
             }
         }
     }

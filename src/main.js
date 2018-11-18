@@ -15,6 +15,8 @@ import 'mint-ui/lib/style.css';
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(VueResource)
+Vue.http.options.emulateHTTP = true;
+Vue.http.options.emulateJSON = true;
 Vue.use(VueScroller)
 
 /* eslint-disable no-new */
