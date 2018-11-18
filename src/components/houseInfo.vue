@@ -91,12 +91,12 @@
                         </span>
                 </div>
             </div>
-            <div class="houseinfo">
+            <!--<div class="houseinfo">
                 <div class="houseinfoitem">
                         <span class="desclabel">看房</span>
                         <span class="desccon">随时看房</span>
                 </div>
-            </div>
+            </div>-->
             <div class="jkClear"></div>
         </div>
 
@@ -200,6 +200,28 @@
                 <p class="jk-house-conTit">可做饭</p>
             </div>
         </div>
+        
+        <div class="jk-house-feture">
+            <div class="houseinfo">
+                <div class="houseinfoitem">
+                    <span class="desclabel">房屋亮点</span>
+                	<span class="desccon">
+	                    {{houseInfoAll.housefeature}}
+	                </span>
+                </div>
+            </div>
+        </div>
+         <div class="jk-house-description">
+            <div class="houseinfo">
+                <div  class="houseinfoitem">
+                    <span class="desclabel">房源描述</span>
+	                <span class="desccon">
+	                    {{houseInfoAll.description}}
+	                </span>
+                </div>
+            </div>
+        </div>
+        
 
         <!-- <div class="jk-house-tit">
             新潮嘉园A区04楼

@@ -34,7 +34,7 @@
                     <a v-bind:href="telNumber" class="item5">联系客服</a>
                 </li>
                 <li class="jk-info-linkItem">
-                    <a href="advice.html" class="item6">意见反馈</a>
+                    <router-link class="item6" :to="{name: 'mineAdvice'}">意见反馈</router-link>
                 </li>
                 <li class="jk-info-linkItem logout">
                     <a href="" >退出登录</a>
