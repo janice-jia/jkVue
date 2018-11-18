@@ -140,7 +140,7 @@
 
     <!-- 筛选 弹层 start-->
     <div class="jkScreen" id="jkScreen">
-        <form action="/">
+        <form action="/" id="searchForm">
             <!--筛选的类型 Area区域 Price租金 HouseType户型 Screen筛选 Sort排序-->
             <input type="hidden" name="searchType" id="searchType">
             <!-- 筛选 nav start-->
@@ -307,13 +307,22 @@
             <!-- 排序  start-->
             <div class="jkScreenItem" id="screenSort">
                 <div class="jk-screen-box jkFlex">
+                    <input type="hidden" value="" name="asctype" id="asctype"/>
                     <div class="jk-screen-cont jkFlexItem">
                         <ul class="jk-screen-ui">
-                            <li class="shover"><button name="paixu" type="submit">默认排序</button></li>
-                            <li><button name="asctype" type="submit" value="rentasc">价格从低到高</button></li>
-                            <li><button name="asctype" type="submit" value="rentdesc">价格从高到低</button></li>
-                            <li><button name="asctype" type="submit" value="adddatetimeasc">发布从新到旧</button></li>
-                            <li><button name="asctype" type="submit" value="adddatetimedesc">发布从旧到新</button></li>
+                            <li v-bind:class="[!asctypeClass ? 'shover' : '']"><button name="paixu" type="submit">默认排序</button></li>
+                            <li v-bind:class="[asctypeClass=='rentasc' ? 'shover' : '']">
+                                <button type="button" @click="setasctype('rentasc')" value="rentasc">价格从低到高</button>
+                            </li>
+                            <li v-bind:class="[asctypeClass=='rentdesc' ? 'shover' : '']">
+                                <button type="button" @click="setasctype('rentdesc')" value="rentdesc">价格从高到低</button>
+                            </li>
+                            <li v-bind:class="[asctypeClass=='rentdesc' ? 'shover' : '']">
+                                <button type="button" @click="setasctype('adddatetimeasc')" value="adddatetimeasc">发布从新到旧</button>
+                            </li>
+                            <li v-bind:class="[asctypeClass=='rentdesc' ? 'adddatetimedesc' : '']">
+                                <button type="button" @click="setasctype('adddatetimedesc')"  value="adddatetimedesc">发布从旧到新</button>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -377,7 +386,9 @@ export default {
             areaTyprStr:'区域', //区域选中的筛选，用于首页展示
             screenTyprStr:'筛选', //筛选选中的筛选，用于首页展示
 
-            areaData:[]  //区域数组
+            areaData:[],  //区域数组
+
+            asctypeClass: this.$route.query.asctype
         }
     },
     beforeCreated(){
@@ -420,6 +431,8 @@ export default {
 
         var rentFeature = ["不限","临高铁","押一付一","配套齐全","精装修","普通装修","南北通透","有阳台","首次出租","随时看房","女生合租","男生合租"];
         indexJs.getSelectData(rentFeature, 'rentFeature','jk-ca-tag', 'rentFeatureVal','tag-hover', true, this.housefeature ? this.housefeature : '不限');
+
+        if(this.$route.query.asctype) $('#asctype').val(this.$route.query.asctype);
     },
     components: {
         bottomCom
@@ -635,6 +648,10 @@ export default {
             }else{
                 return false
             }
+        },
+        setasctype (type){
+            $('#asctype').val(type);
+            $('#searchForm').submit();
         }
     }
 }
