@@ -2,7 +2,7 @@
 	  <div class="jk-lookbox">
             <div class="jk-lookcon">
                 <div class="jk-lookconImg">
-                    <!--<img src="./images/recommend.jpg" alt="" />-->
+                    <img :src="imgWenSiteUrl+houseBasicInfo.thumbnailurl" alt="" />
                 </div>
                 <div class="jk-lookDesc">
                     <div class="jkFlex">
@@ -89,6 +89,7 @@
 				houseId:'',
 				userId:configJs.config.userId,
 				houseBasicInfo:{},//房源基本信息
+				imgWenSiteUrl:configJs.config.imgWenSiteUrl,
 				realname:'',//姓名
 				sex:false,//性別(男：true;女:false)
 				mobile:'',//电话
@@ -115,7 +116,8 @@
 			this.$http.get('/api/API.ashx',{
 				params:{
 					apicommand:'gethousebasic',
-					houseid:this.houseId					
+					houseid:this.houseId,
+					userid:this.userId
 				}
 			}).then(function(data){
 				this.houseBasicInfo=data.body.houseinfo[0];
@@ -132,7 +134,7 @@
 			transferLookDay(lookDay){
 				var myDate=new Date();
 				if(lookDay=='0'){
-					return '';
+					return '1990年1月1日';
 				}else if(lookDay=='1'){
 					return myDate.getFullYear()+'年'+(myDate.getMonth()+1)+'月'+myDate.getDate()+'日';
 				}else if(lookDay=='2'){
@@ -150,24 +152,27 @@
 			},
 			//提交约看
 			submitOrderLook(){
-				this.lookDaySelected=this.transferLookDay(this.lookDaySelected);
-				this.transferSex();
-//				console.info('lookDaySelected:'+this.lookDaySelected);
-				this.$http.post('/api/API.ashx?apicommand=submitappointment',{
-
-//						apicommand:'submitappointment',
-						houseid:this.houseId,
-						userid:this.userId,
-						appointmentdate:this.lookDaySelected,
-						realname:this.realname,
-						sex:this.sex,
-						mobile:this.mobile
-
-				}).then(function(data){
-					if(data.body.result=='Y'){
-						console.info('Success!');
-					}
-				})
+				if(''==this.realname||''==this.mobile){
+					alert("请填写完整！")
+				}else{
+					this.lookDaySelected=this.transferLookDay(this.lookDaySelected);
+					this.transferSex();
+					this.$http.post('/api/API.ashx',{
+							apicommand:'submitappointment',
+							houseid:this.houseId,
+							userid:this.userId,
+							appointmentdate:this.lookDaySelected,
+							realname:this.realname,
+							sex:this.sex,
+							mobile:this.mobile
+	
+					}).then(function(data){
+						if(data.body.result=='Y'){
+							console.info('Success!');
+							this.$router.push({name:'mineOrderInfo',params:{houseid:this.houseId}});
+						}
+					})
+				}
 			}
 		}
 	}

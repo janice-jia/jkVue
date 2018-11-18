@@ -9,8 +9,10 @@ import minehouseList from '@/components/minehouseList'
 import minehousePublisManage from  '@/components/minehousePublisManage'
 import mineOrderLook from '@/components/mineOrderLook'
 import mineOrderlist from '@/components/mineOrderlist'
-import mineOrderInfo from '@/components/mineOrderInfo';
-import mineAuthentication from '@/components/mineAuthentication';
+import mineOrderInfo from '@/components/mineOrderInfo'
+import mineAdvice from '@/components/mineAdvice'
+import mineAdviceAdd from '@/components/mineAdviceAdd'
+import mineAuthentication from '@/components/mineAuthentication'
 import mineAuthenticationEdit from '@/components/mineAuthenticationEdit'
 
 //发布 by zqy
@@ -75,6 +77,16 @@ export default new Router({
       path: '/mine/mineOrderInfo/:houseid',
       name: 'mineOrderInfo',
       component:mineOrderInfo
+    },
+    {
+      path: '/mine/advice',
+      name:'mineAdvice',
+      component: mineAdvice
+    },
+     {
+      path: '/mine/adviceAdd',
+      name:'mineAdviceAdd',
+      component: mineAdviceAdd
     },
     {
       path: '/mine/authentication',
