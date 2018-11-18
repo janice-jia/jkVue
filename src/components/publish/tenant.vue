@@ -3,11 +3,8 @@
         <div>
             <!-- 图片轮播 -->
             <mt-swipe :auto="4000" class="swipe"  v-if="picArr.length>0">
-                <mt-swipe-item>
-                    <img src="../../assets/house-banner.jpg" alt="" class="img-responsive">
-                </mt-swipe-item>
-                <mt-swipe-item>
-                    <img src="../../assets/house-banner.jpg" alt="" class="img-responsive">
+                <mt-swipe-item v-for="item in picArr">
+                    <img :src="imgWenSiteUrl+item.thumbnailurl" alt="" class="img-responsive">
                 </mt-swipe-item>
             </mt-swipe>
             <!--图片上传-->
@@ -24,13 +21,14 @@
 
             <!--图片预览 by zqy-->
             <div class="clearfix preview-img" v-show="picArr.length>0">
-                <p v-for="(item,index) in picArr" :style="'backgroundImage:url('+item+')'" class="upload_picture">
-                    <span class="del" @click="delPic(index)"></span>
+                <p v-for="(item,idx) in picArr"
+                   :style="'backgroundImage:url('+imgWenSiteUrl+item.thumbnailurl+')'" class="upload_picture">
+                    <span class="del" @click="delPic(idx,item.id,item.thumbnailurl,item.imgurl)"></span>
                 </p>
 
                 <p class="upload_picture upload-btn">
-                    <!--<img src="../../assets/icon-add.png" alt="upload" class="upload-btn-img">-->
-                    <input name="pic" ref="fileInput" @change="selectFile" type="file" />
+                    <img src="../../assets/icon-add.png" alt="upload" class="upload-btn-img">
+                    <input name="pic" ref="fileInput" @change="selectFile" type="file" multiple accept="image/*"/>
                 </p>
             </div>
 
@@ -40,56 +38,57 @@
             <div class="jk-group">
                 <div class="jk-group-tit">小区：</div>
                 <div class="jk-group-inputInfo">
-                    <input class="jk-group-input" type="text" placeholder="请填写信息"/>
+                    <input class="jk-group-input" type="text" placeholder="请填写信息" v-model="sendDataInfo.community"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">门牌号：</div>
-                <div class="jk-group-inputInfo" @click="showPup(0)">
-                    <input class="jk-group-input" type="text" id="roomNum" name="roomNum" placeholder="请填写信息"/>
+                <div class="jk-group-inputInfo">
+                    <input class="jk-group-input" type="text" v-model="sendDataInfo.housenumber" name="roomNum" placeholder="请填写信息"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">面积：</div>
                 <div class="jk-group-inputInfo">
-                    <input class="jk-group-input" type="number" placeholder="请填写信息"/>
+                    <input class="jk-group-input" type="number" placeholder="请填写信息" v-model="sendDataInfo.area"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">装修：</div>
                 <div class="jk-group-inputInfo" @click="showPup(1)">
-                    <input type="input" class="jk-group-select"  name="decorate" id="decorate" placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select" v-model="sendDataInfo.decorated"  name="decorate"  placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">厅室：</div>
                 <div class="jk-group-inputInfo" @click="showPup(2)">
-                    <input type="text" class="jk-group-input" name="house" id="house" placeholder="请选择内容"/>
+                    <input type="text" class="jk-group-input" name="house" v-model="sendDataInfo.housestructure" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">朝向：</div>
                 <div class="jk-group-inputInfo" @click="showPup(3)">
-                    <input type="input" class="jk-group-select"  name="toward" id="toward" placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select"  name="toward" v-model="sendDataInfo.direction" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">楼层：</div>
                 <div class="jk-group-inputInfo" @click="showPup(4)">
-                    <input type="input" class="jk-group-select"  name="floor" id="floor" placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select"  name="floor" v-model="sendDataInfo.floor" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">总楼层：</div>
                 <div class="jk-group-inputInfo">
-                    <input type="input" class="jk-group-select"  name="floorAll" id="floorAll" placeholder="请填写内容"/>
+                    <input type="number" class="jk-group-select"  name="floorcount" v-model="sendDataInfo.floorcount" placeholder="请填写内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">电梯：</div>
                 <div class="jk-group-inputInfo">
                     <div class="jk-checkBoxSkin">
-                        <input id="lift" class="jk-checkbox" name="check1" checked type="checkbox" />
+                        <input id="lift" class="jk-checkbox" name="check1" checked type="checkbox"
+                               v-model="sendDataInfo.elevator"/>
                         <label for="lift" class="trigger"></label>
                     </div>
                 </div>
@@ -98,7 +97,8 @@
                 <div class="jk-group-tit">车位：</div>
                 <div class="jk-group-inputInfo">
                     <div class="jk-checkBoxSkin">
-                        <input id="park" class="jk-checkbox" name="check2" type="checkbox" />
+                        <input id="park" class="jk-checkbox" name="check2" type="checkbox"
+                               v-model="sendDataInfo.carport"/>
                         <label for="park" class="trigger"></label>
                     </div>
                 </div>
@@ -110,19 +110,19 @@
             <div class="jk-group">
                 <div class="jk-group-tit">入住时间：</div>
                 <div class="jk-group-inputInfo" @click="showPup(5)">
-                    <input type="input" class="jk-group-select"  name="checkInTime" id="checkInTime" placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select"  name="checkInTime" v-model="sendDataInfo.checkin" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">易住人数：</div>
                 <div class="jk-group-inputInfo" @click="showPup(6)">
-                    <input type="input" class="jk-group-select"  name="peopleNum" id="peopleNum" placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select"  name="peopleNum" v-model="sendDataInfo.occupancynum" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">看房时间：</div>
                 <div class="jk-group-inputInfo" @click="showPup(7)">
-                    <input type="input" class="jk-group-select"  name="lookTime" id="lookTime" placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select"  name="lookTime" v-model="sendDataInfo.openhomedate" placeholder="请选择内容"/>
                 </div>
             </div>
 
@@ -131,25 +131,26 @@
             <div class="jk-group">
                 <div class="jk-group-tit">租金形式：</div>
                 <div class="jk-group-inputInfo" @click="showPup(11)">
-                    <input class="jk-group-input" type="text" name="payType" id="priceType" placeholder="请选择内容"/>
+                    <input class="jk-group-input" type="text" name="payType" v-model="sendDataInfo.rentunit" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">租金：</div>
                 <div class="jk-group-inputInfo">
-                    <input class="jk-group-input" type="text" placeholder="请填写信息"/>
+                    <input class="jk-group-input" type="text" placeholder="请填写信息"
+                           v-model="sendDataInfo.rent"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">付款方式：</div>
                 <div class="jk-group-inputInfo" @click="showPup(8)">
-                    <input class="jk-group-input" type="text" name="payType" id="payType" placeholder="请选择内容"/>
+                    <input class="jk-group-input" type="text" name="payType" v-model="sendDataInfo.payment" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">租金包含费用<span>（物业费等）</span>:</div>
                 <div class="jk-group-inputInfo" @click="showPup(9)">
-                    <input class="jk-group-input" type="text" name="priceContains" id="priceContains" placeholder="请选择内容"/>
+                    <input class="jk-group-input" type="text" name="priceContains" v-model="sendDataInfo.rentcontent" placeholder="请选择内容"/>
                 </div>
             </div>
 
@@ -158,10 +159,12 @@
             <div class="jk-group">
                 <div class="jk-group-tit">房东：</div>
                 <div class="jk-group-inputInfo">
-                    <input class="jk-group-input" type="text" placeholder="请填写姓名"/>
+                    <input class="jk-group-input" type="text" placeholder="请填写姓名"
+                           v-model="sendDataInfo.realname"/>
                 </div>
                 <div class="jk-checkBoxSkin jk-checkBoxVal">
-                    <input id="sex" class="jk-checkbox" name="check3" type="checkbox" checked/>
+                    <input id="sex" class="jk-checkbox" name="check3" type="checkbox" checked
+                           v-model="sexy"/>
                     <label for="sex" class="trigger"></label>
                     <span class="jk-checkbox-checkVal1">男士</span>
                     <span class="jk-checkbox-checkVal2">女士</span>
@@ -170,16 +173,17 @@
             <div class="jk-group">
                 <div class="jk-group-tit">联系电话：</div>
                 <div class="jk-group-inputInfo">
-                    <input class="jk-group-input" type="number" placeholder="请填写手机号码"/>
+                    <input class="jk-group-input" type="number" placeholder="请填写手机号码"
+                           v-model="sendDataInfo.ownermobile"/>
                 </div>
             </div>
 
-            <div class="jk-group">
-                <div class="jk-group-tit">接听时段:</div>
-                <div class="jk-group-inputInfo" @click="showPup(10)">
-                    <input class="jk-group-input" type="text" name="answerTime" id="answerTime"  placeholder="请选择内容"/>
-                </div>
-            </div>
+            <!--<div class="jk-group">-->
+                <!--<div class="jk-group-tit">接听时段:</div>-->
+                <!--<div class="jk-group-inputInfo" @click="showPup(10)">-->
+                    <!--<input class="jk-group-input" type="text" name="answerTime" v-model="sendDataInfo.housestructure"  placeholder="请选择内容"/>-->
+                <!--</div>-->
+            <!--</div>-->
             <!--提交信息-->
             <div class="jk-bottom" @click="toSecondStep">
                 <button class="jk-oneBtn-bottom" type="submit">下一步</button>
@@ -261,24 +265,15 @@
                 </div>
             </mt-picker>
         </mt-popup>
-        <!--租金的picker-->
-        <mt-popup v-model="popPriceContains" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
-            <mt-picker :slots="priceContainsSlots" @change="onValuesChangePrice"  style="width: 7.5rem;" showToolbar>
-                <div class="clearfix picker-toolbar-title">
-                    <p class="usi-btn-cancel left" @click="popPriceContains = !popPriceContains">取消</p>
-                    <p class="usi-btn-sure right" @click="popPriceContains = !popPriceContains">确定</p>
-                </div>
-            </mt-picker>
-        </mt-popup>
         <!--接听的picker-->
-        <mt-popup v-model="popAnswerTime" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
-            <mt-picker :slots="answerTimeSlots" @change="onValuesChangeAnswer"  style="width: 7.5rem;" showToolbar>
-                <div class="clearfix picker-toolbar-title">
-                    <p class="usi-btn-cancel left" @click="popAnswerTime = !popAnswerTime">取消</p>
-                    <p class="usi-btn-sure right" @click="popAnswerTime = !popAnswerTime">确定</p>
-                </div>
-            </mt-picker>
-        </mt-popup>
+<!--        <mt-popup v-model="popAnswerTime" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">-->
+<!--            <mt-picker :slots="answerTimeSlots" @change="onValuesChangeAnswer"  style="width: 7.5rem;" showToolbar>-->
+<!--                <div class="clearfix picker-toolbar-title">-->
+<!--                    <p class="usi-btn-cancel left" @click="popAnswerTime = !popAnswerTime">取消</p>-->
+<!--                    <p class="usi-btn-sure right" @click="popAnswerTime = !popAnswerTime">确定</p>-->
+<!--                </div>-->
+<!--            </mt-picker>-->
+<!--        </mt-popup>-->
 
         <!--租金形式的picker-->
         <mt-popup v-model="popPriceType" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
@@ -299,21 +294,26 @@
 
 <script>
     import Vue from 'vue'
-    import { Picker,Popup,DatetimePicker,MessageBox , Swipe, SwipeItem} from 'mint-ui';
+    import config from '../../js/config'
+
+    import { Picker,Popup,DatetimePicker,MessageBox , Swipe, SwipeItem,Toast} from 'mint-ui';
     Vue.component(Picker.name, Picker,Popup.name, Popup,
         DatetimePicker.name, DatetimePicker,Swipe.name, Swipe,SwipeItem.name, SwipeItem);
-    // uploadApi = '/Ajax/UploadImg.ashx';
+
     let apiUrl = '/api/API.ashx',
+        // uploadApi = '/Ajax/UploadImg.ashx';
         uploadApi = 'http://admin.9kuaiz.com/Ajax/UploadImg.ashx';
 
     export default {
         name: "tenant",
         data(){
             return {
+                rentType:this.$route.params.renttype,
+                imgWenSiteUrl:config.config.imgWenSiteUrl,
                 showToolbar:true,
             //装修
                 dcorateSlots: [{
-                    values: ['毛坯', '简单装修','中等装修','精装修'],
+                    values: ['','毛坯', '简单装修','中等装修','精装修'],
 
                 }],
                 popDecorate: false,
@@ -341,111 +341,102 @@
                 popHouse: false,
                 //朝向
                 towardSlots: [{
-                    values: ['东', '南','西','北'],
+                    values: ['','东', '南','西','北'],
 
                 }],
                 popToward:false,
                 //楼层
-                floorSlots: [
-                    {
-                        flex: 1,
-                        values: ['-1层','1层','2层','3层'],
-                        className: 'slot1',
-                        textAlign: 'left'
-                    }, {
-                        flex: 1,
-                        values: ['共6层','共7层','共8层','共9层'],
-                        className: 'slot2',
-                        textAlign: 'right'
-                    }
-
-                ],
+                floorSlots: [{
+                    values: ['','1层', '2层', '3层','4层', '5层', '6层','7层', '8层', '9层','10层',
+                        '11层', '12层', '13层','14层', '15层', '16层','17层', '18层', '19层','20层',
+                        '21层', '22层', '23层','24层', '25层', '26层','27层', '28层', '29层','30层',
+                        '31层', '32层', '33层','34层', '35层', '36层','37层', '38层', '39层','40层',
+                        '41层', '42层', '43层','44层', '45层', '46层','47层', '48层', '49层','50层',],
+                }],
                 popFloor: false,
                 //入住时间
                 pickerVisible:true,
-                dateTime: '',
                 startDate: new Date(),
                 //易住人数
                 peopleNumSlots: [{
-                    values: ['1人', '2人','3人','4人'],
+                    values: ['','1人', '2人','3人','4人'],
 
                 }],
                 popPeopleNum: false,
                 //看房时间
                 lookTimeSlots: [{
-                    values: ['随时看', '仅周末','仅工作日']
+                    values: ['','随时看', '仅周末','仅工作日']
                 }],
                 popLookTime: false,
                 //付款方式
                 payTypeSlots: [{
-                    values:['押一付一','押一付三','半年付','年付']
+                    values:['','押一付一','押一付三','半年付','年付']
                 }],
                 popPayType: false,
-                //租金
-                priceContainsList:[],
-                priceContainsSlots: [],
-                popPriceContains: false,
-                //接听时段
-                answerTimeSlots: [
-                    {
-                        flex: 1,
-                        values: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
-                            "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
-                            "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"],
-                        className: 'slot1',
-                        textAlign: 'left',
-                        defaultIndex:8
-                    },{
-                        flex: 1,
-                        content:'至',
-                        divider: true,
-                        textAlign:'center',
-                        className: 'slot1',
-                    },
-                    {
-                        flex: 1,
-                        values: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
-                            "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
-                            "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"],
-                        className: 'slot1',
-                        defaultIndex:15,
-                        textAlign: 'right'
-                    },
-
-                ],
+                // //接听时段
+                // answerTimeSlots: [
+                //     {
+                //         flex: 1,
+                //         values: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+                //             "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
+                //             "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"],
+                //         className: 'slot1',
+                //         textAlign: 'left',
+                //         defaultIndex:8
+                //     },{
+                //         flex: 1,
+                //         content:'至',
+                //         divider: true,
+                //         textAlign:'center',
+                //         className: 'slot1',
+                //     },
+                //     {
+                //         flex: 1,
+                //         values: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+                //             "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
+                //             "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"],
+                //         className: 'slot1',
+                //         defaultIndex:15,
+                //         textAlign: 'right'
+                //     },
+                //
+                // ],
                 popAnswerTime: false,
-                //基本信息的数据
-                sendDataInfo: {
-                    houseid:'',
-                    community:'',
-                    housenumber:'',
-                    area:'',
-                    decorated:'',
-                    housestructure:'',
-                    direction:'',
-                    floor:'',
-                    elevator:'',
-                    carport:'',
-                    checkin:'',
-                    openhomedate:'',
-                    occupancynum:'',
-                    rent:'',
-                    rentunit:'',
-                    payment:'',
-                    realname:'',
-                    rentcontent:'',
-                    ownermobile:''
-
-                },
                 //租金形式
                 popPriceType:false,
                 priceTypeSlots: [{
-                    values:['月租','日租']
+                    values:['','月租','日租']
                 }],
+                //基本信息的数据
+                sendDataInfo: {
+                    renttype:'整租',
+                    houseid:'100026',
+                    community:'',
+                    housenumber:'',
+                    area:'',
+                    decorated:'毛坯',
+                    housestructure:'1室1厅1卫',
+                    direction:'东',
+                    floor:'-1',
+                    elevator:'',
+                    carport:'',
+                    checkin:'',
+                    openhomedate:'随时看',
+                    occupancynum:'1',
+                    rent:'',
+                    rentunit:'月租',
+                    payment:'押一付一',
+                    realname:'',
+                    rentcontent:'',
+                    ownermobile:'',
+                    floorcount:''
+                },
                 //图片上传 and 预览 and 删
                 picValue:'',
                 picArr:[],
-                sendImgArr:[]
+                sendImgArr:[],
+                //男士女士
+                sexy:'男士'
 
             }
         },
@@ -456,9 +447,6 @@
             showPup(num) {
                 let n = num;
                 switch(n) {
-                    case 0:
-                        this.popRoomNum = true; //门牌
-                        break;
                     case 1:
                         this.popDecorate = true; //装修
                         break;
@@ -484,12 +472,9 @@
                     case 8:
                         this.popPayType = true; //付款方式
                         break;
-                    case 9:
-                        this.popPriceContains = true;  //租金
-                        break;
-                    case 10:
-                        this.popAnswerTime = true;  //接听时段
-                        break;
+                    // case 10:
+                    //     this.popAnswerTime = true;  //接听时段
+                    //     break;
                     case 11:
                         this.popPriceType = true;  //租金形式
                         break;
@@ -497,36 +482,61 @@
                 }
             },
             onValuesChangeDecorate(picker, values) {
-                console.log(picker.getSlotValue(0));
+                console.log(values,'装修 ');
+                this.sendDataInfo.decorated = values[0];
             },
-            onValuesChangeHouse(){
-
+            onValuesChangeHouse(picker, values){
+                console.log(values,'厅室');
+                this.sendDataInfo.housestructure = values[0]+values[1]+values[2];
             },
-            onValuesChangeHouse(){
-
+            onValuesChangeToward(picker, values){
+                console.log('朝向',values);
+                this.sendDataInfo.direction = values[0];
             },
-            onValuesChangeToward(){
-
+            onValuesChangeFloor(picker, values){
+                console.log('楼层',values);
+                this.sendDataInfo.floor = values[0];
             },
-            onValuesChangeFloor(){
-
+            onValuesChangePople(picker, values){
+                console.log('住的人数',values);
+                this.sendDataInfo.occupancynum = values[0];
             },
-            onValuesChangePople(){
-
+            onValuesChangeLook(picker, values){
+                console.log('看房时间',values);
+                this.sendDataInfo.openhomedate = values[0];
             },
-            onValuesChangeLook(){
-
+            onValuesChangePay(picker, values){
+                console.log('付款形式',values);
+                this.sendDataInfo.payment = values[0];
             },
-            onValuesChangePay(){
-
+            onValuesChangePriceType(picker, values){
+                console.log('租金形式',values);
+                this.sendDataInfo.rentunit = values[0];
             },
-            onValuesChangePrice(){},
-            onValuesChangeAnswer(){},
-            onValuesChangePriceType(){},
+            // onValuesChangeAnswer(picker, values){
+            //     console.log('接听时段',values);
+            //     this.sendDataInfo.ownermobile = values[0]+','+values[1];
+            // },
 
+            //时间格式转换
+            format(Date){
+                let Y = Date.getFullYear(),
+                    M = Date.getMonth() + 1;
+                M = M < 10 ? '0' + M : M;// 不够两位补充0
+                let D = Date.getDate();
+                D = D < 10 ? '0' + D : D;
+                let H = Date.getHours();
+                H = H < 10 ? '0' + H : H;
+                let Mi = Date.getMinutes();
+                Mi = Mi < 10 ? '0' + Mi : Mi;
+                let S = Date.getSeconds();
+                S = S < 10 ? '0' + S : S;
+                return Y + '-' + M + '-' + D + ' ' + H + ':' + Mi + ':' + S;
+            },
+            //获取入住时间
             handleConfirm (data) {
-                let date = moment(data).format('YYYY.MM.DD');
-                this.dateTime = date;
+                this.sendDataInfo.checkin = this.format(data);
+
             },
 
             //选择图片
@@ -536,7 +546,6 @@
                 //获取图片
                 let files = e.target.files || e.dataTransfer.files,
                     _this = this;
-                console.log(files,'files')
                 if (!files.length){
                     return false;
                 }else if(files.length > 10){
@@ -569,25 +578,30 @@
 
             //上传图片、预览图片
             uploadImg(){
+                Toast({
+                    message: '正在上传，请稍等',
+                    position: 'middle',
+                    duration: 2000
+                });
                 let sendData = {
                     command:'webuploadhouseimg',
                     img:this.sendImgArr
                 };
+                sendData = JSON.parse(JSON.stringify(sendData));
                 if(this.sendImgArr.length>0){
-                    console.log(sendData,'qwr');
-                    console.info('uploadApi', uploadApi);
-                    this.$http.post(uploadApi,{params:sendData},{headers:{'Content-Type':'json'}}).then(function (data) {
+                    this.$http.post(uploadApi,{params:sendData},{headers:{'Content-Type':'application/json'}}).then(function (data) {
                         this.picVal = [];
                         let resData = data.data;
                         this.houseId = resData.houseid;
-                        if(resData.imglist && resData.imglist>0){
+                        if(resData.imglist && resData.imglist.length>0){
                             this.picArr= resData.imglist;
                         }
                     })
                 }
             },
             //删除图片
-            delPic(idx) {
+            delPic(idx,id,thumbnailurl,imgurl) {
+                let _this= this;
                 MessageBox({
                     $type:'prompt',
                     title:'提示',
@@ -597,26 +611,58 @@
                 }).then(({ value, action }) => {
                     /* value 为填写的值，进行下一步操作 */
                     console.log(111)
-                    this.picVal.splice(idx, 1);
+                    let sendData = {
+                        command:'DelHouseImg',
+                        id:id,
+                        thumbnailurl:thumbnailurl,
+                        imgurl:imgurl
+
+                    };
+
+                    _this.$http.get(uploadApi,{params:sendData}).then(function () {
+                        _this.picArr.splice(idx, 1);
+                    })
+
                 });
 
             },
 
-
             //点击下一步提交基本信息进入其他信息
             toSecondStep(){
-                let sendData = this.sendDataInfo;
+            
+                //电梯有无
+                if(this.sendDataInfo.elevator == true){
+                    this.sendDataInfo.elevator = '有';
+                }else{
+                    this.sendDataInfo.elevator = '无';
+                };
+                //车位有无
+                if(this.sendDataInfo.carport == true){
+                    this.sendDataInfo.carport = '一个车位';
+                }else{
+                    this.sendDataInfo.carport = '无';
+                };
+
+                let sendData = this.sendDataInfo,
+                    isDataNull = false;
                 for(let item in sendData){//遍历json对象的每个key/value对,item为key
-                    console.log(item + " " + myJson[item]);
-                }
-                if(houseId == ''){
-                    return false;
-                }
-                this.$http.post(apiUrl,{params:sendData}).then(function (data) {
-                    if(data.data.content && data.data.content.length>0){
-                        console.log(data.data.content,'fdsfdg');
-                        this.$router.push({ name:'secondStep',params: { page:1}});
+                    if(!sendData[item]){
+                        isDataNull = true;
                     }
+                };
+                console.info('ssss',sendData)
+                // if(isDataNull == true || !this.houseId){
+                //     Toast({
+                //         message: '您有未选择的选项，请检查',
+                //         position: 'middle',
+                //         duration: 2000
+                //     });
+                //     return false;
+                // };
+
+                // this.$http.post(apiUrl,{params:sendData}).then(function () {
+                this.$http.get(apiUrl,{params:sendData}).then(function () {
+                    this.$router.push({ name:'secondStep',params: { page:1}});
                 })
 
             },

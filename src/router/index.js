@@ -17,7 +17,6 @@ import mineAuthenticationEdit from '@/components/mineAuthenticationEdit'
 
 //发布 by zqy
 import publish from '@/components/publish/publish'
-import shared from '@/components/publish/shared'
 import tenant from '@/components/publish/tenant'
 import secondStep from '@/components/publish/secondStep'
 
@@ -104,19 +103,14 @@ export default new Router({
         component: publish,
     },
     {
-        path: '/tenant',
-        name: 'tenant',
-        component: tenant
+      path: '/tenant/:renttype',
+      name: 'tenant',
+      component: tenant
     },
     {
         path: '/secondStep/:page', //1-->tenant,2-->shared
         name: 'secondStep',
         component: secondStep
-    },
-    {
-        path: '/shared',
-        name: 'shared',
-        component: shared
-    },
+    }
   ]
 })
