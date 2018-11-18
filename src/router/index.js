@@ -7,6 +7,7 @@ import mine from '@/components/mine'
 import mineCollect from '@/components/mineCollect'
 import minehouseList from '@/components/minehouseList'
 import minehousePublisManage from  '@/components/minehousePublisManage'
+import mineOrderLook from '@/components/mineOrderLook'
 import mineOrderlist from '@/components/mineOrderlist'
 import mineOrderInfo from '@/components/mineOrderInfo';
 import mineAuthentication from '@/components/mineAuthentication';
@@ -17,6 +18,8 @@ import publish from '@/components/publish/publish'
 import shared from '@/components/publish/shared'
 import tenant from '@/components/publish/tenant'
 import secondStep from '@/components/publish/secondStep'
+
+
 
 Vue.use(Router)
 
@@ -37,6 +40,11 @@ export default new Router({
     	path: '/houseInfo/:houseid',
     	name:'houseInfo',
     	component: houseInfo
+    },
+    {
+    	path: '/mineOrderLook/:houseid',
+    	name:'mineOrderLook',
+    	component: mineOrderLook
     },
     {
     	path: '/mine/type/:type',

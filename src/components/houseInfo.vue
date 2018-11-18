@@ -315,10 +315,10 @@
                     <button class="jk-call" id="callBtn" @click="call();">拨打电话</button>
                 </div>
                 <div class="jk-sharerightitem">
-                	<a class="jk-look" href="myOrderLook.html"></a>
-                	<!--<router-link class="jk-look" :to="{name:'mineOrderLook',params:{houseid:item.houseid}}" >
+                	<!--<a class="jk-look" href="myOrderLook.html"></a>-->
+                	<router-link class="jk-look" :to="{name:'mineOrderLook',params:{houseid:houseInfoAll.houseid}}" >
                 		预约看房
-                	</router-link>-->
+                	</router-link>
                 </div>
             </div>
         </div>
@@ -438,6 +438,7 @@
            },
             //收藏
             collect(){
+            	console.info(this.collectStatus);
             	if(this.collectStatus==false){
             		this.$http.get('/api/API.ashx',{
 		            	params:{
@@ -446,7 +447,6 @@
 		            		userid:this.userId
 		            	}
 		            }).then(function(data){
-		            	console.info(data);
 			          	if(data.body.result=='Y'){
 			          		this.collectStatus=true;
 			          	}else if(data.body.result=='N'){
@@ -461,15 +461,11 @@
 		            		userid:this.userId
 		            	}
 		            }).then(function(data){
-		            	console.info(data);
-//		            	var collectData=eval("("+data.bodyText+")");
-//		            	var collectData=JSON.parse(data.bodyText);
-//		            	console.info(collectData);
-//			          	if(data.body.result=='Y'){
+			          	if(data.body.result=='Y'){
 			          		this.collectStatus=false;
-//			          	}else if(data.body.result=='N'){
-//			          		this.collectStatus=true;
-//			          	}
+			          	}else if(data.body.result=='N'){
+			          		this.collectStatus=true;
+			          	}
 		            })
 	            }
 	            
