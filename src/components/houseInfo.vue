@@ -1,15 +1,23 @@
 <template>
 <div>
-	 <div class="jk-house-banner swiper-container" id="slideTop">
+	 <!--<div class="jk-house-banner swiper-container" id="slideTop">
         <div class="swiper-wrapper">
+            <div class="swiper-slide" v-for="(houseImg,index) in houseImgList" :key="index">
+            	<img :src="imgWenSiteUrl+houseImg.imgurl" alt="">
+            </div>
             <div class="swiper-slide"><img :src="houseBanner1" alt=""></div>
             <div class="swiper-slide"><img :src="houseBanner1" alt=""></div>
             <div class="swiper-slide"><img :src="houseBanner1" alt=""></div>
-            <div class="swiper-slide"><img :src="houseBanner1" alt=""></div>
-        </div>
+        </div>-->
         <!-- Add Pagination -->
-        <div class="swiper-pagination-top"></div>
-    </div>
+        <!--<div class="swiper-pagination-top"></div>
+    </div>-->
+    <!-- 图片轮播 -->
+        <mt-swipe :auto="4000" class="swipe" style="height:5.62rem">
+            <mt-swipe-item v-for="(houseImg,index) in houseImgList" :key="index">
+                <img :src="imgWenSiteUrl+houseImg.imgurl" alt="">
+            </mt-swipe-item>
+        </mt-swipe>
     <div class="jk-house">
         <div class="jk-house-name">
             <!--整租·新潮嘉园二区1室1厅1卫-->
@@ -391,11 +399,15 @@
 	
     import indexJs from	'../js/index';
     import configJs from '../js/config'; 
+    import Vue from 'vue'
+    import {Swipe, SwipeItem} from 'mint-ui';
+    Vue.component(Swipe.name, Swipe,SwipeItem.name, SwipeItem);
     
 	export default{
 		name:'houseInfo',
 		data(){
 			return{
+				houseImgList:[],
 				houseBanner1:houseBanner1,
 				houseBanner2:houseBanner2,
 				houseBanner3:houseBanner3,
@@ -413,8 +425,23 @@
 			}
 		},
 		created(){
-			//获取当前房源所有详细信息
 			this.houseId=this.$route.params.houseid;
+			//banner图获取
+			this.$http.get('/api/API.ashx',{
+				params:{
+					apicommand:'gethouseimg',
+					houseid:this.houseId
+				}
+			}).then(function(data){
+                if(data.body){
+                	for(var i=0;i<data.body.imglist.length;i++){
+                        this.houseImgList.push(data.body.imglist[i]);
+                    }
+                }
+                console.info(this.houseImgList);
+            })
+			
+			//获取当前房源所有详细信息
 			this.$http.get('/api/API.ashx',{
 				params:{
 					apicommand:'gethouseinfo',
@@ -435,9 +462,9 @@
             //获取推荐房源
             this.$http.get('/api/API.ashx?apicommand=getrecommend').then(function(data){
                 if(data.body){
-                    for(i=0;i<data.body.houselist.length;i++){
-                        data.houselist[i].housefeature=this.splitStr(data.houseList[i].housefeature,',');
-                        this.houseRecommandAll.push(data.houselist[i]);
+                    for(var i=0;i<data.body.houselist.length;i++){
+                        data.body.houselist[i].housefeature=this.splitStr(data.body.houseList[i].housefeature,',');
+                        this.houseRecommandAll.push(data.body.houselist[i]);
                     }
                 }
             })
