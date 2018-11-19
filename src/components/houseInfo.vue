@@ -209,27 +209,27 @@
             </div>
         </div>
         
-        <div class="jk-house-feture">
+        <div class="jk-house-feture jk-house-desc1" style="padding-top:0">
             <div class="houseinfo">
-                <div class="houseinfoitem">
-                    <span class="desclabel">房屋亮点</span>
-                	<span class="desccon">
+                <div class="houseinfoitem" style="width:100%">
+                    <span class="desclabel" style="width:4em;">房屋亮点</span>
+                	<span class="desccon" style="width:80%">
 	                    {{houseInfoAll.housefeature}}
 	                </span>
                 </div>
             </div>
         </div>
-         <div class="jk-house-description">
+         <div class="jk-house-description jk-house-desc1" style="padding-top:0;">
             <div class="houseinfo">
-                <div  class="houseinfoitem">
-                    <span class="desclabel">房源描述</span>
-	                <span class="desccon">
+                <div class="houseinfoitem" style="width:100%">
+                    <span class="desclabel" style="width:4em;">房源描述</span>
+	                <span class="desccon" style="width:80%">
 	                    {{houseInfoAll.description}}
 	                </span>
                 </div>
             </div>
         </div>
-        
+        <div style="height:50px;">&nbsp;</div>
 
         <!-- <div class="jk-house-tit">
             新潮嘉园A区04楼

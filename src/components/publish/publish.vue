@@ -60,11 +60,8 @@
         },
         methods:{
             toPublishPage(page){
-                if(page == 1){
-                    this.$router.push({ path: '/tenant' })
-                }else if(page == 2){
-                    this.$router.push({ path: '/shared' })
-                }
+                this.$router.push({ name:'tenant',params: { renttype:page}})
+
             }
         }
 
