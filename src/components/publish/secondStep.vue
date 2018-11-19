@@ -174,6 +174,7 @@
                         position: 'middle',
                         duration: 2000
                     });
+                    this.$router.push({ name:'publishFinis'});
                 })
                 //shared提交
 
