@@ -391,15 +391,12 @@
 </template>
 
 <script>
-	import houseBanner1 from '../assets/house-banner.jpg';
-	import houseBanner2 from '../assets/house-banner.jpg';
-	import houseBanner3 from '../assets/house-banner.jpg';
-	import houseBanner4 from '../assets/house-banner.jpg';
+//	import houseBanner1 from '../assets/house-banner.jpg';
     import mapImg from '../assets/map.jpg';
 	
     import indexJs from	'../js/index';
     import configJs from '../js/config'; 
-    import Vue from 'vue'
+    import Vue from 'vue';
     import {Swipe, SwipeItem} from 'mint-ui';
     Vue.component(Swipe.name, Swipe,SwipeItem.name, SwipeItem);
     
@@ -408,10 +405,10 @@
 		data(){
 			return{
 				houseImgList:[],
-				houseBanner1:houseBanner1,
-				houseBanner2:houseBanner2,
-				houseBanner3:houseBanner3,
-				houseBanner4:houseBanner4,
+//				houseBanner1:houseBanner1,
+//				houseBanner2:houseBanner2,
+//				houseBanner3:houseBanner3,
+//				houseBanner4:houseBanner4,
 				mapImg:mapImg,
 				houseInfoAll:{},//房源详细信息
                 houseId:'',
