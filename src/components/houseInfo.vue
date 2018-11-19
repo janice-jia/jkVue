@@ -276,7 +276,7 @@
                         </div>
                         <div class="jk-recommend-conPrice">
                             <!-- 1860元/月 -->
-                            {{item.rent}}
+                            {{item.rent+'元/月'}}
                         </div>
                         <div class="jk-recommend-tag tag-parent">
                             <div class="jk-tag-2 " 
@@ -447,7 +447,7 @@
 				}
 			}).then(function(data){
                 this.houseInfoAll=data.body.houseinfo[0];
-                this.houseFeatures=this.splitStr(this.houseInfoAll.housefeature);
+                this.houseFeatures=this.splitStr(this.houseInfoAll.housefeature, ',');
                 this.houseInfoAll.checkin=this.splitStr(this.houseInfoAll.checkin,' ')[0];
                  //获取当前房源是否被收藏
 	            if(this.houseInfoAll.collectid){
@@ -459,9 +459,9 @@
             //获取推荐房源
             this.$http.get('/api/API.ashx?apicommand=getrecommend').then(function(data){
                 if(data.body){
-                    for(var i=0;i<data.body.houselist.length;i++){
-                        data.body.houselist[i].housefeature=this.splitStr(data.body.houseList[i].housefeature,',');
-                        this.houseRecommandAll.push(data.body.houselist[i]);
+                    for(var i=0;i<data.body.houseinfo.length;i++){
+                        data.body.houseinfo[i].housefeature=this.splitStr(data.body.houseinfo[i].housefeature,',');
+                        this.houseRecommandAll.push(data.body.houseinfo[i]);
                     }
                 }
             })
