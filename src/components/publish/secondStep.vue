@@ -3,21 +3,36 @@
         <!-- 房屋配置 -->
         <div class="jk-rent2Tit">房屋配置</div>
         <div class="jkFlex tag-parent" id="houseConfig">
-            <p class="jk-ca-tag" v-for="(item,index) in houseContentList" :data-id="index">{{item.housecontent}}</p>
+            <p  class="jk-ca-tag" 
+                v-for="(item,index) in houseContentList" 
+                :data-id="index" 
+                :key="index"
+                @click="setTag(item, 'housecontent',$event)"
+            >{{item.housecontent}}</p>
         </div>
         <input type="hidden" name="houseConfigVal" id="houseConfigVal" />
 
         <!-- 房屋亮点 -->
         <div class="jk-rent2Tit">房屋亮点</div>
         <div class="jkFlex tag-parent" id="houseGood">
-            <p class="jk-ca-tag" v-for="(item,index) in houseFeatureList" :data-id="index">{{item.housefeature}}</p>
+            <p class="jk-ca-tag" 
+                v-for="(item,index) in houseFeatureList" 
+                :data-id="index" 
+                :key="index"
+                @click="setTag(item, 'housefeature',$event)"
+            >{{item.housefeature}}</p>
         </div>
         <input type="hidden" name="houseGoodVal" id="houseGoodVal" />
 
         <!-- 出租要求 -->
         <div class="jk-rent2Tit">出租要求</div>
         <div class="jkFlex tag-parent" id="houseRequire">
-            <p class="jk-ca-tag" v-for="(item,index) in houseRequireList" :data-id="index">{{item.houserequire}}</p>
+            <p class="jk-ca-tag" 
+                v-for="(item,index) in houseRequireList" 
+                :data-id="index" 
+                :key="index"
+                @click="setTag(item, 'houserequire',$event)"
+            >{{item.houserequire}}</p>
         </div>
         <input type="hidden" name="houseRequireVal" id="houseRequireVal" />
 
@@ -48,6 +63,13 @@
                 pageId:null,
                 wordsNum:0,//字数计数器
                 descVal:'',
+                housecontentClass:'jk-ca-tag',
+                sendDataInfo:{
+                    housecontent:[],
+                    housefeature:[],
+                    houserequire:[],
+                    description:''
+                }
             }
         },
         mounted(){
@@ -59,10 +81,28 @@
                 this.pageId = this.$route.params.page;
             }
             console.log(this.houseContentList,'this.houseContentList')
-
-
         },
         methods:{
+            setTag(item, type,event){
+                // this.sendDataInfo[type] = item[type] + ',';
+                var el = event.currentTarget;
+                el.className = 'jk-ca-tag tag-hover'
+                //根据当前选中tag匹配是否已选
+                console.info('this.sendDataInfo[type]' ,this.sendDataInfo[type]);
+                var s = this.sendDataInfo[type].join(",").indexOf(item[type]);
+                if(s>=0){
+                    for(var r in this.sendDataInfo[type]){
+                        if( this.sendDataInfo[type][r] == item[type] ){
+                            this.sendDataInfo[type].splice(r,1);
+                            el.className = 'jk-ca-tag'
+                        }
+                    }
+                } else{
+                    this.sendDataInfo[type].push(item[type])
+                }
+                console.info('this.sendDataInfo[type]' ,this.sendDataInfo[type]);
+                //获取点击对象
+            },
             getHouseRequire(){
                 let sendData = {
                     apicommand:'gethouserequire'
@@ -71,20 +111,8 @@
                 this.$http.get(apiUrl,{params:sendData}).then(function (data) {
                    if(data.data.content && data.data.content.length>0){
                        _this.houseRequireList = data.data.content;
-                    //    console.info('_this.houseRequireList', _this.houseRequireList);
-                       let houseRequireList_default = this.getDefault(_this.houseRequireList);
-                       console.info('houseRequireList_default',houseRequireList_default)
-                       index.getSelectData(houseRequireList_default, 'houseRequire','jk-ca-tag', 'houseRequireVal','tag-hover');
                    }
                 })
-            },
-            getDefault(arr){
-                var arr1 = []
-                for(var i=0; i<arr.length; i++){
-                    if(arr[i].houserequire)
-                        arr1.push(arr[i].houserequire);
-                }
-                return arr1;
             },
             getHouseFeature(){
                 let sendData = {
@@ -132,12 +160,21 @@
                 } else {
                     this.wordsNum = 0
                 }
-
-
             },
             submitData(){
                 //tenant提交
-
+                if(this.sendDataInfo.housecontent) this.sendDataInfo.housecontent = this.sendDataInfo.housecontent.join(",");
+                if(this.sendDataInfo.housefeature) this.sendDataInfo.housefeature = this.sendDataInfo.housefeature.join(",");
+                if(this.sendDataInfo.houserequire) this.sendDataInfo.houserequire = this.sendDataInfo.houserequire.join(",");
+                this.sendDataInfo.houseid=this.$route.params.houseid;
+                this.sendDataInfo.description=this.descVal;
+                this.$http.post('/api/API.ashx?apicommand=addhouseotherinfo',{params:this.sendDataInfo}).then(function (data) {
+                    Toast({
+                        message: '上传成功',
+                        position: 'middle',
+                        duration: 2000
+                    });
+                })
                 //shared提交
 
             }

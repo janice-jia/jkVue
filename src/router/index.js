@@ -19,6 +19,7 @@ import mineAuthenticationEdit from '@/components/mineAuthenticationEdit'
 import publish from '@/components/publish/publish'
 import tenant from '@/components/publish/tenant'
 import secondStep from '@/components/publish/secondStep'
+import publishFinis from '@/components/publish/publishFinis'
 
 
 
@@ -108,9 +109,14 @@ export default new Router({
       component: tenant
     },
     {
-        path: '/secondStep/:page', //1-->tenant,2-->shared
+        path: '/secondStep/:houseid',
         name: 'secondStep',
         component: secondStep
+    },
+    {
+        path: '/publishfinis',
+        name: 'publishFinis',
+        component: publishFinis
     }
   ]
 })

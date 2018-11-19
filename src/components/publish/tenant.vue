@@ -3,8 +3,8 @@
         <div>
             <!-- 图片轮播 -->
             <mt-swipe :auto="4000" class="swipe"  v-if="picArr.length>0">
-                <mt-swipe-item v-for="item in picArr">
-                    <img :src="imgWenSiteUrl+item.thumbnailurl" alt="" class="img-responsive">
+                <mt-swipe-item v-for="(item, index) in picArr" :key="index">
+                    <img :src="imgWenSiteUrl+item.imgurl" alt="" class="img-responsive">
                 </mt-swipe-item>
             </mt-swipe>
             <!--图片上传-->
@@ -22,7 +22,7 @@
             <!--图片预览 by zqy-->
             <div class="clearfix preview-img" v-show="picArr.length>0">
                 <p v-for="(item,idx) in picArr"
-                   :style="'backgroundImage:url('+imgWenSiteUrl+item.thumbnailurl+')'" class="upload_picture">
+                   :style="'backgroundImage:url('+imgWenSiteUrl+item.thumbnailurl+')'" :key="idx" class="upload_picture">
                     <span class="del" @click="delPic(idx,item.id,item.thumbnailurl,item.imgurl)"></span>
                 </p>
 
@@ -439,7 +439,6 @@
                 sendImgArr:[],
                 //男士女士
                 sexy:'男士'
-
             }
         },
         mounted(){
@@ -539,7 +538,6 @@
             //获取入住时间
             handleConfirm (data) {
                 this.sendDataInfo.checkin = this.format(data);
-
             },
 
             //选择图片
@@ -648,24 +646,26 @@
 
                 let sendData = this.sendDataInfo,
                     isDataNull = false;
+                sendData.houseid = this.houseId;
                 for(let item in sendData){//遍历json对象的每个key/value对,item为key
                     if(!sendData[item]){
                         isDataNull = true;
                     }
                 };
+                
                 console.info('ssss',sendData)
-                // if(isDataNull == true || !this.houseId){
-                //     Toast({
-                //         message: '您有未选择的选项，请检查',
-                //         position: 'middle',
-                //         duration: 2000
-                //     });
-                //     return false;
-                // };
+                if(isDataNull == true || !this.houseId){
+                    Toast({
+                        message: '您有未选择的选项，请检查',
+                        position: 'middle',
+                        duration: 2000
+                    });
+                    return false;
+                };
 
                 // this.$http.post(apiUrl,{params:sendData}).then(function () {
                 this.$http.get(apiUrl,{params:sendData}).then(function () {
-                    this.$router.push({ name:'secondStep',params: { page:1}});
+                    this.$router.push({ name:'secondStep',params: { houseid:sendData.houseid}});
                 })
 
             },

@@ -346,7 +346,7 @@ import menuImg1 from '../assets/menu-item-1.png';
 import menuImg2 from '../assets/menu-item-2.png';
 import menuImg3 from '../assets/menu-item-3.png';
 
-
+import {Toast} from 'mint-ui';
 export default {
     name: 'index',
     data () {
