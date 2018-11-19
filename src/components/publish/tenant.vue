@@ -409,8 +409,10 @@
                 }],
                 //基本信息的数据
                 sendDataInfo: {
+                    apicommand:'addhouseinfo',
                     renttype:'整租',
-                    houseid:'100026',
+                    // houseid:'100026',
+                    houseid:'',
                     community:'',
                     housenumber:'',
                     area:'',
