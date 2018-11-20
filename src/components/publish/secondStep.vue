@@ -57,6 +57,7 @@
         name: "secondStep",
         data(){
             return {
+                userid:'',
                 houseRequireList:[],
                 houseFeatureList:[],
                 houseContentList:[],
@@ -71,6 +72,10 @@
                     description:''
                 }
             }
+        },
+        created(){
+            var data = config.getUserId();
+            this.userid = data.userid;
         },
         mounted(){
             this.getHouseRequire();
@@ -168,6 +173,7 @@
                 if(this.sendDataInfo.houserequire) this.sendDataInfo.houserequire = this.sendDataInfo.houserequire.join(",");
                 this.sendDataInfo.houseid=this.$route.params.houseid;
                 this.sendDataInfo.description=this.descVal;
+                this.sendDataInfo.userid = this.userid;
                 this.$http.post('/api/API.ashx?apicommand=addhouseotherinfo',{params:this.sendDataInfo}).then(function (data) {
                     Toast({
                         message: '上传成功',

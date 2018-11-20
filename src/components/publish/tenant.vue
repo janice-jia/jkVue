@@ -41,7 +41,7 @@
                     <input class="jk-group-input" type="text" placeholder="请填写信息" v-model="sendDataInfo.community"/>
                 </div>
             </div>
-            <div class="jk-group">
+            <div class="jk-group" v-show="rentType==1">
                 <div class="jk-group-tit">门牌号：</div>
                 <div class="jk-group-inputInfo">
                     <input class="jk-group-input" type="text" v-model="sendDataInfo.housenumber" name="roomNum" placeholder="请填写信息"/>
@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </div>
-            <div class="jk-group">
+            <div class="jk-group"  v-show="rentType==1">
                 <div class="jk-group-tit">车位：</div>
                 <div class="jk-group-inputInfo">
                     <div class="jk-checkBoxSkin">
@@ -113,7 +113,7 @@
                     <input type="input" class="jk-group-select"  name="checkInTime" v-model="sendDataInfo.checkin" placeholder="请选择内容"/>
                 </div>
             </div>
-            <div class="jk-group">
+            <div class="jk-group" v-show="rentType==1">
                 <div class="jk-group-tit">易住人数：</div>
                 <div class="jk-group-inputInfo" @click="showPup(6)">
                     <input type="input" class="jk-group-select"  name="peopleNum" v-model="sendDataInfo.occupancynum" placeholder="请选择内容"/>
@@ -147,7 +147,7 @@
                     <input class="jk-group-input" type="text" name="payType" v-model="sendDataInfo.payment" placeholder="请选择内容"/>
                 </div>
             </div>
-            <div class="jk-group">
+            <div class="jk-group"  v-show="rentType==1">
                 <div class="jk-group-tit">租金包含费用<span>（物业费等）</span>:</div>
                 <div class="jk-group-inputInfo" @click="showPup(9)">
                     <input class="jk-group-input" type="text" name="priceContains" v-model="sendDataInfo.rentcontent" placeholder="请选择内容"/>
@@ -157,7 +157,7 @@
             <!-- 联系人 -->
             <div class="jk-groupTit">联系人</div>
             <div class="jk-group">
-                <div class="jk-group-tit">房东：</div>
+                <div class="jk-group-tit">{{rentcontent==1 ? '房东' : '个人'}}：</div>
                 <div class="jk-group-inputInfo">
                     <input class="jk-group-input" type="text" placeholder="请填写姓名"
                            v-model="sendDataInfo.realname"/>
@@ -311,6 +311,7 @@
                 rentType:this.$route.params.renttype,
                 imgWenSiteUrl:config.config.imgWenSiteUrl,
                 showToolbar:true,
+                userid:'',
             //装修
                 dcorateSlots: [{
                     values: ['','毛坯', '简单装修','中等装修','精装修'],
@@ -441,8 +442,14 @@
                 sexy:'男士'
             }
         },
+        created(){
+            var data = config.getUserId();
+            this.userid = data.userid;
+            alert('用户名：userid=='+data.userid+',,,,openid==='+data.openid)
+        },
         mounted(){
-            this.getRentcontent();
+            // 获取租金包含项目
+            // this.getRentcontent();
         },
         methods: {
             showPup(num) {
@@ -483,35 +490,35 @@
                 }
             },
             onValuesChangeDecorate(picker, values) {
-                console.log(values,'装修 ');
+                // console.log(values,'装修 ');
                 this.sendDataInfo.decorated = values[0];
             },
             onValuesChangeHouse(picker, values){
-                console.log(values,'厅室');
+                // console.log(values,'厅室');
                 this.sendDataInfo.housestructure = values[0]+values[1]+values[2];
             },
             onValuesChangeToward(picker, values){
-                console.log('朝向',values);
+                // console.log('朝向',values);
                 this.sendDataInfo.direction = values[0];
             },
             onValuesChangeFloor(picker, values){
-                console.log('楼层',values);
+                // console.log('楼层',values);
                 this.sendDataInfo.floor = values[0];
             },
             onValuesChangePople(picker, values){
-                console.log('住的人数',values);
+                // console.log('住的人数',values);
                 this.sendDataInfo.occupancynum = values[0];
             },
             onValuesChangeLook(picker, values){
-                console.log('看房时间',values);
+                // console.log('看房时间',values);
                 this.sendDataInfo.openhomedate = values[0];
             },
             onValuesChangePay(picker, values){
-                console.log('付款形式',values);
+                // console.log('付款形式',values);
                 this.sendDataInfo.payment = values[0];
             },
             onValuesChangePriceType(picker, values){
-                console.log('租金形式',values);
+                // console.log('租金形式',values);
                 this.sendDataInfo.rentunit = values[0];
             },
             // onValuesChangeAnswer(picker, values){
@@ -586,7 +593,8 @@
                 });
                 let sendData = {
                     command:'webuploadhouseimg',
-                    img:this.sendImgArr
+                    img:this.sendImgArr,
+                    userid: this.userid
                 };
                 sendData = JSON.parse(JSON.stringify(sendData));
                 if(this.sendImgArr.length>0){
@@ -644,6 +652,16 @@
                     this.sendDataInfo.carport = '无';
                 };
 
+                console.info('ssss',sendData);
+                //根据类型处理不同的验证
+                if(this.rentType == 2){
+                    delete sendData.housenumber;//门牌号
+                    delete sendData.carport;  //车位
+                    delete sendData.occupancynum; //易住人数
+                    delete sendData.rentcontent; //租金包含项目
+                }
+
+
                 let sendData = this.sendDataInfo,
                     isDataNull = false;
                 sendData.houseid = this.houseId;
@@ -653,7 +671,8 @@
                     }
                 };
                 
-                console.info('ssss',sendData)
+                
+
                 if(isDataNull == true || !this.houseId){
                     Toast({
                         message: '您有未选择的选项，请检查',
@@ -663,6 +682,7 @@
                     return false;
                 };
 
+                sendData.userid = this.userid;
                 // this.$http.post(apiUrl,{params:sendData}).then(function () {
                 this.$http.get(apiUrl,{params:sendData}).then(function () {
                     this.$router.push({ name:'secondStep',params: { houseid:sendData.houseid}});
@@ -678,12 +698,13 @@
                     if(data.data.content && data.data.content.length>0){
                         let list = JSON.parse(JSON.stringify(data.data.content)),
                             json = {};
+                            console.info('list', list)
                         list.map(function (item,idx) {
-                            _this.priceContainsList.push(item.rentcontent)
+                            if(item.rentcontent) _this.priceContainsList.push(item.rentcontent)
                         });
 
-                        json.values = this.priceContainsList;
-                        this.priceContainsSlots.push(json);
+                        json.values = _this.priceContainsList;
+                        _this.priceContainsSlots.push(json);
                     }
                 })
             },
