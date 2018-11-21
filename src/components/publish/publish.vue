@@ -42,7 +42,6 @@
     import menuImg2 from '../../assets/menu-item-2.png';
     import iconRight from '../../assets/icon-right.png';
 
-    import config from '../../js/config'
 
 
     export default {
@@ -52,7 +51,7 @@
                 menuImg1: menuImg1,
                 menuImg2: menuImg2,
                 iconRight: iconRight,
-                imgWenSiteUrl:config.config.imgWenSiteUrl,
+                imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
             }
         },
         components: {

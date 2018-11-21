@@ -31,14 +31,12 @@
 </template>
 
 <script>
-	 import configJs from '../js/config'; 
     
 	export default{
 		name:'mineAdviceAdd',
 		data(){
 			return{
-                userId:configJs.config.userId,
-
+                userId:this.GLOBAL.userid,
 			}
 		},
 		created(){

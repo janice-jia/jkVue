@@ -395,7 +395,6 @@
     import mapImg from '../assets/map.jpg';
 	
     import indexJs from	'../js/index';
-    import configJs from '../js/config'; 
     import Vue from 'vue';
     import {Swipe, SwipeItem} from 'mint-ui';
     Vue.component(Swipe.name, Swipe,SwipeItem.name, SwipeItem);
@@ -405,19 +404,15 @@
 		data(){
 			return{
 				houseImgList:[],
-//				houseBanner1:houseBanner1,
-//				houseBanner2:houseBanner2,
-//				houseBanner3:houseBanner3,
-//				houseBanner4:houseBanner4,
 				mapImg:mapImg,
 				houseInfoAll:{},//房源详细信息
                 houseId:'',
-                userId:configJs.config.userId,
+                userId:this.GLOBAL.userid,
                 houseFeatures:[],
                 houseRecommandAll:[],//推荐房源
                 collectStatus:false,//收藏状态
                 orderLookStatus:false,//是否已经约看
-                imgWenSiteUrl:configJs.config.imgWenSiteUrl,//图片路径前缀
+                imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,//图片路径前缀
 
 			}
 		},

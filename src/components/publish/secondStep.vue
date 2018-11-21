@@ -65,6 +65,7 @@
                 wordsNum:0,//字数计数器
                 descVal:'',
                 housecontentClass:'jk-ca-tag',
+                userid:this.GLOBAL.userid,
                 sendDataInfo:{
                     housecontent:[],
                     housefeature:[],
@@ -72,10 +73,6 @@
                     description:''
                 }
             }
-        },
-        created(){
-            var data = config.getUserId();
-            this.userid = data.userid;
         },
         mounted(){
             this.getHouseRequire();
@@ -174,7 +171,7 @@
                 this.sendDataInfo.houseid=this.$route.params.houseid;
                 this.sendDataInfo.description=this.descVal;
                 this.sendDataInfo.userid = this.userid;
-                this.$http.post('/api/API.ashx?apicommand=addhouseotherinfo',{params:this.sendDataInfo}).then(function (data) {
+                this.$http.post('/api/API.ashx?apicommand=addhouseotherinfo',JSON.stringify(this.sendDataInfo)).then(function (data) {
                     Toast({
                         message: '上传成功',
                         position: 'middle',

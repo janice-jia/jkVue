@@ -49,14 +49,13 @@
 <script type="text/ecmascript-6">
 import bottomCom from './bottomCom.vue';
 import avatar from '../assets/avatar.jpg';
-import config from '../js/config'
 export default {
     name: 'mine',
     data () {
         return {
             avatar:avatar,
             islandlord: false,
-            telNumber: 'tel:'+config.config.telNumber
+            telNumber: 'tel:'+this.GLOBAL.telNumber
         }
     },
     components: {

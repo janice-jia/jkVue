@@ -27,7 +27,6 @@
 import bottomCom from './bottomCom.vue';
 import authentication from '../assets/_authentication.png';
 import iconright from '../assets/icon-right.png';
-import configJs from '../js/config'
 export default {
     name: 'minehousePublisManage',
     data () {
@@ -46,7 +45,7 @@ export default {
     },
     methods: {
         isauthFn(){
-            this.$http.get('/api/API.ashx?apicommand=isauth&userid='+configJs.config.userId).then(function(data) {
+            this.$http.get('/api/API.ashx?apicommand=isauth&userid='+this.GLOBAL.userid).then(function(data) {
                 if(data == 'Y'){
                     this.isauth = true;
                 }else{

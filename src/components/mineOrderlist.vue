@@ -64,13 +64,12 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-import configJs from '../js/config'
 export default {
     name: 'mineOrderlist',
     data() {
         return {
             orderList:[],
-            imgWenSiteUrl:configJs.config.imgWenSiteUrl,
+            imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
         }
         
     },
@@ -82,7 +81,7 @@ export default {
             this.$http.get('/api/API.ashx',{
                 params:{
                     'apicommand': 'getmyappointment',
-                    'userid':configJs.config.userId
+                    'userid':this.GLOBAL.userid
                 }
             }).then(function(data){
                 this.orderList = data.body.houseinfo;

@@ -340,7 +340,6 @@
 <script type="text/ecmascript-6">
 import bottomCom from './bottomCom.vue';
 import indexJs from '../js/index'
-import config from '../js/config'
 
 import menuImg1 from '../assets/menu-item-1.png';
 import menuImg2 from '../assets/menu-item-2.png';
@@ -354,7 +353,7 @@ export default {
             menuImg1: menuImg1,
             menuImg2: menuImg2,
             menuImg3: menuImg3,
-            imgWenSiteUrl:config.config.imgWenSiteUrl,
+            imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
             heightList:[],
             hoseListAll:[],
             totalItems: 0,  //总条数

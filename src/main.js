@@ -11,6 +11,8 @@ import VueScroller from 'vue-scroller'
 import Mint from 'mint-ui';
 Vue.use(Mint);
 import 'mint-ui/lib/style.css';
+import global_ from './global'//引用文件
+Vue.prototype.GLOBAL = global_//挂载到Vue实例上面
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)

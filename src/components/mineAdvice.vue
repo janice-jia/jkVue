@@ -27,14 +27,12 @@
     </div>
 </template>
 
-<script>
-    import configJs from '../js/config'; 
-    
+<script>    
 	export default{
 		name:'mineAdvice',
 		data(){
 			return{
-                userId:configJs.config.userId,
+                userId:this.GLOBAL.userid,
 
 			}
 		},

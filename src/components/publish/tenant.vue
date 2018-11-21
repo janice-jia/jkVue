@@ -157,7 +157,7 @@
             <!-- 联系人 -->
             <div class="jk-groupTit">联系人</div>
             <div class="jk-group">
-                <div class="jk-group-tit">{{rentcontent==1 ? '房东' : '个人'}}：</div>
+                <div class="jk-group-tit">{{rentType==1 ? '房东' : '个人'}}：</div>
                 <div class="jk-group-inputInfo">
                     <input class="jk-group-input" type="text" placeholder="请填写姓名"
                            v-model="sendDataInfo.realname"/>
@@ -294,8 +294,6 @@
 
 <script>
     import Vue from 'vue'
-    import config from '../../js/config'
-
     import { Picker,Popup,DatetimePicker,MessageBox , Swipe, SwipeItem,Toast} from 'mint-ui';
     Vue.component(Picker.name, Picker,Popup.name, Popup,
         DatetimePicker.name, DatetimePicker,Swipe.name, Swipe,SwipeItem.name, SwipeItem);
@@ -309,7 +307,7 @@
         data(){
             return {
                 rentType:this.$route.params.renttype,
-                imgWenSiteUrl:config.config.imgWenSiteUrl,
+                imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
                 showToolbar:true,
                 userid:'',
             //装修
@@ -443,9 +441,7 @@
             }
         },
         created(){
-            var data = config.getUserId();
-            this.userid = data.userid;
-            alert('用户名：userid=='+data.userid+',,,,openid==='+data.openid)
+            alert("uderid=="+this.GLOBAL.userid+',,openid='+this.GLOBAL.openid)
         },
         mounted(){
             // 获取租金包含项目
@@ -652,13 +648,13 @@
                     this.sendDataInfo.carport = '无';
                 };
 
-                console.info('ssss',sendData);
+                console.info('ssss',this.sendDataInfo);
                 //根据类型处理不同的验证
                 if(this.rentType == 2){
-                    delete sendData.housenumber;//门牌号
-                    delete sendData.carport;  //车位
-                    delete sendData.occupancynum; //易住人数
-                    delete sendData.rentcontent; //租金包含项目
+                    delete this.sendDataInfo.housenumber;//门牌号
+                    delete this.sendDataInfo.carport;  //车位
+                    delete this.sendDataInfo.occupancynum; //易住人数
+                    delete this.sendDataInfo.rentcontent; //租金包含项目
                 }
 
 

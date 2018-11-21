@@ -67,17 +67,17 @@
 
 
 <script type="text/ecmascript-6">
-import configJs from '../js/config'
 export default {
     name: 'mineCollect',
     data() {
         return {
             collectList:[],
-            imgWenSiteUrl:configJs.config.imgWenSiteUrl,
+            imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
         }
         
     },
     created (){
+        console.info('this.GLOBAL.userid', this.GLOBAL)
         this.getList()
     },
     methods: {
@@ -85,7 +85,7 @@ export default {
             this.$http.get('/api/API.ashx',{
                 params:{
                     'apicommand': 'getcollect',
-                    'userid':configJs.config.userId
+                    'userid':this.GLOBAL.userid
                 }
             }).then(function(data){
                 this.collectList = data.body.collectlist;

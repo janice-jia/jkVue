@@ -59,7 +59,7 @@
                 <div class="jkFlex">
                     <div class="jkFlexItem" >
                         <select name="lookday" id=""  v-model="lookDaySelected">
-                            <option v-for="lookDay in lookDayList" :value="lookDay.id">{{lookDay.name}}</option>
+                            <option v-for="(lookDay, index) in lookDayList" :value="lookDay.id" :key="index">{{lookDay.name}}</option>
                         </select>
                     </div>
                     <div class="jkFlexItem">
@@ -80,16 +80,15 @@
 <script>	
 	
 	import indexJs from '../js/index';
-	import configJs from '../js/config';
 	
 	export default{
 		name:'mineOrderLook',
 		data(){
 			return{
 				houseId:'',
-				userId:configJs.config.userId,
+				userId:this.GLOBAL.userid,
 				houseBasicInfo:{},//房源基本信息
-				imgWenSiteUrl:configJs.config.imgWenSiteUrl,
+				imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
 				realname:'',//姓名
 				sex:false,//性別(男：true;女:false)
 				mobile:'',//电话

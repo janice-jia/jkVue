@@ -29,7 +29,7 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-import config from '../js/config'
+import {Toast} from 'mint-ui';
 export default {
     name: 'mineAuthenticationEdit',
     data(){
@@ -41,9 +41,51 @@ export default {
     },
     methods:{
         doSubmit(){
-            console.info(this.name)
-            return false;
+            var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  
+   
+            if(!this.name){
+                Toast({
+                    message: '请填写姓名',
+                    position: 'middle',
+                    duration: 2000
+                });
+                return false;
+            }else if(!this.idCard){
+                Toast({
+                    message: '请填写身份证号',
+                    position: 'middle',
+                    duration: 2000
+                });
+                return false;
+            } else if(reg.test(this.idCard) === false){
+                Toast({
+                    message: '请输入有效的身份证号码',
+                    position: 'middle',
+                    duration: 2000
+                });
+                return false;
+            }else if(!this.agree){
+                Toast({
+                    message: '请同意《玖快租房认证服务协议》',
+                    position: 'middle',
+                    duration: 2000
+                });
+                return false;
+            }else{
+                var sendData = {};
+                sendData.name = this.name;
+                sendData.idCard = this.idCard;
+                sendData.userid = this.GLOBAL.userid;
+                this.$http.post(
+                    uploadApi,
+                    JSON.stringify(sendData),
+                    {headers:{'Content-Type':'application/json'}}
+                ).then(function (data) {
+                    
+                })
+            }
         }
+            
     }
 }
 </script>

@@ -62,17 +62,15 @@
     </div>
 </template>
 <script>
-    import indexJs from	'../js/index';
-    import configJs from '../js/config'; 
-    
+    import indexJs from	'../js/index';    
 	export default{
 		name:'mineOrderInfo',
 		data(){
 			return{
                 houseId:'',
-                userId:configJs.config.userId,
+                userId:this.GLOBAL.userid,
                 appointmentDeatil:{},//约看详情
-				imgWenSiteUrl:configJs.config.imgWenSiteUrl,
+				imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
 				appointmentdate:[],//预约时间
 			}
 		},
