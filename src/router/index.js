@@ -11,6 +11,7 @@ import mineOrderLook from '@/components/mineOrderLook'
 import mineOrderlist from '@/components/mineOrderlist'
 import mineOrderInfo from '@/components/mineOrderInfo'
 import mineAdvice from '@/components/mineAdvice'
+import mineEditinfo from '@/components/mineEditinfo'
 import mineAdviceAdd from '@/components/mineAdviceAdd'
 import mineAuthentication from '@/components/mineAuthentication'
 import mineAuthenticationEdit from '@/components/mineAuthenticationEdit'
@@ -52,6 +53,11 @@ export default new Router({
     	path: '/mine/type/:type',
     	name:'mine',
     	component: mine
+    },
+    {
+      path: '/mine/editinfo',
+      name:'mineEditinfo',
+      component: mineEditinfo
     },
     {
     	path: '/mine/collect',

@@ -10,7 +10,11 @@
             </div>
             <div class="jk-userName">玖快租房</div>
             <div class="jk-userEdit">
-                <p><a href="./userInformationEdit.html" class="jk-userEdit-link">查看并编辑个人信息</a></p>
+                <p>
+                    <router-link class="jk-userEdit-link" :to="{name: 'mineEditinfo'}">
+                        查看并编辑个人信息
+                    </router-link>
+                </p>
             </div>
         </div>
         
