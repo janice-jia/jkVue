@@ -309,7 +309,7 @@
                 rentType:this.$route.params.renttype,
                 imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
                 showToolbar:true,
-                userid:this.GLOBAL.userid,
+                userid:'',
             //装修
                 dcorateSlots: [{
                     values: ['','毛坯', '简单装修','中等装修','精装修'],

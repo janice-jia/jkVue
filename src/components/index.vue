@@ -10,20 +10,20 @@
 
         <!-- 导航 start-->
         <div class="jk-menu jkFlex">
-            <div class="jk-menu-item jkFlexItem">
-                <a href="/?renttype=整租">
+            <div class="jk-menu-item jkFlexItem" @click="changeRenttype('整租')">
+                <a href="javascript:;" >
                     <img :src="menuImg1" alt="整租" />
                     <p>整租</p>
                 </a>
             </div>
-            <div class="jk-menu-item jkFlexItem">
-                <a href="/?renttype=合租">
+            <div class="jk-menu-item jkFlexItem" @click="changeRenttype('合租')">
+                <a href="javascript:;">
                     <img :src="menuImg2" alt="合租" />
                     <p>合租</p>
                 </a>
             </div>
-            <div class="jk-menu-item jkFlexItem">
-                <a href="/?renttype=短租">
+            <div class="jk-menu-item jkFlexItem" @click="changeRenttype('短租')">
+                <a href="javascript:;">
                     <img :src="menuImg3" alt="短租" />
                     <p>短租</p>
                 </a>
@@ -437,6 +437,10 @@ export default {
         bottomCom
     },
     methods: {
+        changeRenttype(renttype){
+            $('#rentTypeVal').val(renttype);
+            $('#searchForm').submit();
+        },
         getCity(){
             var THIS = this;
              //请求区域数据
@@ -605,7 +609,7 @@ export default {
                 queryData.city = 607;      //城市
                 queryData.county= this.county;     //市
                 queryData.POI= this.POI;        //地标
-                queryData.renttype = ''; //类型
+  
                 queryData.rentstart = this.rentstart;  //租金起始
                 queryData.rentend = this.rentend;  //租金截止
                 queryData.housestructure = this.housestructure;  //户型
@@ -617,7 +621,7 @@ export default {
                 queryData.pagesize = this.pagesize;  //每页显示
                 queryData.pageindex = this.pageindex; //第几页
             }
-            if(queryData.renttype == undefined) queryData.renttype = ''
+            // if(queryData.renttype == undefined) queryData.renttype = ''
             
             this.$http.get(apiUrl,{params:queryData}).then(function (data) {
                 if (data.body) {
