@@ -40,9 +40,9 @@
                 <li class="jk-info-linkItem">
                     <router-link class="item6" :to="{name: 'mineAdvice'}">意见反馈</router-link>
                 </li>
-                <li class="jk-info-linkItem logout">
+                <!-- <li class="jk-info-linkItem logout">
                     <a href="" >退出登录</a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>
