@@ -16,7 +16,7 @@
             </div>
             <div class="jk-group"  style="border-bottom:none;">
                 <div class="jk-group-inputInfo jkInfotl">
-                    <input type="radio" v-model="agree">  我同意  
+                    <input type="radio" v-model="agree" v-bind:value="true">  我同意  
                     <a href="">《玖快租房认证服务协议》</a>
                 </div>
             </div>
@@ -77,7 +77,7 @@ export default {
                 sendData.idCard = this.idCard;
                 sendData.userid = this.GLOBAL.userid;
                 this.$http.post(
-                    uploadApi,
+                    '/api/API.ashx?apicommand=submiauth',
                     JSON.stringify(sendData),
                     {headers:{'Content-Type':'application/json'}}
                 ).then(function (data) {
