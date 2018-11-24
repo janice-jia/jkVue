@@ -1,6 +1,6 @@
 <template>
     <div class="jk-wap">
-        <div class="jk-null jk-null-nopadding" v-if="!houseList || houseList.length==0">
+        <div class="jk-null" v-if="!houseList || houseList.length==0">
             <div class="jk-null-tit">
                 暂无房源信息
             </div>
@@ -33,7 +33,12 @@
                         <router-link class="jk-tag-Link" v-show="!isauth" :to="{name: 'mineAuthenticationEdit'}"> 
                             立即认证
                         </router-link>
-                        <a href="#" class="jk-tag-Link"> 发布</a>
+                        <a href="javacript:;" class="jk-tag-Link" @click="publish"> 发布</a>
+                    </div>
+                    <div class="jk-cont-item-tag oneLine" v-show="publishType == 2">
+                        <router-link class="houseLink" :to="{name: 'houseInfo', params: {houseid: item.houseid}}">
+                            查看
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -42,6 +47,8 @@
 </template>
 <script type="text/ecmascript-6">
     import contItem from '../assets/cont-item.jpg';
+    import {Toast} from 'mint-ui';
+
     export default {
         name: 'minehousePublisManage',
         data () {
@@ -49,7 +56,8 @@
                 contItem:contItem,
                 publishType:this.$route.params.publishType,
                 isauth:false,
-                houseList:[]
+                houseList:[],
+                imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl
                 // iconRight:iconRight
             }
         },
@@ -61,7 +69,7 @@
         methods: {
             isauthFn(){
                 this.$http.get('/api/API.ashx?apicommand=isauth&userid='+this.GLOBAL.userid).then(function(data) {
-                    if(data == 'Y'){
+                    if(data.body.result == 'Y'){
                         this.isauth = true;
                     }else{
                         this.isauth = false;
@@ -69,11 +77,23 @@
                 })
             },
             getList(){
-                var ispublish = 1;
-                if(this.publishType == 2 ) ispublish = 0;
+                var ispublish = 0;
+                if(this.publishType == 2 ) ispublish = 1;
                 this.$http.get('/api/API.ashx?apicommand=getmyhouse&ispublish='+ispublish+'&userid='+this.GLOBAL.userid).then(function (data) {
-                    this.houseList = data.body.houseList;
+                    this.houseList = data.body.houselist;
                 })
+            },
+            //发布
+            publish(){
+                if(!this.isauth){
+                    Toast({
+                        message: '您还没有认证，请认证后发布',
+                        position: 'middle',
+                        duration: 2000
+                    });
+                }else{
+
+                }
             }
         }
     }

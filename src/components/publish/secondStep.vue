@@ -53,6 +53,7 @@
 <script>
     let apiUrl = '/api/API.ashx';
     import index from '../../js/index'
+    import {Toast} from 'mint-ui';
     export default {
         name: "secondStep",
         data(){

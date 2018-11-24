@@ -17,7 +17,7 @@
             <div class="jk-group"  style="border-bottom:none;">
                 <div class="jk-group-inputInfo jkInfotl">
                     <input type="radio" v-model="agree" v-bind:value="true">  我同意  
-                    <a href="">《玖快租房认证服务协议》</a>
+                    <a href="javascript:;">《玖快租房认证服务协议》</a>
                 </div>
             </div>
         
@@ -81,7 +81,15 @@ export default {
                     JSON.stringify(sendData),
                     {headers:{'Content-Type':'application/json'}}
                 ).then(function (data) {
-                    
+                    console.info(data)
+                    if(data.body.result == "Y" || data.status == 200){
+                        Toast({
+                            message: '认证成功',
+                            position: 'middle',
+                            duration: 2000
+                        });
+                        this.$router.push({name: 'mine', params:{'type':2}});
+                    }
                 })
             }
         }

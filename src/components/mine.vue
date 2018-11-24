@@ -6,7 +6,7 @@
                 转为{{islandlord ? '房东' : '租客'}}
             </a>
             <div class="jk-avatar-img">
-                <img :src="avatar" alt="">
+                <img :src="userinfo.headimgurl" alt="">
             </div>
             <div class="jk-userName">玖快租房</div>
             <div class="jk-userEdit">
@@ -52,14 +52,13 @@
 
 <script type="text/ecmascript-6">
 import bottomCom from './bottomCom.vue';
-import avatar from '../assets/avatar.jpg';
 export default {
     name: 'mine',
     data () {
         return {
-            avatar:avatar,
             islandlord: false,
-            telNumber: 'tel:'+this.GLOBAL.telNumber
+            telNumber: 'tel:'+this.GLOBAL.telNumber,
+            userinfo:{}
         }
     },
     components: {
@@ -67,6 +66,7 @@ export default {
     },
     created (){
         this.islandlordFn();
+        this.getUserInfo();
     },
     watch: {
         '$route' (to, from) {
@@ -89,6 +89,13 @@ export default {
                 typeM='1'
             }
             this.$router.push({name: 'mine', params:{'type':typeM}});
+        },
+        getUserInfo(){
+            this.$http.get('/api/API.ashx?apicommand=getuserinfo&userid='+this.GLOBAL.userid).then(function (data) {
+                if (data.body) {
+                    this.userinfo = data.body.userinfo[0];
+                }
+            })
         }
     }
 }

@@ -48,6 +48,18 @@
                 </div>
             </div>
             <div class="jk-group">
+                <div class="jk-group-tit">地区选择：</div>
+                <div class="jk-group-inputInfo" @click="showPup(12)">
+                    <input type="text"  class="jk-group-input" v-model="address"  name="place" placeholder="请选择内容"/>
+                </div>
+            </div>
+            <div class="">
+                <div class="jk-group-tit">所在POI：</div>
+                <div class="jk-group-inputInfo" @click="showPup(12)">
+                    <input type="text"  class="jk-group-input"  name="place" placeholder="请选择内容"/>
+                </div>
+            </div>
+            <div class="jk-group">
                 <div class="jk-group-tit">面积：</div>
                 <div class="jk-group-inputInfo">
                     <input class="jk-group-input" type="number" placeholder="请填写信息" v-model="sendDataInfo.area"/>
@@ -200,6 +212,17 @@
                 </div>
             </mt-picker>
         </mt-popup>
+
+        <!--地点的picker-->
+        <mt-popup v-model="popPlace" v-if="threeListAddress" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
+            <mt-picker :slots="myAddressSlots" @change="addressChange"  :visibleItemCount="5" valueKey="RegionName" style="width: 7.5rem;" showToolbar>
+                <div class="clearfix picker-toolbar-title">
+                    <p class="usi-btn-cancel left" @click="popPlace = !popPlace">取消</p>
+                    <p class="usi-btn-sure right" @click="popPlace = !popPlace">确定</p>
+                </div>
+            </mt-picker>    
+        </mt-popup>
+        
         <!--厅室的picker-->
         <mt-popup v-model="popHouse" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
             <mt-picker :slots="houseSlots" @change="onValuesChangeHouse"  style="width: 7.5rem;" showToolbar>
@@ -258,13 +281,36 @@
         </mt-popup>
         <!--付款的picker-->
         <mt-popup v-model="popPayType" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
-            <mt-picker :slots="payTypeSlots" @change="onValuesChangePay"  style="width: 7.5rem;" showToolbar>
+            <mt-picker :slots="payTypeSlots" @change="onValuesChangePay" valueKey="RegionName" style="width: 7.5rem;" showToolbar>
                 <div class="clearfix picker-toolbar-title">
                     <p class="usi-btn-cancel left" @click="popPayType = !popPayType">取消</p>
                     <p class="usi-btn-sure right" @click="popPayType = !popPayType">确定</p>
                 </div>
             </mt-picker>
         </mt-popup>
+        <!-- 租金包含项目 -->
+         <mt-popup v-model="rentcontent" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
+            <div class="clearfix picker-toolbar-title">
+                <p class="usi-btn-cancel left" @click="rentcontent = !rentcontent">取消</p>
+                <p class="usi-btn-sure right" @click="rentcontent = !rentcontent">确定</p>
+            </div>
+            <div style="width: 7.5rem;height:4rem;">
+                <mt-checklist 
+                    v-model="rentcontentvalue" 
+                    :options="priceContainsList"
+                    @change="checkon($event)"
+                >
+                </mt-checklist>
+
+                <!-- <ul class="tag-parent" style="overflow:hidden;padding:0.5rem;">
+                    <li class="jk-tag-2" style="font-weight:normal;font-size:14px;color:#999999;line-height:0.5rem;" v-for="(item,index) in priceContainsList" :key="index">
+                        <input type="checkbox" @click="changeRentcontent" name="rentcontent" class="mini-checkbox" :v-bind="item.rentcontent">
+                        {{item.rentcontent}}
+                    </li>
+                </ul> -->
+                
+            </div>
+        </mt-popup>
         <!--接听的picker-->
 <!--        <mt-popup v-model="popAnswerTime" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">-->
 <!--            <mt-picker :slots="answerTimeSlots" @change="onValuesChangeAnswer"  style="width: 7.5rem;" showToolbar>-->
@@ -294,9 +340,10 @@
 
 <script>
     import Vue from 'vue'
-    import { Picker,Popup,DatetimePicker,MessageBox , Swipe, SwipeItem,Toast} from 'mint-ui';
+    import { Picker,Popup,DatetimePicker,MessageBox , Swipe, SwipeItem,Toast,Checklist} from 'mint-ui';
+    import threeLevelAddress from './address.json'
     Vue.component(Picker.name, Picker,Popup.name, Popup,
-        DatetimePicker.name, DatetimePicker,Swipe.name, Swipe,SwipeItem.name, SwipeItem);
+        DatetimePicker.name, DatetimePicker,Swipe.name, Swipe,SwipeItem.name, SwipeItem,Checklist);
 
     let apiUrl = '/api/API.ashx',
         // uploadApi = '/Ajax/UploadImg.ashx';
@@ -310,28 +357,38 @@
                 imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
                 showToolbar:true,
                 userid:this.GLOBAL.userid,
-            //装修
+                provinceList:[],
+                priceContainsList:[],//租金包含项目
+                rentcontentvalue:[],
+                threeListAddress:[],
+                //装修
                 dcorateSlots: [{
                     values: ['','毛坯', '简单装修','中等装修','精装修'],
 
                 }],
                 popDecorate: false,
-            //    厅室
+                //    厅室
                 houseSlots: [
                     {
                         flex: 1,
-                        values: ['1室', '2室', '3室'],
+                        values: ['1室', '2室', '3室','4室','4室','5室','7室'],
                         className: 'slot1',
                         textAlign: 'left'
                     },{
                         flex: 1,
-                        values: ['1厅', '2厅', '3厅'],
+                        values: ['1厅', '2厅', '3厅', '4厅', '5厅', '6厅', '7厅'],
                         className: 'slot2',
                         textAlign: 'center'
                     },
                     {
                         flex: 1,
-                        values: ['1卫', '2卫', '3卫'],
+                        values: ['1卫', '2卫', '3卫', '4卫', '5卫', '6卫', '7卫'],
+                        className: 'slot3',
+                        textAlign: 'center'
+                    },
+                    {
+                        flex: 1,
+                        values: ['1阳台', '2阳台', '3阳台', '4阳台', '5阳台', '6阳台', '7阳台'],
                         className: 'slot3',
                         textAlign: 'right'
                     }
@@ -406,6 +463,46 @@
                 priceTypeSlots: [{
                     values:['','月租','日租']
                 }],
+                //地点
+                place:'',
+                popPlace: false,
+                popPlaceInit: false,
+                 //picker组件插槽
+                myAddressSlots: [
+                      //省
+                    {
+                        flex: 1,
+                        values: [], //省份数组
+                        className: 'slot1',
+                        textAlign: 'center'
+                    },
+                       //分隔符
+                    {
+                        divider: true,
+                        content: '',
+                        className: 'slot2'
+                    },
+                      //市
+                    {
+                        flex: 1,
+                        values: [],
+                        className: 'slot3',
+                        textAlign: 'center'
+                    },
+                    {
+                        divider: true,
+                        content: '',
+                        className: 'slot4'
+                    },
+                      //县
+                    {
+                        flex: 1,
+                        values: [],
+                        className: 'slot5',
+                        textAlign: 'center'
+                    }
+                ],
+                   
                 //基本信息的数据
                 sendDataInfo: {
                     apicommand:'addhouseinfo',
@@ -437,17 +534,105 @@
                 picArr:[],
                 sendImgArr:[],
                 //男士女士
-                sexy:'男士'
+                sexy:'男士',
+
+                cityList:[],
+
+                // region:'',//地址
+                province:'',//省
+                city:'',//市
+                county:'',//县
+                address:'',//地址用于显示
+                rentcontent:false, //租金包含项是否显示
+
+                ProvinceArr:[]
+            }
+        },
+        watch:{
+            rentcontentvalue:{
+                //注意：当观察的数据为对象或数组时，curVal和oldVal是相等的，因为这两个形参指向的是同一个数据对象
+                handler(curVal,oldVal){
+                    // console.log(curVal,oldVal);
+                    this.rentcontentvalue = curVal;
+                    if(this.rentcontentvalue && this.rentcontentvalue.length>0){
+                        var _this = this;
+                        _this.sendDataInfo.rentcontent = '';
+                        this.rentcontentvalue.map(function (item,index) {
+                            _this.sendDataInfo.rentcontent += item;
+                            if(index != _this.rentcontentvalue.length) _this.sendDataInfo.rentcontent += ',';
+                        })
+                        
+                    }
+                },
+                deep:true
             }
         },
         created(){
-            alert("uderid=="+this.GLOBAL.userid+',,openid='+this.GLOBAL.openid)
+            console.info("uderid=="+this.GLOBAL.userid+',,openid='+this.GLOBAL.openid)
         },
         mounted(){
-            // 获取租金包含项目
-            // this.getRentcontent();
+            this.getProvince();
+            this.getCity();
+            this.getCounty();
+            this.getRentcontent();
         },
         methods: {
+            checkon: function(){
+                // console.log(this.rentcontentvalue)
+            },
+
+            //picker组件的change事件，进行取值赋值
+            addressChange(picker, values){
+                //取值并赋值
+                if(values[0]!=undefined && values[1]!=undefined && values[2]!=undefined){
+                    var provinceName = values[0]["RegionName"];
+                    var cityName = values[1]["RegionName"];
+                    var countyName = values[2]["RegionName"];
+                    this.sendDataInfo.province = values[0]["Id"];
+                    this.sendDataInfo.city = values[1]["Id"];
+                    this.sendDataInfo.county = values[2]["Id"];
+                    this.address = provinceName + ',' + cityName + ',' + countyName;
+
+                }
+            },
+            // 获取省
+            getProvince(){
+                //请求区域数据
+                let provinceArr = [];
+                this.$http.get("/api/API.ashx?apicommand=getprovince&t="+Date.now()).then(function (data) {
+                    var areaData = eval("("+data.bodyText+")");
+                    areaData = areaData.filter(item => item.RegionName=='河北省')
+                    this.myAddressSlots[0].values = areaData;
+                }).then(function(){
+                    console.info('获取省份error')
+                })
+            },
+            // get市
+            getCity(){
+                var THIS = this;
+                //请求区域数据
+                this.$http.get("/api/API.ashx?apicommand=getcity&t="+Date.now()).then(function (data) {
+                    var areaData = eval("("+data.bodyText+")");
+                    areaData = areaData.filter(item => item.RegionName=='邯郸市')
+                    this.myAddressSlots[2].values = areaData;
+                }).then(function(){
+                    console.info('获取省份error')
+                })
+            },
+            
+            //get 区
+            getCounty(){
+                var THIS = this;
+                
+                //请求区域数据
+                this.$http.get("/api/API.ashx?apicommand=getcounty&t="+Date.now()).then(function (data) {
+                    var areaData = eval("("+data.bodyText+")");
+                    this.myAddressSlots[4].values = areaData;
+                }).then(function(){
+                    console.info('获取省份error')
+                })
+            },
+
             showPup(num) {
                 let n = num;
                 switch(n) {
@@ -473,8 +658,12 @@
                     case 7:
                         this.popLookTime = true; //看房时间
                         break;
+                    
                     case 8:
                         this.popPayType = true; //付款方式
+                        break;
+                    case 9:
+                        this.rentcontent = true; //租金包含项
                         break;
                     // case 10:
                     //     this.popAnswerTime = true;  //接听时段
@@ -482,8 +671,16 @@
                     case 11:
                         this.popPriceType = true;  //租金形式
                         break;
+                    case 12:
+                        this.popPlace = true;//地点
+                        this.popPlaceInit = true;
+                        break;
 
                 }
+            },
+            onValuesChangePlace(picker, values){
+                // console.log('地点',values);
+                // this.sendDataInfo.payment = values[0];
             },
             onValuesChangeDecorate(picker, values) {
                 // console.log(values,'装修 ');
@@ -491,7 +688,7 @@
             },
             onValuesChangeHouse(picker, values){
                 // console.log(values,'厅室');
-                this.sendDataInfo.housestructure = values[0]+values[1]+values[2];
+                this.sendDataInfo.housestructure = values[0]+values[1]+values[2]+values[3];
             },
             onValuesChangeToward(picker, values){
                 // console.log('朝向',values);
@@ -590,9 +787,11 @@
                 let sendData = {
                     command:'webuploadhouseimg',
                     img:this.sendImgArr,
-                    userid: this.userid
+                    userid: this.userid,
+                    houseid: this.houseId
                 };
                 sendData = JSON.parse(JSON.stringify(sendData));
+                console.info('sendData',sendData)
                 if(this.sendImgArr.length>0){
                     this.$http.post(uploadApi,{params:sendData},{headers:{'Content-Type':'application/json'}}).then(function (data) {
                         this.picVal = [];
@@ -686,21 +885,19 @@
 
             },
             getRentcontent(){
-                let sendData = {
-                    apicommand:'getrentcontent'
-                    },
-                    _this = this;
-                this.$http.get(apiUrl,{params:sendData}).then(function (data) {
+                let _this = this;
+                this.$http.get(apiUrl+'?apicommand=getrentcontent&t='+Date.now()).then(function (data) {
                     if(data.data.content && data.data.content.length>0){
                         let list = JSON.parse(JSON.stringify(data.data.content)),
                             json = {};
-                            console.info('list', list)
-                        list.map(function (item,idx) {
-                            if(item.rentcontent) _this.priceContainsList.push(item.rentcontent)
-                        });
-
-                        json.values = _this.priceContainsList;
-                        _this.priceContainsSlots.push(json);
+                            // console.info('list', list)
+                            list.map(function (item) {
+                                _this.priceContainsList.push({
+                                    label:item.rentcontent,
+                                    value:item.rentcontent
+                                })
+                            });
+                            // console.info('_this.priceContainsList', _this.priceContainsList)
                     }
                 })
             },

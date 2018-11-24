@@ -1,0 +1,225 @@
+[
+    {
+      "Id": "110000",
+      "RegionName": "北京市",
+      "children": [
+        {
+          "Id": "110100",
+          "RegionName": "北京市",
+          "children": [
+            {
+              "Id": "110101",
+              "RegionName": "东城区"
+            },
+            {
+              "Id": "110102",
+              "RegionName": "西城区"
+            },
+            {
+              "Id": "110105",
+              "RegionName": "朝阳区"
+            },
+            {
+              "Id": "110106",
+              "RegionName": "丰台区"
+            },
+            {
+              "Id": "110107",
+              "RegionName": "石景山区"
+            },
+            {
+              "Id": "110108",
+              "RegionName": "海淀区"
+            },
+            {
+              "Id": "110109",
+              "RegionName": "门头沟区"
+            },
+            {
+              "Id": "110111",
+              "RegionName": "房山区"
+            },
+            {
+              "Id": "110112",
+              "RegionName": "通州区"
+            },
+            {
+              "Id": "110113",
+              "RegionName": "顺义区"
+            },
+            {
+              "Id": "110114",
+              "RegionName": "昌平区"
+            },
+            {
+              "Id": "110115",
+              "RegionName": "大兴区"
+            },
+            {
+              "Id": "110116",
+              "RegionName": "怀柔区"
+            },
+            {
+              "Id": "110117",
+              "RegionName": "平谷区"
+            },
+            {
+              "Id": "110128",
+              "RegionName": "密云县"
+            },
+            {
+              "Id": "110129",
+              "RegionName": "延庆县"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "120000",
+      "RegionName": "天津市",
+      "children": [
+        {
+          "Id": "120100",
+          "RegionName": "天津市",
+          "children": [
+            {
+              "Id": "120101",
+              "RegionName": "和平区"
+            },
+            {
+              "Id": "120102",
+              "RegionName": "河东区"
+            },
+            {
+              "Id": "120103",
+              "RegionName": "河西区"
+            },
+            {
+              "Id": "120104",
+              "RegionName": "南开区"
+            },
+            {
+              "Id": "120105",
+              "RegionName": "河北区"
+            },
+            {
+              "Id": "120106",
+              "RegionName": "红桥区"
+            },
+            {
+              "Id": "120110",
+              "RegionName": "东丽区"
+            },
+            {
+              "Id": "120111",
+              "RegionName": "西青区"
+            },
+            {
+              "Id": "120112",
+              "RegionName": "津南区"
+            },
+            {
+              "Id": "120113",
+              "RegionName": "北辰区"
+            },
+            {
+              "Id": "120114",
+              "RegionName": "武清区"
+            },
+            {
+              "Id": "120115",
+              "RegionName": "宝坻区"
+            },
+            {
+              "Id": "120116",
+              "RegionName": "滨海新区"
+            },
+            {
+              "Id": "120121",
+              "RegionName": "宁河县"
+            },
+            {
+              "Id": "120123",
+              "RegionName": "静海县"
+            },
+            {
+              "Id": "120125",
+              "RegionName": "蓟县"
+            }
+          ]
+        },
+        {
+            "Id": "1201002",
+            "RegionName": "天津市11",
+            "children": [
+              {
+                "Id": "120101",
+                "RegionName": "和平区"
+              },
+              {
+                "Id": "120102",
+                "RegionName": "河东区"
+              },
+              {
+                "Id": "120103",
+                "RegionName": "河西区"
+              },
+              {
+                "Id": "120104",
+                "RegionName": "南开区"
+              },
+              {
+                "Id": "120105",
+                "RegionName": "河北区"
+              },
+              {
+                "Id": "120106",
+                "RegionName": "红桥区"
+              },
+              {
+                "Id": "120110",
+                "RegionName": "东丽区"
+              },
+              {
+                "Id": "120111",
+                "RegionName": "西青区"
+              },
+              {
+                "Id": "120112",
+                "RegionName": "津南区"
+              },
+              {
+                "Id": "120113",
+                "RegionName": "北辰区"
+              },
+              {
+                "Id": "120114",
+                "RegionName": "武清区"
+              },
+              {
+                "Id": "120115",
+                "RegionName": "宝坻区"
+              },
+              {
+                "Id": "120116",
+                "RegionName": "滨海新区"
+              },
+              {
+                "Id": "120121",
+                "RegionName": "宁河县"
+              },
+              {
+                "Id": "120123",
+                "RegionName": "静海县"
+              },
+              {
+                "Id": "120125",
+                "RegionName": "蓟县"
+              }
+            ]
+          }
+      ]
+    }
+  ]
+  
