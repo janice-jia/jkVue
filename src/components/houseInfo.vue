@@ -21,7 +21,7 @@
     <div class="jk-house">
         <div class="jk-house-name">
             <!--整租·新潮嘉园二区1室1厅1卫-->
-            {{houseInfoAll.renttype+'·'}}{{houseInfoAll.community}}{{houseInfoAll.housestructure}}
+            {{houseInfoAll.renttype+' · '}}{{houseInfoAll.community}}{{houseInfoAll.housestructure}}
         </div>
         <div class="jk-house-price">
             <!--3000元/每月-->

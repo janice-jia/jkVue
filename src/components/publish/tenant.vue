@@ -50,13 +50,13 @@
             <div class="jk-group">
                 <div class="jk-group-tit">地区选择：</div>
                 <div class="jk-group-inputInfo" @click="showPup(12)">
-                    <input type="text"  class="jk-group-input" v-model="address"  name="place" placeholder="请选择内容"/>
+                    <input type="text"  class="jk-group-input" v-model="address" readonly name="place" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">所在POI：</div>
                 <div class="jk-group-inputInfo" @click="showPup(13)">
-                    <input type="text"  class="jk-group-input" v-model="sendDataInfo.POI" name="place" placeholder="请选择内容"/>
+                    <input type="text"  class="jk-group-input" readonly v-model="sendDataInfo.POI" name="place" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
@@ -80,13 +80,13 @@
             <div class="jk-group">
                 <div class="jk-group-tit">朝向：</div>
                 <div class="jk-group-inputInfo" @click="showPup(3)">
-                    <input type="input" class="jk-group-select"  name="toward" v-model="sendDataInfo.direction" placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select" readonly name="toward" v-model="sendDataInfo.direction" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">楼层：</div>
                 <div class="jk-group-inputInfo" @click="showPup(4)">
-                    <input type="input" class="jk-group-select"  name="floor" v-model="sendDataInfo.floor" placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select" readonly name="floor" v-model="sendDataInfo.floor" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
@@ -122,19 +122,19 @@
             <div class="jk-group">
                 <div class="jk-group-tit">入住时间：</div>
                 <div class="jk-group-inputInfo" @click="showPup(5)">
-                    <input type="input" class="jk-group-select"  name="checkInTime" v-model="sendDataInfo.checkin" placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select" readonly  name="checkInTime" v-model="sendDataInfo.checkin" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group" v-show="rentType==1">
                 <div class="jk-group-tit">易住人数：</div>
                 <div class="jk-group-inputInfo" @click="showPup(6)">
-                    <input type="input" class="jk-group-select"  name="peopleNum" v-model="sendDataInfo.occupancynum" placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select" readonly name="peopleNum" v-model="sendDataInfo.occupancynum" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">看房时间：</div>
                 <div class="jk-group-inputInfo" @click="showPup(7)">
-                    <input type="input" class="jk-group-select"  name="lookTime" v-model="sendDataInfo.openhomedate" placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select" readonly name="lookTime" v-model="sendDataInfo.openhomedate" placeholder="请选择内容"/>
                 </div>
             </div>
 
@@ -143,7 +143,7 @@
             <div class="jk-group">
                 <div class="jk-group-tit">租金形式：</div>
                 <div class="jk-group-inputInfo" @click="showPup(11)">
-                    <input class="jk-group-input" type="text" name="payType" v-model="sendDataInfo.rentunit" placeholder="请选择内容"/>
+                    <input class="jk-group-input" type="text"  readonly name="payType" v-model="sendDataInfo.rentunit" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
@@ -156,13 +156,13 @@
             <div class="jk-group">
                 <div class="jk-group-tit">付款方式：</div>
                 <div class="jk-group-inputInfo" @click="showPup(8)">
-                    <input class="jk-group-input" type="text" name="payType" v-model="sendDataInfo.payment" placeholder="请选择内容"/>
+                    <input class="jk-group-input" type="text" readonly name="payType" v-model="sendDataInfo.payment" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group"  v-show="rentType==1">
                 <div class="jk-group-tit">租金包含费用<span>（物业费等）</span>:</div>
                 <div class="jk-group-inputInfo" @click="showPup(9)">
-                    <input class="jk-group-input" type="text" name="priceContains" v-model="sendDataInfo.rentcontent" placeholder="请选择内容"/>
+                    <input class="jk-group-input" readonly type="text" name="priceContains" v-model="sendDataInfo.rentcontent" placeholder="请选择内容"/>
                 </div>
             </div>
 
@@ -185,7 +185,7 @@
             <div class="jk-group">
                 <div class="jk-group-tit">联系电话：</div>
                 <div class="jk-group-inputInfo">
-                    <input class="jk-group-input" type="number" placeholder="请填写手机号码"
+                    <input class="jk-group-input" type="text" placeholder="请填写手机号码"
                            v-model="sendDataInfo.ownermobile"/>
                 </div>
             </div>

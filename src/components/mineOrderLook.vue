@@ -80,6 +80,7 @@
 <script>	
 	
 	import indexJs from '../js/index';
+	import {Toast} from 'mint-ui';
 	
 	export default{
 		name:'mineOrderLook',
@@ -155,19 +156,29 @@
 				}else{
 					this.lookDaySelected=this.transferLookDay(this.lookDaySelected);
 					this.transferSex();
-					this.$http.post('/api/API.ashx',{
-							apicommand:'submitappointment',
-							houseid:this.houseId,
-							userid:this.userId,
-							appointmentdate:this.lookDaySelected,
-							realname:this.realname,
-							sex:this.sex,
-							mobile:this.mobile
-
-					}).then(function(data){
+					var getStr = '';
+					 	getStr += '/api/API.ashx?apicommand=submitappointment';
+						getStr += '&houseid='+this.houseId;
+						getStr += '&userid='+this.userId;
+						getStr += '&appointmentdate='+this.lookDaySelected;
+						getStr += '&realname='+this.realname;
+						getStr += '&sex='+this.sex;
+						getStr += '&mobile='+this.mobile;
+					this.$http.get(getStr).then(function(data){
 						if(data.body.result=='Y'){
 							console.info('Success!');
+							Toast({
+                                message: '约看成功',
+                                position: 'middle',
+                                duration: 2000
+                            });
 							this.$router.push({name:'mineOrderInfo',params:{houseid:this.houseId}});
+						}else{
+							Toast({
+                                message: '约看失败',
+                                position: 'middle',
+                                duration: 2000
+                            });
 						}
 					})
 				}
