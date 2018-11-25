@@ -415,7 +415,7 @@ export default {
         indexJs.getSelectData(priceType, 'priceType','tagItem', 'priceTypeVal','shover', true, this.$route.query.priceTypeVal ? this.$route.query.priceTypeVal : '不限');
 
         var rentType = ["不限","整租","合租","短租"];
-        console.info('this.renttype', this.renttype);
+        // console.info('this.renttype', this.renttype);
         indexJs.getSelectData(rentType, 'rentType','jk-ca-tag', 'rentTypeVal','tag-hover', true, this.renttype ? this.renttype : '不限');
 
         var rentHoseType = ["不限","1室","2室","3室","4+室"];
@@ -450,9 +450,12 @@ export default {
                 var row1Default = '';
                 for(var i=0; i < this.areaData.length; i++){
                     if(this.areaData[i].id == this.county){
-                        row1Default = this.areaData[i].name;
+                        row1Default = this.areaData[i].id;
                     }
                 }
+                // console.info('THIS.$route.query.row2Val', THIS.$route.query.row2Val);
+                if(THIS.$route.query.row2Val) this.POI = THIS.$route.query.row2Val;
+                // console.info('this.POI', this.POI);
                 indexJs.showTab('area', this.areaData, row1Default, this.POI);
 
                 //设置区域搜索显示

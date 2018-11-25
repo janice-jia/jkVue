@@ -13,9 +13,9 @@
         <!--<div class="swiper-pagination-top"></div>
     </div>-->
     <!-- 图片轮播 -->
-        <mt-swipe :auto="4000" class="swipe" style="height:5.62rem">
+        <mt-swipe :auto="0" class="swipe" style="height:5.62rem;width:7.5rem;">
             <mt-swipe-item v-for="(houseImg,index) in houseImgList" :key="index">
-                <img :src="imgWenSiteUrl+houseImg.imgurl" alt="">
+                <img :src="imgWenSiteUrl+houseImg.imgurl" alt="" style="height:5.62rem;width:7.5rem;">
             </mt-swipe-item>
         </mt-swipe>
     <div class="jk-house">

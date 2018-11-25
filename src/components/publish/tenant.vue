@@ -2,7 +2,7 @@
     <div class="jk-rent">
         <div>
             <!-- 图片轮播 -->
-            <mt-swipe :auto="4000" class="swipe"  v-if="picArr.length>0">
+            <mt-swipe :auto="0" class="swipe"  v-if="picArr.length>0">
                 <mt-swipe-item v-for="(item, index) in picArr" :key="index">
                     <img :src="imgWenSiteUrl+item.imgurl" alt="" class="img-responsive">
                 </mt-swipe-item>
@@ -53,10 +53,10 @@
                     <input type="text"  class="jk-group-input" v-model="address"  name="place" placeholder="请选择内容"/>
                 </div>
             </div>
-            <div class="">
+            <div class="jk-group">
                 <div class="jk-group-tit">所在POI：</div>
-                <div class="jk-group-inputInfo" @click="showPup(12)">
-                    <input type="text"  class="jk-group-input"  name="place" placeholder="请选择内容"/>
+                <div class="jk-group-inputInfo" @click="showPup(13)">
+                    <input type="text"  class="jk-group-input" v-model="sendDataInfo.POI" name="place" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
@@ -214,7 +214,7 @@
         </mt-popup>
 
         <!--地点的picker-->
-        <mt-popup v-model="popPlace" v-if="threeListAddress" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
+        <mt-popup v-model="popPlace" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
             <mt-picker :slots="myAddressSlots" @change="addressChange"  :visibleItemCount="5" valueKey="RegionName" style="width: 7.5rem;" showToolbar>
                 <div class="clearfix picker-toolbar-title">
                     <p class="usi-btn-cancel left" @click="popPlace = !popPlace">取消</p>
@@ -288,7 +288,25 @@
                 </div>
             </mt-picker>
         </mt-popup>
+        <!-- Poi -->
+        <div v-if="PoiList && PoiList.length>0">
+         <mt-popup v-model="popPoi" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
+            <div class="clearfix picker-toolbar-title">
+                <p class="usi-btn-cancel left" @click="popPoi = !popPoi">取消</p>
+                <p class="usi-btn-sure right" @click="popPoi = !popPoi">确定</p>
+            </div>
+            <div style="width: 7.5rem;height:6rem; overflow:auto;">
+                <mt-checklist 
+                    v-model="PoiVal" 
+                    :options="PoiList"
+                >
+                </mt-checklist>
+            </div>
+        </mt-popup>
+        </div>
+
         <!-- 租金包含项目 -->
+        <div>
          <mt-popup v-model="rentcontent" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
             <div class="clearfix picker-toolbar-title">
                 <p class="usi-btn-cancel left" @click="rentcontent = !rentcontent">取消</p>
@@ -301,16 +319,10 @@
                     @change="checkon($event)"
                 >
                 </mt-checklist>
-
-                <!-- <ul class="tag-parent" style="overflow:hidden;padding:0.5rem;">
-                    <li class="jk-tag-2" style="font-weight:normal;font-size:14px;color:#999999;line-height:0.5rem;" v-for="(item,index) in priceContainsList" :key="index">
-                        <input type="checkbox" @click="changeRentcontent" name="rentcontent" class="mini-checkbox" :v-bind="item.rentcontent">
-                        {{item.rentcontent}}
-                    </li>
-                </ul> -->
-                
             </div>
         </mt-popup>
+        </div>
+
         <!--接听的picker-->
 <!--        <mt-popup v-model="popAnswerTime" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">-->
 <!--            <mt-picker :slots="answerTimeSlots" @change="onValuesChangeAnswer"  style="width: 7.5rem;" showToolbar>-->
@@ -341,7 +353,7 @@
 <script>
     import Vue from 'vue'
     import { Picker,Popup,DatetimePicker,MessageBox , Swipe, SwipeItem,Toast,Checklist} from 'mint-ui';
-    import threeLevelAddress from './address.json'
+    // import threeLevelAddress from './address.json'
     Vue.component(Picker.name, Picker,Popup.name, Popup,
         DatetimePicker.name, DatetimePicker,Swipe.name, Swipe,SwipeItem.name, SwipeItem,Checklist);
 
@@ -544,8 +556,9 @@
                 county:'',//县
                 address:'',//地址用于显示
                 rentcontent:false, //租金包含项是否显示
-
-                ProvinceArr:[]
+                popPoi: false,
+                PoiList: [], //poilist
+                PoiVal:[], // poi存储数据
             }
         },
         watch:{
@@ -559,7 +572,25 @@
                         _this.sendDataInfo.rentcontent = '';
                         this.rentcontentvalue.map(function (item,index) {
                             _this.sendDataInfo.rentcontent += item;
-                            if(index != _this.rentcontentvalue.length) _this.sendDataInfo.rentcontent += ',';
+                            if(index < (_this.rentcontentvalue.length-1)) _this.sendDataInfo.rentcontent += ',';
+                        })
+                        
+                    }
+                },
+                deep:true
+            },
+            PoiVal:{
+                //注意：当观察的数据为对象或数组时，curVal和oldVal是相等的，因为这两个形参指向的是同一个数据对象
+                handler(curVal,oldVal){
+                    // console.log(curVal,oldVal);
+                    this.PoiVal = curVal;
+                    if(this.PoiVal && this.PoiVal.length>0){
+                        var _this = this;
+                        _this.sendDataInfo.POI = '';
+                        this.PoiVal.map(function (item,index) {
+                            _this.sendDataInfo.POI += item;
+                            console.info('======',index+'======'+_this.PoiVal.length)
+                            if(index < (_this.PoiVal.length-1)) _this.sendDataInfo.POI += ',';
                         })
                         
                     }
@@ -593,12 +624,18 @@
                     this.sendDataInfo.county = values[2]["Id"];
                     this.address = provinceName + ',' + cityName + ',' + countyName;
 
+
+                    // 当地址改变时修清空上次的poilist以及所选择的值
+                    this.PoiList = [];
+                    this.PoiVal = [];
+                    this.sendDataInfo.POI = '';
+                    
+                    this.getPoi(this.sendDataInfo.county);
                 }
             },
             // 获取省
             getProvince(){
                 //请求区域数据
-                let provinceArr = [];
                 this.$http.get("/api/API.ashx?apicommand=getprovince&t="+Date.now()).then(function (data) {
                     var areaData = eval("("+data.bodyText+")");
                     areaData = areaData.filter(item => item.RegionName=='河北省')
@@ -632,7 +669,29 @@
                     console.info('获取省份error')
                 })
             },
-
+            //getpoi
+            getPoi(countyId){
+                if(countyId){
+                    var THIS = this;
+                    //请求区域数据
+                    this.$http.get("/api/API.ashx?apicommand=getpoi&parentid="+countyId+"&t"+Date.now()).then(function (data) {
+                        var areaData = eval("("+data.bodyText+")");
+                        if(data.data && data.data.length>0){
+                        let json = {};
+                            areaData.map(function (item) {
+                                THIS.PoiList.push({
+                                    label:item.RegionName,
+                                    value:item.RegionName
+                                })
+                            });
+                        }
+                        console.info('this.PoiList', THIS.PoiList);
+                        return false;
+                    }).then(function(){
+                        console.info('获取省份error')
+                    })
+                }
+            },
             showPup(num) {
                 let n = num;
                 switch(n) {
@@ -674,6 +733,9 @@
                     case 12:
                         this.popPlace = true;//地点
                         this.popPlaceInit = true;
+                        break;
+                    case 13:
+                        this.popPoi = true;//poi
                         break;
 
                 }
@@ -907,7 +969,7 @@
 
 <style scoped>
     .picker-toolbar-title{
-       padding: .3rem;
+       padding: .4rem;
     }
     .usi-btn-cancel, .usi-btn-sure{
         font-size: 14px;
@@ -978,6 +1040,4 @@
         width: 100%;
         height: 5.62rem;
     }
-
-
 </style>

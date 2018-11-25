@@ -33,10 +33,10 @@
                         <router-link class="jk-tag-Link" v-show="!isauth" :to="{name: 'mineAuthenticationEdit'}"> 
                             立即认证
                         </router-link>
-                        <a href="javacript:;" class="jk-tag-Link" @click="publish"> 发布</a>
+                        <a href="javacript:;" class="jk-tag-Link" @click="publish(item)"> 发布</a>
                     </div>
                     <div class="jk-cont-item-tag oneLine" v-show="publishType == 2">
-                        <router-link class="houseLink" :to="{name: 'houseInfo', params: {houseid: item.houseid}}">
+                        <router-link class="jk-tag-Link" :to="{name: 'houseInfo', params: {houseid: item.houseid}}">
                             查看
                         </router-link>
                     </div>
@@ -64,7 +64,6 @@
         created () {
             this.getList();
             this.isauthFn();
-            
         },
         methods: {
             isauthFn(){
@@ -84,7 +83,7 @@
                 })
             },
             //发布
-            publish(){
+            publish(info){
                 if(!this.isauth){
                     Toast({
                         message: '您还没有认证，请认证后发布',
@@ -92,7 +91,22 @@
                         duration: 2000
                     });
                 }else{
-
+                    this.$http.get('/api/API.ashx?apicommand=publishhouse&houseid='+info.houseid).then(function (data) {
+                        if(data.body.result == "Y" || data.status == 200){
+                            Toast({
+                                message: '发布成功',
+                                position: 'middle',
+                                duration: 2000
+                            });
+                            this.getList();
+                        }else{
+                            Toast({
+                                message: '发布失败',
+                                position: 'middle',
+                                duration: 2000
+                            });
+                        }
+                    })
                 }
             }
         }

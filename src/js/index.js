@@ -258,7 +258,7 @@ export default {
         }else if(type == 'area'){
             $(tabItemEle[1]).addClass('shover');
              //渲染区域dom及click事件
-             THIS.addRow(areaData, 2, 1, row1Default, row2Default);
+             THIS.addRow(areaData, 2, 1, row1Default, row2Default, type);
 
         }else if(type == 'subWay'){
             $(tabItemEle[2]).addClass('shover');
@@ -278,7 +278,16 @@ export default {
         }
     },
 
-    addRow(rowData, addNum,rowNum, row1Default, row2Default){
+    /**
+     * 
+     * @param {*} rowData 数据
+     * @param {*} addNum  需要添加几列
+     * @param {*} rowNum 当前第几列
+     * @param {*} row1Default  第一列默认值
+     * @param {*} row2Default  第二列默认值
+     * @param {*} type  类型
+     */
+    addRow(rowData, addNum,rowNum, row1Default, row2Default,type){
         var THIS = this;
         var bg = 'screenBg';
         if(addNum != 1){
@@ -299,20 +308,43 @@ export default {
             for(var i=0; i<rowData.length; i++){
                 tagList.push(rowData[i].name);
                 var dataselectval = '';
-                if(rowData[i].id) dataselectval = ' data-select-val="'+rowData[i].id+'"';
+                if(rowData[i].id){
+                    dataselectval = ' data-select-val="'+rowData[i].id+'"';
+                } 
 
-                if(rowData[i].name == row1Default) 
-                    jkScreenItem += '<li class="tagItem shover" data-id="'+i+'" '+dataselectval+'>'+rowData[i].name+'</li>';
-                else
-                    jkScreenItem += '<li class="tagItem" data-id="'+i+'" '+dataselectval+'>'+rowData[i].name+'</li>';
+                //回显第二列
+                if(type && type == 'area'){
+                    if(rowData[i].id == row1Default){
+                        jkScreenItem += '<li class="tagItem shover" data-id="'+i+'" '+dataselectval+'>'+rowData[i].name+'</li>';
+                        // if(rowData && rowData[i].child)
+                        //     THIS.addRow(rowData[i].child, 1, 2, undefined, row2Default);
+                    }  else{
+                        jkScreenItem += '<li class="tagItem" data-id="'+i+'" '+dataselectval+'>'+rowData[i].name+'</li>';
+                    }
+                    
+                }else{
+                    if(rowData[i].name == row1Default){
+                        jkScreenItem += '<li class="tagItem shover" data-id="'+i+'" '+dataselectval+'>'+rowData[i].name+'</li>';
+                    }  else{
+                        jkScreenItem += '<li class="tagItem" data-id="'+i+'" '+dataselectval+'>'+rowData[i].name+'</li>';
+                    }
+                }
+                    
             }
+            
         }
         
         // console.info('tagList', tagList);
         jkScreenItem +='</ul>';
         if(row1Default || row2Default){
-            var defauleVal = row1Default || row2Default;
-            jkScreenItem +='<input type="hidden" name="row'+rowNum+'Val" id="row'+rowNum+'Val" value="'+defauleVal+'"/>';
+            var defauleVal = '';
+            if(rowNum == 1) {
+                defauleVal = row1Default;
+                jkScreenItem +='<input type="hidden" name="row'+rowNum+'Val" id="row'+rowNum+'Val" value="'+defauleVal+'"/>';
+            }else if(rowNum == 2){
+                defauleVal = row2Default;
+                jkScreenItem +='<input type="hidden" name="row'+rowNum+'Val" id="row'+rowNum+'Val" value="'+defauleVal+'"/>';
+            }
         }else{
             jkScreenItem +='<input type="hidden" name="row'+rowNum+'Val" id="row'+rowNum+'Val"/>';
         }
@@ -329,8 +361,20 @@ export default {
 
             //根据当前选中tag匹配是否已选
             var val = $('#row'+rowNum+'Val').val();
-            var s = tagList.join(",").indexOf(val);
+            if(!isNaN(val)){
+                for(var i=0; i<rowData.length; i++){
+                    if(val == rowData[i].id){
+                        val = rowData[i].name;
+                    }
+                }
+            }
 
+            var s = 0;
+            if(tagList && val){
+                for(var ti = 0; ti<tagList.length; ti++){
+                    if(val == tagList[ti]) s = ti;
+                }
+            }
             if(s >= 0 && rowData[s].child && rowData[s].child.length>0){
                 THIS.addRow(rowData[s].child, 1, 2, undefined, row2Default);
             }
