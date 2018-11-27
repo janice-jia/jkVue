@@ -90,7 +90,7 @@ export default new Router({
       component: mineAdvice
     },
      {
-      path: '/mine/adviceAdd',
+      path: '/mine/adviceAdd/:type',
       name:'mineAdviceAdd',
       component: mineAdviceAdd
     },

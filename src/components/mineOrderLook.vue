@@ -123,7 +123,7 @@
 			})
 			
 			//如果没有这句代码，select中初始化会是空白的，默认选中就无法实现
-      this.lookDaySelected = this.lookDayList[0].id;
+      		this.lookDaySelected = this.lookDayList[0].id;
 		},
 		mounted(){
 			
@@ -145,7 +145,7 @@
 			transferSex(){
 				if(this.sex==false){
 					this.sex='女';
-				}else if(this,sex==true){
+				}else if(this.sex==true){
 					this.sex='男';
 				}
 			},

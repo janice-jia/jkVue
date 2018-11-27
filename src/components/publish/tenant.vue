@@ -38,13 +38,13 @@
             <div class="jk-group">
                 <div class="jk-group-tit">小区：</div>
                 <div class="jk-group-inputInfo">
-                    <input class="jk-group-input" type="text" placeholder="请填写信息" v-model="sendDataInfo.community"/>
+                    <input class="jk-group-input" type="text" placeholder="例:曙光小区" v-model="sendDataInfo.community"/>
                 </div>
             </div>
             <div class="jk-group" v-show="rentType==1">
                 <div class="jk-group-tit">门牌号：</div>
                 <div class="jk-group-inputInfo">
-                    <input class="jk-group-input" type="text" v-model="sendDataInfo.housenumber" name="roomNum" placeholder="请填写信息"/>
+                    <input class="jk-group-input" type="text" v-model="sendDataInfo.housenumber" name="roomNum" placeholder="例:1-2-203"/>
                 </div>
             </div>
             <div class="jk-group">
@@ -68,13 +68,13 @@
             <div class="jk-group">
                 <div class="jk-group-tit">装修：</div>
                 <div class="jk-group-inputInfo" @click="showPup(1)">
-                    <input type="input" class="jk-group-select" v-model="sendDataInfo.decorated"  name="decorate"  placeholder="请选择内容"/>
+                    <input type="input" class="jk-group-select" v-model="sendDataInfo.decorated" readonly name="decorate"  placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
                 <div class="jk-group-tit">厅室：</div>
                 <div class="jk-group-inputInfo" @click="showPup(2)">
-                    <input type="text" class="jk-group-input" name="house" v-model="sendDataInfo.housestructure" placeholder="请选择内容"/>
+                    <input type="text" class="jk-group-input" name="house" readonly v-model="sendDataInfo.housestructure" placeholder="请选择内容"/>
                 </div>
             </div>
             <div class="jk-group">
@@ -126,7 +126,7 @@
                 </div>
             </div>
             <div class="jk-group" v-show="rentType==1">
-                <div class="jk-group-tit">易住人数：</div>
+                <div class="jk-group-tit">宜住人数：</div>
                 <div class="jk-group-inputInfo" @click="showPup(6)">
                     <input type="input" class="jk-group-select" readonly name="peopleNum" v-model="sendDataInfo.occupancynum" placeholder="请选择内容"/>
                 </div>
@@ -425,7 +425,7 @@
                 //入住时间
                 pickerVisible:true,
                 startDate: new Date(),
-                //易住人数
+                //宜住人数
                 peopleNumSlots: [{
                     values: ['','1人', '2人','3人','4人'],
 
@@ -914,7 +914,7 @@
                 if(this.rentType == 2){
                     delete this.sendDataInfo.housenumber;//门牌号
                     delete this.sendDataInfo.carport;  //车位
-                    delete this.sendDataInfo.occupancynum; //易住人数
+                    delete this.sendDataInfo.occupancynum; //宜住人数
                     delete this.sendDataInfo.rentcontent; //租金包含项目
                 }
 
@@ -968,6 +968,9 @@
 </script>
 
 <style scoped>
+    .picker-items{
+        width: 100%;
+    }
     .picker-toolbar-title{
        padding: .4rem;
     }

@@ -2,9 +2,9 @@
 const  imgWenSiteUrl = 'http://admin.9kuaiz.com';
 let userid=getCookie('userid');
 const openid=getCookie('openid');
-const telNumber = '123232323'
+const telNumber = '13911250214'
 // if(!userid) userid = 15
-if(!userid) userid = 12
+// if(!userid) userid = 12
 
 function getCookie(cookie_name){
     // 定义一个函数，用来读取特定的cookie值。

@@ -254,7 +254,7 @@
                 v-for="(item,index) in houseRecommandAll" 
                 :key="index">
                     <!--<a class="houseLink" href=""></a>-->
-                    <router-link class="houseLink" :to="{name:'houseInfo',params:{houseid:item.houseid}}" ></router-link>
+                    <router-link class="houseLink"  @click.native="refresh" :to="{name:'houseInfo', params:{houseid:item.houseid}}" ></router-link>
                     <div class="jk-recommend-img">
                     	<!--<img src="../assets/recommend.jpg" alt="房源推荐" />-->
                     	<img :src="imgWenSiteUrl+item.thumbnailurl" alt="房源推荐" />
@@ -290,29 +290,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- 房源推荐 item end -->
-                <!-- 房源推荐 item start -->
-                <!-- <div class="jk-recommend-item swiper-slide">
-                    <a class="houseLink" href=""></a>
-                    <div class="jk-recommend-img"><img src="../assets/recommend.jpg" alt="房源推荐" /></div>
-                    <div class="jk-recommend-con">
-                        <div class="jk-recommend-conTit">新悦家园4居室-北卧</div>
-                        <div class="jk-recommend-conDesc">
-                            <span>4室1厅</span>
-                            <span>14.9m³</span>
-                        </div>
-                        <div class="jk-recommend-conPrice">1860元/月</div>
-                        <div class="jk-recommend-tag tag-parent">
-                            <div class="jk-tag-2 ">
-                                <p class="jk-ca-tag">离地铁近</p>
-                            </div>
-                            <div class="jk-tag-2">
-                                <p class="jk-ca-tag">首次出租</p>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div> -->
                 <!-- 房源推荐 item end -->
             </div>
         </div>
@@ -476,7 +453,7 @@
 	            }
             })
 
-		},
+        },
 		mounted(){
 			//顶部轮播图
 			indexJs.showHouseInfoTopSwiper();
@@ -484,6 +461,9 @@
 			indexJs.showHouseInfoLeftSwiper();
 		},
 		methods:{
+            refresh:function(){
+    　　　　　    this.$router.go(0);  
+    　　　　 },
 			//拨打电话
 			call(){
 				$("#callBottom").show();
