@@ -365,6 +365,7 @@
         name: "tenant",
         data(){
             return {
+                maxsize:204800, //200kb
                 rentType:this.$route.params.renttype,
                 imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
                 showToolbar:true,
@@ -804,6 +805,7 @@
 
             //选择图片
             selectFile(e) {
+                
                 //先清空在push
                 this.sendImgArr = [];
                 //获取图片
@@ -811,7 +813,12 @@
                     _this = this;
                 if (!files.length){
                     return false;
-                }else if(files.length > 10){
+                }else if(files.length > 9){
+                    Toast({
+                        message: '最多同时只可上传9张图片',
+                        position: 'middle',
+                        duration: 2000
+                    });
                     return false;
                 }
 
@@ -827,16 +834,106 @@
                             let img = new Image();
                             img.src = result;
 
-                            _this.sendImgArr.push(this.result);
-                            //判断到循环结束再开始上传
-                            if(i == files.length-1){
-                                _this.uploadImg();
+                            console.info('图片大小图片大小',result.length);
+                            if (result.length <= this.maxsize) {
+                                _this.sendImgArr.push(this.result);
+                            }
+                            // 图片加载完毕之后进行压缩，然后上传
+                            if (img.complete) {
+                                callback();
+                            } else {
+                                img.onload = callback;
                             }
 
+                            function callback() {
+                                var data = _this.compress(img);
+                                    _this.sendImgArr.push(data);
+                                // console.info('datadatadatadatadata',data)
+
+                                //判断到循环结束再开始上传
+                                if(_this.sendImgArr.length == files.length){
+                                    console.info('files.length', files.length);
+                                    console.info('_this.sendImgArr', _this.sendImgArr.length);
+                                    _this.uploadImg();
+                                }
+                            }
+                            
                         }
                     }
                 }
 
+            },
+
+            // 图片压缩
+            compress(img) {
+
+                Toast({
+                    message: '正在上传，请稍等',
+                    position: 'middle',
+                    duration: 2000
+                });
+
+                //    用于压缩图片的canvas
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext('2d');
+                //    瓦片canvas
+                var tCanvas = document.createElement("canvas");
+                var tctx = tCanvas.getContext("2d");
+                
+                var initSize = img.src.length;
+                var width = img.width;
+                var height = img.height;
+
+                //如果图片大于四百万像素，计算压缩比并将大小压至400万以下
+                var ratio;
+                if ((ratio = width * height / 4000000)>1) {
+                    ratio = Math.sqrt(ratio);
+                    width /= ratio;
+                    height /= ratio;
+                }else {
+                    ratio = 1;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                //        铺底色
+                ctx.fillStyle = "#fff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                //如果图片像素大于100万则使用瓦片绘制
+                var count;
+                if ((count = width * height / 1000000) > 1) {
+                    count = ~~(Math.sqrt(count)+1); //计算要分成多少块瓦片
+
+                    //            计算每块瓦片的宽和高
+                    var nw = ~~(width / count);
+                    var nh = ~~(height / count);
+
+                    tCanvas.width = nw;
+                    tCanvas.height = nh;
+
+                    for (var i = 0; i < count; i++) {
+                        for (var j = 0; j < count; j++) {
+                            tctx.drawImage(img, i * nw * ratio, j * nh * ratio, nw * ratio, nh * ratio, 0, 0, nw, nh);
+
+                            ctx.drawImage(tCanvas, i * nw, j * nh, nw, nh);
+                        }
+                    }
+                } else {
+                    ctx.drawImage(img, 0, 0, width, height);
+                }
+
+                //进行最小压缩
+                var ndata = canvas.toDataURL('image/jpeg', 0.1);
+
+                console.log('压缩前：' + initSize);
+                console.log('压缩后：' + ndata.length);
+                console.log('压缩率：' + ~~(100 * (initSize - ndata.length) / initSize) + "%");
+
+                tCanvas.width = tCanvas.height = canvas.width = canvas.height = 0;
+
+                return ndata;
             },
 
             //上传图片、预览图片
@@ -856,12 +953,21 @@
                 console.info('sendData',sendData)
                 if(this.sendImgArr.length>0){
                     this.$http.post(uploadApi,{params:sendData},{headers:{'Content-Type':'application/json'}}).then(function (data) {
-                        this.picVal = [];
-                        let resData = data.data;
-                        this.houseId = resData.houseid;
-                        if(resData.imglist && resData.imglist.length>0){
-                            this.picArr= resData.imglist;
+                        if(data.body.result=='Y'){
+                            Toast({
+                                message: '上传失败',
+                                position: 'middle',
+                                duration: 2000
+                            });
+                        }else{
+                            this.picVal = [];
+                            let resData = data.data;
+                            this.houseId = resData.houseid;
+                            if(resData.imglist && resData.imglist.length>0){
+                                this.picArr= resData.imglist;
+                            }
                         }
+                        
                     })
                 }
             },
@@ -1001,7 +1107,7 @@
         width: 1.71rem;
         border: 1px solid #979797;
         border-radius: 6px;
-        margin: 4px;
+        margin: 3px;
         float: left;
         background-repeat: no-repeat;
         background-size: cover;
