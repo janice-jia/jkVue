@@ -428,10 +428,13 @@ export default {
     //房源信息左滑效果
     showHouseInfoLeftSwiper(){
     	var swiper = new Swiper('#slideCenter', {
+            // initialSlide :0,
+            loop: true,
             pagination: '.swiper-pagination',
             slidesPerView: 2,
             paginationClickable: true,
-            spaceBetween: 20
+            spaceBetween: 20,
+            observer: true
         });
     }
     

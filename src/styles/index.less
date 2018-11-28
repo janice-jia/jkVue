@@ -1031,6 +1031,12 @@ a:focus{
                     font-size: 0.3rem;
                     color: rgb(110, 101, 101);
                     margin-bottom: 0.15rem;
+
+                    // 限制一行
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 1;
+                    overflow: hidden;
                 }
                 .jk-recommend-conDesc{
                     font-size: 0.26rem;

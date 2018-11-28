@@ -846,7 +846,7 @@
                             }
 
                             function callback() {
-                                var data = _this.compress(img);
+                                var data = _this.compressChangeWidthAndHeight(img);
                                     _this.sendImgArr.push(data);
                                 // console.info('datadatadatadatadata',data)
 
@@ -863,8 +863,49 @@
                 }
 
             },
+            // 图片压缩----修改尺寸
+            compressChangeWidthAndHeight(img) {
 
-            // 图片压缩
+                Toast({
+                    message: '正在上传，请稍等',
+                    position: 'middle',
+                    duration: 2000
+                });
+
+                //    用于压缩图片的canvas
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext('2d');
+                //    瓦片canvas
+                var tCanvas = document.createElement("canvas");
+                var tctx = tCanvas.getContext("2d");
+                
+                var initSize = img.src.length;
+                var width = img.width;
+                var height = img.height;
+
+          
+
+                canvas.width = 750;
+                canvas.height = 562;
+
+                //        铺底色
+                ctx.fillStyle = "#fff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, 750, 562);
+                
+                //进行压缩(0-1  1图片质量最高)
+                var ndata = canvas.toDataURL('image/jpeg', 0.9);
+
+                console.log('压缩前：' + initSize);
+                console.log('压缩后：' + ndata.length);
+                console.log('压缩率：' + ~~(100 * (initSize - ndata.length) / initSize) + "%");
+
+                tCanvas.width = tCanvas.height = canvas.width = canvas.height = 0;
+
+                return ndata;
+            },
+
+            // 图片压缩----不修改尺寸---暂不用
             compress(img) {
 
                 Toast({

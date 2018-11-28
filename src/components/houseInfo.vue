@@ -21,11 +21,13 @@
     <div class="jk-house">
         <div class="jk-house-name">
             <!--整租·新潮嘉园二区1室1厅1卫-->
-            {{houseInfoAll.renttype+' · '}}{{houseInfoAll.community}}{{houseInfoAll.housestructure}}
+            {{houseInfoAll.renttype ? houseInfoAll.renttype +' · ' : ''}}
+            {{houseInfoAll.community ? houseInfoAll.community : ''}}
+            {{houseInfoAll.housestructure ? houseInfoAll.housestructure : ''}}
         </div>
         <div class="jk-house-price">
             <!--3000元/每月-->
-            {{houseInfoAll.rent+'元/每月'}}
+            {{houseInfoAll.rent ? houseInfoAll.rent : '0'}}元/每月
         </div>
        
         <div class="jk-house-tagbox tag-parent" >
@@ -38,7 +40,7 @@
         <div class="jk-house-desc jkFlex">
             <p class="jkFlexItem">
             	<!--73m³-->
-            	{{houseInfoAll.area+'m²'}}
+            	{{houseInfoAll.area ? houseInfoAll.area : ''}}m²
             </p>
             <p class="jkFlexItem">
             	<!--1室1厅1卫-->
@@ -63,7 +65,7 @@
                     <span class="desclabel">楼层</span>
                     <span class="desccon">
                     	<!--高层/15层-->
-                    	{{houseInfoAll.floorcount+'层'}}
+                    	{{houseInfoAll.floorcount ? houseInfoAll.floorcount : ''}}层
                     </span>
                 </div>
             </div>
@@ -262,32 +264,34 @@
                     <div class="jk-recommend-con">
                         <div class="jk-recommend-conTit">
                             <!-- 新悦家园4居室-北卧 -->
-                            {{item.title}}
+                            <!-- {{item.title}} -->
+                            {{item.POI ? item.POI :''}}
+                            {{item.community ? item.community :''}}
                         </div>
                         <div class="jk-recommend-conDesc">
                             <span>
                                 <!-- 4室1厅 -->
-                                {{item.housestructure}}
+                                
                             </span>
                             <span>
                                 <!-- 14.9m³ -->
-                                {{item.area+'m²'}}
+                                {{item.housestructure ? item.housestructure+' / ' : ''}}
+                                {{item.area ? item.area+'m²' : ''}}
                             </span>
                         </div>
-                        <div class="jk-recommend-conPrice">
-                            <!-- 1860元/月 -->
+                        <!-- <div class="jk-recommend-conPrice">
+                            1860元/月
                             {{item.rent+'元/月'}}
-                        </div>
-                        <div class="jk-recommend-tag tag-parent">
+                        </div> -->
+                        <!-- <div class="jk-recommend-tag tag-parent">
                             <div class="jk-tag-2 " 
                             v-for="featureItem in item.housefeature" 
                             :key="featureItem">
                                 <p class="jk-ca-tag">
-                                    <!-- 离地铁近 -->
                                     {{featureItem}}
                                 </p>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <!-- 房源推荐 item end -->
@@ -428,15 +432,7 @@
 	            	this.collectStatus=false;
 	            }
             })
-            //获取推荐房源
-            this.$http.get('/api/API.ashx?apicommand=getrecommend').then(function(data){
-                if(data.body){
-                    for(var i=0;i<data.body.houseinfo.length;i++){
-                        data.body.houseinfo[i].housefeature=this.splitStr(data.body.houseinfo[i].housefeature,',');
-                        this.houseRecommandAll.push(data.body.houseinfo[i]);
-                    }
-                }
-            })
+            
             //查看是否已经约看当前房源
             this.$http.get('/api/API.ashx',{
             	params:{
@@ -455,10 +451,29 @@
 
         },
 		mounted(){
+            //获取推荐房源
+            this.$http.get('/api/API.ashx?apicommand=getrecommend').then(function(data){
+                if(data.body){
+                    for(var i=0;i<data.body.houseinfo.length;i++){
+                        data.body.houseinfo[i].housefeature=this.splitStr(data.body.houseinfo[i].housefeature,',');
+                        this.houseRecommandAll.push(data.body.houseinfo[i]);
+                    }
+                    //底部房源推荐轮播图
+                    // indexJs.showHouseInfoLeftSwiper();
+                    this.$nextTick(function(){
+                　　　　var mySwiper =new Swiper('#slideCenter', {
+                            pagination: '.swiper-pagination',
+                            slidesPerView: 2,
+                            slidesPerColumn: 2,
+                            paginationClickable: true,
+                            spaceBetween: 20,
+                        });
+                　　})
+                    
+                }
+            })
 			//顶部轮播图
 			indexJs.showHouseInfoTopSwiper();
-			//底部房源推荐轮播图
-			indexJs.showHouseInfoLeftSwiper();
 		},
 		methods:{
             refresh:function(){
