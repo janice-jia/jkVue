@@ -370,14 +370,16 @@
 	</div>
 </div>
 </template>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>  
 
 <script>
 //	import houseBanner1 from '../assets/house-banner.jpg';
     import mapImg from '../assets/map.jpg';
+    import wx from 'weixin-js-sdk'
 	
     import indexJs from	'../js/index';
     import Vue from 'vue';
-    import {Swipe, SwipeItem} from 'mint-ui';
+    import {Swipe, SwipeItem, Toast} from 'mint-ui';
     Vue.component(Swipe.name, Swipe,SwipeItem.name, SwipeItem);
     
 	export default{
@@ -398,7 +400,9 @@
 			}
 		},
 		created(){
-			this.houseId=this.$route.params.houseid;
+        },
+		mounted(){
+            this.houseId=this.$route.params.houseid;
 			//banner图获取
 			this.$http.get('/api/API.ashx',{
 				params:{
@@ -447,10 +451,7 @@
 	            }else{
 	            	this.orderLookStatus=false;
 	            }
-            })
-
-        },
-		mounted(){
+            }),
             //获取推荐房源
             this.$http.get('/api/API.ashx?apicommand=getrecommend').then(function(data){
                 if(data.body){
@@ -488,7 +489,69 @@
 			},
 			//分享
 			share(){
-				 $("#weCharBottom").show();
+                //  $("#weCharBottom").show();
+                var fullpath = window.location.href;
+                fullpath = 'http://www.9kuaiz.com/houseInfo/100239'
+                this.$http.get('/api/wxjsapi.aspx?apicommand=GetSignature&url='+fullpath).then(function(data){
+                    if(data.body.signature){
+                        var wxconfig = {
+                            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId: 'wx57b1b7c707dcea9d', // 必填，公众号的唯一标识
+                            timestamp: data.body.timestamp, // 必填，生成签名的时间戳
+                            nonceStr: "jkzf", // 必填，生成签名的随机串
+                            signature: data.body.signature,// 必填，签名
+                            jsApiList: [
+                                'onMenuShareAppMessage',  // 分享给朋友
+                                'onMenuShareTimeline',     // 分享到朋友圈
+                            ]
+                        }
+                        console.info('微信配置wxconfig', wxconfig);
+                        wx.config(wxconfig);
+                        wx.ready(function () {
+                            console.info('ready')
+                            
+                            // 分享给朋友
+                            wx.onMenuShareAppMessage({
+                                title: '测试标题',
+                                desc: '测试描述',
+                                link:  'index.html',
+                                imgUrl: 'http://admin.9kuaiz.com/upload/house/housein/201811121200010113746.jpg'
+                            });
+                            // 分享朋友圈
+                            wx.onMenuShareTimeline({
+                                title: '测试标题',
+                                link:  'index.html',
+                                imgUrl: 'http://admin.9kuaiz.com/upload/house/housein/201811121200010113746.jpg'
+                            });
+
+                            WeixinJSBridge.invoke('sendAppMessage',{
+                                title: '测试标题',
+                                desc: '测试描述',
+                                link:  'index.html',
+                                imgUrl: 'http://admin.9kuaiz.com/upload/house/housein/201811121200010113746.jpg'
+                            });
+
+                            Page({onShareAppMessage: function (res) {
+                                if (res.from === 'button') {
+                                // 来自页面内转发按钮
+                                console.log(res.target)
+                                }
+                                return {
+                                title: '自定义转发标题',
+                                path: '/page/user?id=123'
+                                }
+                            }
+                            })
+                        })
+                    }else{
+                        Toast({
+                            message: '微信分享配置失败',
+                            position: 'middle',
+                            duration: 2000
+                        });
+                    }
+                })
+                
            },
             //收藏
             collect(){
