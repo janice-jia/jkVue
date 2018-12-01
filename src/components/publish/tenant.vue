@@ -352,6 +352,7 @@
 
 <script>
     import Vue from 'vue'
+    import Exif from 'exif-js'  
     import { Picker,Popup,DatetimePicker,MessageBox , Swipe, SwipeItem,Toast,Checklist} from 'mint-ui';
     // import threeLevelAddress from './address.json'
     Vue.component(Picker.name, Picker,Popup.name, Popup,
@@ -822,12 +823,23 @@
                     return false;
                 }
 
+                var Orientation;
                 for (let i = 0; i < files.length; i++) {
                     // 看支持不支持FileReader
                     if (!files[i] || !window.FileReader) return;
                     if (/^image/.test(files[i].type)) {
+                        Exif.getData(files[i], function(){  
+                            Orientation = Exif.getTag(files[i], 'Orientation');  
+                            // Orientation = 6;
+                            // alert(Orientation)
+                        });  
+
+
                         let reader = new FileReader();
                         reader.readAsDataURL(files[i]);
+
+                        
+
                         // 读取成功后的回调
                         reader.onloadend = function () {
                             let result = this.result;
@@ -844,9 +856,9 @@
                             } else {
                                 img.onload = callback;
                             }
-
+                            
                             function callback() {
-                                var data = _this.compressChangeWidthAndHeight(img);
+                                var data = _this.compressChangeWidthAndHeight(img, Orientation);
                                     _this.sendImgArr.push(data);
                                 // console.info('datadatadatadatadata',data)
 
@@ -864,8 +876,10 @@
 
             },
             // 图片压缩----修改尺寸
-            compressChangeWidthAndHeight(img) {
-
+            compressChangeWidthAndHeight(img, Orientation) {
+                console.info('Orientation-----', Orientation)
+                var min_step = 0;
+                var max_step = 3;
                 Toast({
                     message: '正在上传，请稍等',
                     position: 'middle',
@@ -890,8 +904,16 @@
 
                 //        铺底色
                 ctx.fillStyle = "#fff";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0, 750, 562);
+
+                //修复ios上传图片的时候 被旋转的问题
+                if(Orientation == 6){
+                    ctx.rotate(90*Math.PI/180);
+                    ctx.fillRect(0, -750, 1000, 750);
+                    ctx.drawImage(img, -img.width*0.075, -750, 1000, 750);
+                }else{
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, 750, 562);
+                }
                 
                 //进行压缩(0-1  1图片质量最高)
                 var ndata = canvas.toDataURL('image/jpeg', 0.9);
@@ -904,7 +926,7 @@
 
                 return ndata;
             },
-
+            
             // 图片压缩----不修改尺寸---暂不用
             compress(img) {
 

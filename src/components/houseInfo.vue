@@ -311,10 +311,10 @@
         <!-- 分享、预约，打电话 -->
         <div class="jk-share jk-bottom">
             <div class="jk-share-left jkFlex">
-                <div class="jk-shareleftitem jkFlexItem" id="shareBtn" @click="share();">
+                <!-- <div class="jk-shareleftitem jkFlexItem" id="shareBtn" @click="share();">
                     <p class="jk-shareleftitemimg"><img src="../assets/icon-share.png" alt="分享" /></p>
                     <p class="jk-shareleftitemTit">分享</p>
-                </div>
+                </div> -->
                 <div class="jk-shareleftitem jkFlexItem" @click="collect();">
                     <p class="jk-shareleftitemimg" 
                     	v-bind:class="collectStatus?'jklikehover':'jk-like'"></p>
@@ -474,7 +474,8 @@
                 }
             })
 			//顶部轮播图
-			indexJs.showHouseInfoTopSwiper();
+            indexJs.showHouseInfoTopSwiper();
+            this.share();
 		},
 		methods:{
             refresh:function(){
@@ -490,8 +491,9 @@
 			//分享
 			share(){
                 //  $("#weCharBottom").show();
+                var _this = this;
                 var fullpath = window.location.href;
-                fullpath = 'http://www.9kuaiz.com/houseInfo/100239'
+                // fullpath = 'http://www.9kuaiz.com/houseInfo/100237'
                 this.$http.get('/api/wxjsapi.aspx?apicommand=GetSignature&url='+fullpath).then(function(data){
                     if(data.body.signature){
                         var wxconfig = {
@@ -509,39 +511,30 @@
                         wx.config(wxconfig);
                         wx.ready(function () {
                             console.info('ready')
-                            
-                            // 分享给朋友
-                            wx.onMenuShareAppMessage({
-                                title: '测试标题',
-                                desc: '测试描述',
-                                link:  'index.html',
-                                imgUrl: 'http://admin.9kuaiz.com/upload/house/housein/201811121200010113746.jpg'
+                            var titleStr = '';
+                            if(_this.houseInfoAll.community) titleStr += _this.houseInfoAll.community;
+                            if(_this.houseInfoAll.housestructure) titleStr += _this.houseInfoAll.housestructure;
+                            if(_this.houseInfoAll.area) titleStr += _this.houseInfoAll.area+'m²';
+                            console.info('titleStr', titleStr);
+
+                            var imgStr=''
+                            if( _this.houseImgList && _this.houseImgList[0].imgurl) imgStr =  _this.GLOBAL.imgWenSiteUrl+_this.houseImgList[0].imgurl;
+
+                            console.info('imgStr', imgStr)
+                            //需在用户可能点击分享按钮前就先调用
+                            wx.updateTimelineShareData({
+                                title: '玖快租房-'+titleStr,
+                                desc: '玖快租房-这里是描述',
+                                // link:  fullpath,
+                                imgUrl: imgStr
                             });
                             // 分享朋友圈
-                            wx.onMenuShareTimeline({
-                                title: '测试标题',
-                                link:  'index.html',
-                                imgUrl: 'http://admin.9kuaiz.com/upload/house/housein/201811121200010113746.jpg'
+                            wx.updateTimelineShareData({
+                                title: '玖快租房-'+titleStr,
+                                link:  fullpath,
+                                desc: '玖快租房-这里是描述',
+                                imgUrl: imgStr
                             });
-
-                            WeixinJSBridge.invoke('sendAppMessage',{
-                                title: '测试标题',
-                                desc: '测试描述',
-                                link:  'index.html',
-                                imgUrl: 'http://admin.9kuaiz.com/upload/house/housein/201811121200010113746.jpg'
-                            });
-
-                            Page({onShareAppMessage: function (res) {
-                                if (res.from === 'button') {
-                                // 来自页面内转发按钮
-                                console.log(res.target)
-                                }
-                                return {
-                                title: '自定义转发标题',
-                                path: '/page/user?id=123'
-                                }
-                            }
-                            })
                         })
                     }else{
                         Toast({
