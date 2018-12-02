@@ -2,7 +2,7 @@
 const  imgWenSiteUrl = 'http://admin.9kuaiz.com';
 let userid=getCookie('userid');
 const openid=getCookie('openid');
-const telNumber = '03106068995'
+const telNumber = '0310-6068995'
 // if(!userid) userid = 15
 // if(!userid) userid = 12
 

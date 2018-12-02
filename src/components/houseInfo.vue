@@ -312,7 +312,8 @@
                 <div class="Qrcodeimg">
                     <img src="../assets/Qrcode.jpeg" alt="">
                 </div>
-                <p class="jk-icon-desc">扫二维码关注玖快租房，获取更多真实房源</p>
+                <p class="jk-icon-desc">扫二维码关注玖快租房 </p>
+                <p class="jk-icon-desc">获取更多真实房源</p>
             </div>
         </div>
         <!-- 玖快租房 end-->
@@ -332,7 +333,9 @@
             </div>
             <div class="jk-share-right">
                 <div class="jk-sharerightitem">
-                    <button class="jk-call" id="callBtn" @click="call();">拨打电话</button>
+                    <a v-bind:href="'tel:'+houseInfoAll.contactsmobile">
+                        <button class="jk-call" id="callBtn">拨打电话</button>
+                    </a>
                 </div>
                 <div class="jk-sharerightitem">
                 	<!--<a class="jk-look" href="myOrderLook.html"></a>-->
@@ -352,7 +355,7 @@
                     <button class="jkBottomBtn2" id="callCancelBtn">取消</button>
                 </div>
                 <div class="jkFlexItem">
-                    <a v-bind:href="houseInfoAll.contactsmobile">
+                    <a v-bind:href="'tel:'+houseInfoAll.contactsmobile">
                         <button class="jkBottomBtn2">拨打电话</button>
                     </a>
                 </div>
@@ -379,7 +382,7 @@
 
 
         <div class="jk-bottom" v-if="!userId">
-            <a v-bind:href="houseInfoAll.contactsmobile">
+            <a v-bind:href="telNumber">
                 <button class="jkBottomBtn2 jk-oneBtn-bottom">拨打电话</button>
             </a>
         </div>
@@ -412,6 +415,7 @@
                 collectStatus:false,//收藏状态
                 orderLookStatus:false,//是否已经约看
                 imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,//图片路径前缀
+                telNumber:'tel:'+this.GLOBAL.telNumber
 
 			}
 		},
