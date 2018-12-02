@@ -4,8 +4,7 @@ let userid=getCookie('userid');
 const openid=getCookie('openid');
 const telNumber = '03106068995'
 // if(!userid) userid = 15
-// if(!userid) userid = 15
-if(!userid) userid = 12
+// if(!userid) userid = 12
 
 function getCookie(cookie_name){
     // 定义一个函数，用来读取特定的cookie值。
