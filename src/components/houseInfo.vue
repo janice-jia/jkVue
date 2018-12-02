@@ -299,17 +299,26 @@
         </div>
 
         <!-- 玖快租房 start-->
-        <div class="jk-icon">
+        <div class="jk-icon" v-if="userId">
             <div class="jk-icon-jk">
                 <img src="../assets/icon-jk.png" alt="玖快租房" />
                 玖快租房
             </div>
-            <div class="jk-icon-desc">为您精选最优质的房源</div>
+            <div class="jk-icon-desc">租房就是快</div>
+        </div>
+
+        <div class="jk-icon" v-show="!userId">
+            <div class="Qrcode">
+                <div class="Qrcodeimg">
+                    <img src="../assets/Qrcode.jpeg" alt="">
+                </div>
+                <p class="jk-icon-desc">扫二维码关注玖快租房，获取更多真实房源</p>
+            </div>
         </div>
         <!-- 玖快租房 end-->
 
         <!-- 分享、预约，打电话 -->
-        <div class="jk-share jk-bottom">
+        <div class="jk-share jk-bottom" v-if="userId">
             <div class="jk-share-left jkFlex">
                 <!-- <div class="jk-shareleftitem jkFlexItem" id="shareBtn" @click="share();">
                     <p class="jk-shareleftitemimg"><img src="../assets/icon-share.png" alt="分享" /></p>
@@ -344,7 +353,7 @@
                 </div>
                 <div class="jkFlexItem">
                     <a v-bind:href="houseInfoAll.contactsmobile">
-                        <button class="jkBottomBtn2">立即拨打</button>
+                        <button class="jkBottomBtn2">拨打电话</button>
                     </a>
                 </div>
             </div>
@@ -366,6 +375,13 @@
                     <p class="jkShareWechatTit">分享朋友圈</p>
                 </div>
             </div>
+        </div>
+
+
+        <div class="jk-bottom" v-if="!userId">
+            <a v-bind:href="houseInfoAll.contactsmobile">
+                <button class="jkBottomBtn2 jk-oneBtn-bottom">拨打电话</button>
+            </a>
         </div>
 	</div>
 </div>
@@ -503,6 +519,8 @@
                             nonceStr: "jkzf", // 必填，生成签名的随机串
                             signature: data.body.signature,// 必填，签名
                             jsApiList: [
+                                'updateAppMessageShareData',  // 分享给朋友
+                                'updateTimelineShareData',  // 分享到朋友圈
                                 'onMenuShareAppMessage',  // 分享给朋友
                                 'onMenuShareTimeline',     // 分享到朋友圈
                             ]
@@ -519,20 +537,35 @@
 
                             var imgStr=''
                             if( _this.houseImgList && _this.houseImgList[0].imgurl) imgStr =  _this.GLOBAL.imgWenSiteUrl+_this.houseImgList[0].imgurl;
+                            console.info('imgStr', imgStr);
 
-                            console.info('imgStr', imgStr)
-                            //需在用户可能点击分享按钮前就先调用
-                            wx.updateTimelineShareData({
-                                title: '玖快租房-'+titleStr,
-                                desc: '玖快租房-这里是描述',
-                                // link:  fullpath,
+                            // //需在用户可能点击分享按钮前就先调用
+                            // wx.updateAppMessageShareData({
+                            //     title: '玖快租房-'+titleStr,
+                            //     desc: '玖快租房-这里是描述',
+                            //     // link:  fullpath,
+                            //     imgUrl: imgStr
+                            // });
+                            // // 分享朋友圈
+                            // wx.updateTimelineShareData({
+                            //     title: '玖快租房-'+titleStr,
+                            //     link:  fullpath,
+                            //     desc: '玖快租房-这里是描述',
+                            //     imgUrl: imgStr
+                            // });
+                            console.info('fullpath',fullpath)
+                            //分享给朋友
+                            wx.onMenuShareAppMessage({
+                                title: titleStr,
+                                desc: '玖快租房，租房就是快！一键发布房源、一键找房。为您开启全新租住生活！',
+                                link:  fullpath,
                                 imgUrl: imgStr
                             });
                             // 分享朋友圈
-                            wx.updateTimelineShareData({
-                                title: '玖快租房-'+titleStr,
+                            wx.onMenuShareTimeline({
+                                title: titleStr,
                                 link:  fullpath,
-                                desc: '玖快租房-这里是描述',
+                                desc: '玖快租房，租房就是快！一键发布房源、一键找房。为您开启全新租住生活！',
                                 imgUrl: imgStr
                             });
                         })

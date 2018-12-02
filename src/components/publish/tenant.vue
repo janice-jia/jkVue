@@ -92,7 +92,10 @@
             <div class="jk-group">
                 <div class="jk-group-tit">总楼层：</div>
                 <div class="jk-group-inputInfo">
-                    <input type="number" class="jk-group-select"  name="floorcount" v-model="sendDataInfo.floorcount" placeholder="请填写内容"/>
+                    <div class="jk-group-inputInfo" @click="showPup(14)">
+                        <input type="input" class="jk-group-select" readonly name="floorcount" v-model="sendDataInfo.floorcount" placeholder="请选择内容"/>
+                    </div>
+                    <!-- <input type="number" class="jk-group-select"  name="floorcount" v-model="sendDataInfo.floorcount" placeholder="请填写内容"/> -->
                 </div>
             </div>
             <div class="jk-group">
@@ -215,7 +218,7 @@
 
         <!--地点的picker-->
         <mt-popup v-model="popPlace" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
-            <mt-picker :slots="myAddressSlots" @change="addressChange"  :visibleItemCount="5" valueKey="RegionName" style="width: 7.5rem;" showToolbar>
+            <mt-picker id="myAddressSlots" :slots="myAddressSlots" @change="addressChange"  :visibleItemCount="5" valueKey="RegionName" style="width: 7.5rem;" showToolbar>
                 <div class="clearfix picker-toolbar-title">
                     <p class="usi-btn-cancel left" @click="popPlace = !popPlace">取消</p>
                     <p class="usi-btn-sure right" @click="popPlace = !popPlace">确定</p>
@@ -247,6 +250,15 @@
                 <div class="clearfix picker-toolbar-title">
                     <p class="usi-btn-cancel left" @click="popFloor = !popFloor">取消</p>
                     <p class="usi-btn-sure right" @click="popFloor = !popFloor">确定</p>
+                </div>
+            </mt-picker>
+        </mt-popup>
+        <!--总楼层的picker-->
+        <mt-popup v-model="popAllFloor" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
+            <mt-picker :slots="allFloorSlots" @change="onValuesChangeAllFloor"  style="width: 7.5rem;" showToolbar>
+                <div class="clearfix picker-toolbar-title">
+                    <p class="usi-btn-cancel left" @click="popAllFloor = !popAllFloor">取消</p>
+                    <p class="usi-btn-sure right" @click="popAllFloor = !popAllFloor">确定</p>
                 </div>
             </mt-picker>
         </mt-popup>
@@ -424,6 +436,15 @@
                         '41层', '42层', '43层','44层', '45层', '46层','47层', '48层', '49层','50层',],
                 }],
                 popFloor: false,
+                //总楼层
+                allFloorSlots: [{
+                    values: ['','1层', '2层', '3层','4层', '5层', '6层','7层', '8层', '9层','10层',
+                        '11层', '12层', '13层','14层', '15层', '16层','17层', '18层', '19层','20层',
+                        '21层', '22层', '23层','24层', '25层', '26层','27层', '28层', '29层','30层',
+                        '31层', '32层', '33层','34层', '35层', '36层','37层', '38层', '39层','40层',
+                        '41层', '42层', '43层','44层', '45层', '46层','47层', '48层', '49层','50层',],
+                }],
+                popAllFloor: false,
                 //入住时间
                 pickerVisible:true,
                 startDate: new Date(),
@@ -608,6 +629,7 @@
             this.getCity();
             this.getCounty();
             this.getRentcontent();
+            // console.info('this.myAddressSlots',this.myAddressSlots)
         },
         methods: {
             checkon: function(){
@@ -642,6 +664,7 @@
                     var areaData = eval("("+data.bodyText+")");
                     areaData = areaData.filter(item => item.RegionName=='河北省')
                     this.myAddressSlots[0].values = areaData;
+                    // console.info('this.myAddressSlots',this.myAddressSlots)
                 }).then(function(){
                     console.info('获取省份error')
                 })
@@ -654,6 +677,7 @@
                     var areaData = eval("("+data.bodyText+")");
                     areaData = areaData.filter(item => item.RegionName=='邯郸市')
                     this.myAddressSlots[2].values = areaData;
+                    // console.info('this.myAddressSlots',this.myAddressSlots)
                 }).then(function(){
                     console.info('获取省份error')
                 })
@@ -667,6 +691,7 @@
                 this.$http.get("/api/API.ashx?apicommand=getcounty&t="+Date.now()).then(function (data) {
                     var areaData = eval("("+data.bodyText+")");
                     this.myAddressSlots[4].values = areaData;
+                    
                 }).then(function(){
                     console.info('获取省份error')
                 })
@@ -739,6 +764,9 @@
                     case 13:
                         this.popPoi = true;//poi
                         break;
+                    case 14:
+                        this.popAllFloor = true;  //总楼层
+                        break;
 
                 }
             },
@@ -761,6 +789,10 @@
             onValuesChangeFloor(picker, values){
                 // console.log('楼层',values);
                 this.sendDataInfo.floor = values[0];
+            },
+            onValuesChangeAllFloor(picker, values){
+                // console.log('总楼层',values);
+                this.sendDataInfo.floorcount = values[0];
             },
             onValuesChangePople(picker, values){
                 // console.log('住的人数',values);

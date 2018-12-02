@@ -46,7 +46,8 @@ export default {
     methods: {
         isauthFn(){
             this.$http.get('/api/API.ashx?apicommand=isauth&userid='+this.GLOBAL.userid).then(function(data) {
-                if(data == 'Y'){
+                console.info(data)
+                if(data.body.result == 'Y'){
                     this.isauth = true;
                 }else{
                     this.isauth = false;
