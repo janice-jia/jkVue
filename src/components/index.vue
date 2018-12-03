@@ -102,7 +102,8 @@
                             <div class="jk-cont-item-main jkFlexItem">
                                 <div class="jk-cont-item-tit oneLine">
                                     <!-- 合租。丰西北里3居室-南卧 -->
-                                    {{item.renttype+' · '}}{{item.community}}{{item.housestructure}}
+                                    {{item.title}}
+                                    <!-- {{item.renttype+' · '}}{{item.community}}{{item.housestructure}} -->
                                 </div>
                                 <div class="jk-cont-item-price oneLine">
                                     <!-- 1700元/月 -->

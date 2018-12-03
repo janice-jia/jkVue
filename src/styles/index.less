@@ -100,6 +100,7 @@ a:focus{
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+    word-break: break-all;
 }
 
 .tl{
@@ -271,10 +272,12 @@ a:focus{
 /*首页  start*/
 .jk-scrollerWrap{
     position:absolute;
+    padding: 0 0.15rem 0 0.15rem;
     width:100%;
     top:4.1rem;//一般页面有header的时候需要留出header的高度
     bottom:1.15rem;
     z-index: 0;
+    left: 0;
 }
 .jk-wap{
     padding: 0 0.15rem 1.15rem 0.15rem;
@@ -358,7 +361,7 @@ a:focus{
         }
     }
     .jk-cont{
-        
+        // position: relative;
         .jk-cont-Like{
             .userLike{
                 position: absolute;
@@ -388,6 +391,7 @@ a:focus{
         }
         .jk-cont-item{
             padding: 0.3rem 0;
+            margin: 0 0.15rem 0 0.15rem;
             border-bottom: 0.03rem solid rgb(229,229,229);
             position: relative;
             .jk-cont-item-media{
@@ -2072,5 +2076,63 @@ a:focus{
     img{
         height: 5.62rem;
         width: 7.5rem;
+    }
+}
+
+
+// 隐私声明
+.jk-shouquan{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    left: 0;
+    top:0;
+    overflow: auto;
+    .jk-shouquanBox{
+        position: absolute;
+        width: 90%;
+        height: 75%;
+        background: #ffffff;
+        left: 5%;
+        top:10%;
+        overflow: auto;
+        padding: 0.3rem;
+        .jk-shouquan-close{
+            position: fixed;
+            right: 5%;
+            top: 10%;
+            width: 20px;
+            height: 20px;
+            margin: -10px -10px 0 0;
+            z-index: 1000;
+            background: url(../assets/icon-close.png) no-repeat;
+            background-size: 100%;
+        }
+    }
+    .jk-shouquan-tit{
+        text-align: center;
+        font-size: 0.36rem;
+        color: rgb(51,51,51);
+    }
+    .jk-shouquan-desc{
+        text-align: center;
+        font-size: 0.26rem;
+        color: rgb(153, 153, 153);
+        padding: 0.15rem 0 0 0;
+    }
+    .jk-shouquan-con{
+        padding: 0.3rem 0;
+        h1{
+            font-size: 0.26rem;
+            color: rgb(51,51,51);
+            line-height: 0.6rem;
+        }
+        p{
+            font-size: 0.24rem;
+            line-height: 0.48rem;
+            color: rgb(153, 153, 153);
+        }
     }
 }
