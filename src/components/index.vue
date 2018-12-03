@@ -378,6 +378,7 @@ export default {
             POI:"",        //地标
 
             keyword:'',//搜索关键字    用于手动输入查询
+            isrecommend:this.$route.query.isrecommend,
             
 
             hostTyprStr:'户型', //户型选中的筛选，用于首页展示
@@ -601,6 +602,8 @@ export default {
             queryData.apicommand = 'gethousepage'; 
             if(this.keyword){
                 queryData.keyword = this.keyword; //类型
+            }else if(this.isrecommend){
+                queryData.isrecommend = this.isrecommend; //类型
             }else{
                 /**
                     * 根据筛选类型设置参数
@@ -621,9 +624,9 @@ export default {
                 queryData.housefeature = this.housefeature;  //房源特色
                 queryData.asctype = this.asctype;  //排序类型
                 queryData.ascfiled = this.ascfiled;  //排序字段
-                queryData.pagesize = this.pagesize;  //每页显示
-                queryData.pageindex = this.pageindex; //第几页
             }
+            queryData.pagesize = this.pagesize;  //每页显示
+            queryData.pageindex = this.pageindex; //第几页
             // if(queryData.renttype == undefined) queryData.renttype = ''
             
             this.$http.get(apiUrl,{params:queryData}).then(function (data) {
