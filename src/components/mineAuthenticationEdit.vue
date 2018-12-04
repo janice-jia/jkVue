@@ -143,16 +143,13 @@ export default {
                 return false;
             }else{
                 var sendData = {};
+                sendData.apicommand = 'submiauth';
                 sendData.name = this.name;
                 sendData.idCard = this.idCard;
                 sendData.userid = this.GLOBAL.userid;
-                this.$http.post(
-                    '/api/API.ashx?apicommand=submiauth',
-                    JSON.stringify(sendData),
-                    {headers:{'Content-Type':'application/json'}}
-                ).then(function (data) {
+                this.$http.get('/api/API.ashx',{params:sendData}).then(function (data) {
                     console.info(data)
-                    if(data.body.result == "Y" || data.status == 200){
+                    if(data.body.result == "Y"){
                         Toast({
                             message: '认证成功',
                             position: 'middle',
