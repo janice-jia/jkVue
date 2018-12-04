@@ -159,6 +159,12 @@ export default {
                             duration: 2000
                         });
                         this.$router.push({name: 'mine', params:{'type':2}});
+                    }else{
+                        Toast({
+                            message: '认证失败',
+                            position: 'middle',
+                            duration: 2000
+                        });
                     }
                 })
             }
