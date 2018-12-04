@@ -965,8 +965,7 @@
 
                 //        铺底色
                 ctx.fillStyle = "#fff";
-                // alert('widht='+img.width+'height='+img.height+'比例='+img.width/img.height);
-                // return false;
+
                 //修复ios上传图片的时候 被旋转的问题
                 if(Orientation == 6 ){
                     ctx.rotate(90*Math.PI/180);
@@ -975,7 +974,10 @@
                 }else{
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                     if(img.width < img.height){
-                        ctx.drawImage(img,0,(img.height*0.75)/2,img.width,img.height,0,0,750,1000);
+                        var bl = (img.width/img.height);
+                        var h = (750/img.width)*img.height;
+                        console.info(h)
+                        ctx.drawImage(img,0,(img.height*bl)/2,img.width,img.height,0,0,750,h);
                     }else{
                         ctx.drawImage(img, 0, 0, 750, 562);
                     }

@@ -4,7 +4,8 @@
 
 <p>要使用的图片：</p>
 <div style="width:32%; overflow: hidden; float: left;">
-    <img src="/Users/jiameng/Desktop/test/WechatIMG99.jpeg"  alt="tulip" id="tulip" style="margin-left:0px;" />
+    <!-- <img src="/Users/jiameng/Desktop/test/WechatIMG99.jpeg"  alt="tulip" id="tulip" style="margin-left:0px;" /> -->
+    <img src="/Users/jiameng/Desktop/test/test.jpeg"  alt="tulip" id="tulip" style="margin-left:0px;" />
 </div>
 <div style="float:right; width:68%;" >
     <p>Canvas:</p>
@@ -23,9 +24,9 @@ document.getElementById("tulip").onload=function(){
 
 c.width = 750;
 c.height = 562;
-ctx.rotate(90*Math.PI/180);
-ctx.fillRect(0, -750, 1000, 750);
-ctx.drawImage(img, -img.width*0.075, -750, 1000, 750);
+// ctx.rotate(90*Math.PI/180);
+// ctx.fillRect(0, -750, 1000, 750);
+// ctx.drawImage(img, -img.width*0.075, -750, 1000, 750);
 
  
 
@@ -37,7 +38,11 @@ ctx.drawImage(img, -img.width*0.075, -750, 1000, 750);
 // console.info(img.width)
 
 //正常切图
-// ctx.drawImage(img,0,(img.height*0.75)/2,img.width,img.height,0,0,750,1000);
+ctx.fillRect(0, 0, 750, 562);
+var bl = (img.width/img.height);
+var h = (750/img.width)*img.height;
+console.info(h)
+ctx.drawImage(img,0,(img.height*bl)/2,img.width,img.height,0,0,750,h);
 
 };
 </script>

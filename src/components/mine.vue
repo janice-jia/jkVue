@@ -8,7 +8,7 @@
             <div class="jk-avatar-img">
                 <img :src="userinfo.headimgurl" alt="">
             </div>
-            <div class="jk-userName">玖快租房</div>
+            <div class="jk-userName">{{userinfo.nickname}}</div>
             <div class="jk-userEdit">
                 <p>
                     <router-link class="jk-userEdit-link" :to="{name: 'mineEditinfo'}">

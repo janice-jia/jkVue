@@ -1,6 +1,6 @@
 <template>
 	<div class="jk-suggestions">
-            <div class="jk-sTit">界面加载慢</div>
+            <div class="jk-sTit">{{type}}</div>
             <div class="jk-sText jk-supplement">
                 <textarea cols="30" rows="10" v-model="content" placeholder="请填写10个字以上的问题描述以便我们提供更好的帮助"></textarea>
                 <p class="jk-swordNum"><span class="origin">{{content.length}}</span> / 200字以内</p>
@@ -37,12 +37,18 @@
 		data(){
 			return{
                 userId:this.GLOBAL.userid,
-                content:''
+                content:'',
+                type:'界面加载慢'
 			}
 		},
 		mounted(){
+            this.setType();
 		},
 		methods:{
+            setType(){
+                if(this.$route.params.type == 2) this.type = '卡顿';
+                if(this.$route.params.type == 3) this.type = '其他';
+            },
 			submit(){
                 if(this.content.length > 200){
                     Toast({
@@ -53,12 +59,10 @@
                     return false;
                 }
                 
-                var type = '界面加载慢';
-                if(this.$route.params.type == 2) type = '卡顿';
                 var postStr = '';
                 postStr += '/api/API.ashx?apicommand=submitfeedback';
                 postStr += '&userid='+this.GLOBAL.userid;
-                postStr += '&type='+type;
+                postStr += '&type='+this.type;
                 postStr += '&content='+this.content;
                 this.$http.post(postStr).then(function(data){
                     if(data.body.result=='Y'){

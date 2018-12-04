@@ -143,7 +143,7 @@ export default {
                 return false;
             }else{
                 var sendData = {};
-                sendData.apicommand = 'submiauth';
+                sendData.apicommand = 'submitauth';
                 sendData.name = this.name;
                 sendData.idCard = this.idCard;
                 sendData.userid = this.GLOBAL.userid;

@@ -24,6 +24,18 @@
                 <img src="../assets/icon-right.png" alt="" />
             </div>
         </div>
+
+        <!-- 其他 -->
+        <div class="jk-publish-item h80">
+        	<router-link class="houseLink" :to="{name: 'mineAdviceAdd', params:{type: 3}}"></router-link>
+            <!--<a href="adviceAdd.html" class="houseLink"></a>-->
+            <div class="jk-publish-itemType">
+                <p class="publishtit">其他</p>
+            </div>
+            <div class="jk-publish-itemRight">
+                <img src="../assets/icon-right.png" alt="" />
+            </div>
+        </div>
     </div>
 </template>
 
