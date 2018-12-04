@@ -150,6 +150,12 @@
                 </div>
             </div>
             <div class="jk-group">
+                <div class="jk-group-tit">最小租期：</div>
+                <div class="jk-group-inputInfo" @click="showPup(15)">
+                    <input class="jk-group-input" type="text"  readonly name="period" v-model="sendDataInfo.period" placeholder="请选择内容"/>
+                </div>
+            </div>
+            <div class="jk-group">
                 <div class="jk-group-tit">租金：</div>
                 <div class="jk-group-inputInfo">
                     <input class="jk-group-input" type="text" placeholder="请填写信息"
@@ -178,9 +184,9 @@
                            v-model="sendDataInfo.realname"/>
                 </div>
                 <div class="jk-checkBoxSkin jk-checkBoxVal">
-                    <input id="sex" class="jk-checkbox" name="check3" type="checkbox" checked
-                           v-model="sexy"/>
-                    <label for="sex" class="trigger"></label>
+                    <input id="ownersex" class="jk-checkbox" name="check3" type="checkbox" checked
+                           v-model="sendDataInfo.ownersex"/>
+                    <label for="ownersex" class="trigger"></label>
                     <span class="jk-checkbox-checkVal1">男士</span>
                     <span class="jk-checkbox-checkVal2">女士</span>
                 </div>
@@ -354,6 +360,15 @@
                 </div>
             </mt-picker>
         </mt-popup>
+        <!--最小租期的picker-->
+        <mt-popup v-model="popPeriod" popup-transition="popup-fade" closeOnClickModal="true" position="bottom">
+            <mt-picker :slots="periodSlots" @change="onValuesChangePeriod"  style="width: 7.5rem;" showToolbar>
+                <div class="clearfix picker-toolbar-title">
+                    <p class="usi-btn-cancel left" @click="popPeriod = !popPeriod">取消</p>
+                    <p class="usi-btn-sure right" @click="popPeriod = !popPeriod">确定</p>
+                </div>
+            </mt-picker>
+        </mt-popup>
 
 
 
@@ -495,9 +510,15 @@
                 popAnswerTime: false,
                 //租金形式
                 popPriceType:false,
+                //最小租期
+                popPeriod:false,
                 priceTypeSlots: [{
                     values:['','月租','日租']
                 }],
+                periodSlots: [{
+                    values:['','一年','半年','三个月']
+                }],
+                
                 //地点
                 place:'',
                 popPlace: false,
@@ -562,14 +583,15 @@
                     realname:'',
                     rentcontent:'',
                     ownermobile:'',
-                    floorcount:''
+                    floorcount:'',
+                    ownersex:'男士'
                 },
                 //图片上传 and 预览 and 删
                 picValue:'',
                 picArr:[],
                 sendImgArr:[],
                 //男士女士
-                sexy:'男士',
+                // sexy:'男士',
 
                 cityList:[],
 
@@ -767,6 +789,9 @@
                     case 14:
                         this.popAllFloor = true;  //总楼层
                         break;
+                    case 15:
+                        this.popPeriod = true;  //最小租期
+                        break;
 
                 }
             },
@@ -809,6 +834,10 @@
             onValuesChangePriceType(picker, values){
                 // console.log('租金形式',values);
                 this.sendDataInfo.rentunit = values[0];
+            },
+            onValuesChangePeriod(picker, values){
+                // console.log('最小租期',values);
+                this.sendDataInfo.period = values[0];
             },
             // onValuesChangeAnswer(picker, values){
             //     console.log('接听时段',values);
@@ -945,7 +974,7 @@
                     ctx.drawImage(img, -img.width*0.075, -750, 1000, 750);
                 }else{
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    if(img.width< img.height){
+                    if(img.width < img.height){
                         ctx.drawImage(img,0,(img.height*0.75)/2,img.width,img.height,0,0,750,1000);
                     }else{
                         ctx.drawImage(img, 0, 0, 750, 562);
