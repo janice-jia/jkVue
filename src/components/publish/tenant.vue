@@ -972,6 +972,7 @@
                     ctx.fillRect(0, -750, 1000, 750);
                     ctx.drawImage(img, -img.width*0.075, -750, 1000, 750);
                 }else{
+                    //当无法获取方向时，判定是否是是竖图，如果是竖图根据比例画图
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                     if(img.width < img.height){
                         var bl = (img.width/img.height);
