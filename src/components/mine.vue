@@ -28,7 +28,7 @@
                 <li class="jk-info-linkItem">
                      <router-link class="item2" :to="{name: 'mineCollect'}">我的收藏</router-link>
                 </li>
-                <li class="jk-info-linkItem">
+                <li class="jk-info-linkItem" v-show="islandlord">
                     <router-link class="item3" :to="{name: 'mineOrderlist'}">我的约看</router-link>
                 </li>
                 <li class="jk-info-linkItem" v-show="!islandlord">

@@ -65,7 +65,7 @@
                     <span class="desclabel">楼层</span>
                     <span class="desccon">
                     	<!--高层/15层-->
-                    	{{houseInfoAll.floorcount ? houseInfoAll.floorcount : ''}}层
+                        {{houseInfoAll.floordesc ? houseInfoAll.floordesc+'/' : ''}}{{houseInfoAll.floorcount ? '共'+houseInfoAll.floorcount : ''}}
                     </span>
                 </div>
             </div>
@@ -423,76 +423,9 @@
         },
 		mounted(){
             this.houseId=this.$route.params.houseid;
-			//banner图获取
-			this.$http.get('/api/API.ashx',{
-				params:{
-					apicommand:'gethouseimg',
-					houseid:this.houseId
-				}
-			}).then(function(data){
-                if(data.body){
-                	for(var i=0;i<data.body.imglist.length;i++){
-                        this.houseImgList.push(data.body.imglist[i]);
-                    }
-                }
-                console.info(this.houseImgList);
-            })
-			
-			//获取当前房源所有详细信息
-			this.$http.get('/api/API.ashx',{
-				params:{
-					apicommand:'gethouseinfo',
-					houseid:this.houseId,
-					userid:this.userId
-				}
-			}).then(function(data){
-                this.houseInfoAll=data.body.houseinfo[0];
-                this.houseFeatures=this.splitStr(this.houseInfoAll.housefeature, ',');
-                this.houseInfoAll.checkin=this.splitStr(this.houseInfoAll.checkin,' ')[0];
-                 //获取当前房源是否被收藏
-	            if(this.houseInfoAll.collectid){
-	            	this.collectStatus=true;
-	            }else{
-	            	this.collectStatus=false;
-	            }
-            })
-            
-            //查看是否已经约看当前房源
-            this.$http.get('/api/API.ashx',{
-            	params:{
-            		apicommand:'isappointment',
-            		houseid:this.houseId,
-            		userid:this.userId
-            	}
-            }).then(function(data){
-            	console.info(data.body.result)
-                 if(data.body.result=="Y"){
-	            	this.orderLookStatus=true;
-	            }else{
-	            	this.orderLookStatus=false;
-	            }
-            }),
-            //获取推荐房源
-            this.$http.get('/api/API.ashx?apicommand=getrecommend').then(function(data){
-                if(data.body){
-                    for(var i=0;i<data.body.houseinfo.length;i++){
-                        data.body.houseinfo[i].housefeature=this.splitStr(data.body.houseinfo[i].housefeature,',');
-                        this.houseRecommandAll.push(data.body.houseinfo[i]);
-                    }
-                    //底部房源推荐轮播图
-                    // indexJs.showHouseInfoLeftSwiper();
-                    this.$nextTick(function(){
-                　　　　var mySwiper =new Swiper('#slideCenter', {
-                            pagination: '.swiper-pagination',
-                            slidesPerView: 2,
-                            slidesPerColumn: 2,
-                            paginationClickable: true,
-                            spaceBetween: 20,
-                        });
-                　　})
-                    
-                }
-            })
+            this.getBanner()
+            this.gethouseInfoAll();
+            this.getlook();
 			//顶部轮播图
             indexJs.showHouseInfoTopSwiper();
             this.share();
@@ -501,6 +434,89 @@
             refresh:function(){
     　　　　　    this.$router.go(0);  
     　　　　 },
+            //获取推荐
+            getrecommendbyfilter(){
+                //获取推荐房源
+                this.$http.get('/api/API.ashx?apicommand=getrecommendbyfilter&filter=rent&value='+this.houseInfoAll.rent).then(function(data){
+                    if(data.body){
+                        for(var i=0;i<data.body.houseinfo.length;i++){
+                            data.body.houseinfo[i].housefeature=this.splitStr(data.body.houseinfo[i].housefeature,',');
+                            this.houseRecommandAll.push(data.body.houseinfo[i]);
+                        }
+                        //底部房源推荐轮播图
+                        // indexJs.showHouseInfoLeftSwiper();
+                        this.$nextTick(function(){
+                    　　　　var mySwiper =new Swiper('#slideCenter', {
+                                pagination: '.swiper-pagination',
+                                slidesPerView: 2,
+                                slidesPerColumn: (this.houseRecommandAll.length==2) ? 1 : 2,
+                                paginationClickable: true,
+                                spaceBetween: 20,
+                            });
+                    　　})
+                        
+                    }
+                })
+            },
+            //获取幻灯片
+            getBanner(){
+                //banner图获取
+                this.$http.get('/api/API.ashx',{
+                    params:{
+                        apicommand:'gethouseimg',
+                        houseid:this.houseId
+                    }
+                }).then(function(data){
+                    if(data.body){
+                        for(var i=0;i<data.body.imglist.length;i++){
+                            this.houseImgList.push(data.body.imglist[i]);
+                        }
+                    }
+                    console.info(this.houseImgList);
+                })
+            },  
+            //获取房源信息
+            gethouseInfoAll(){
+                //获取当前房源所有详细信息
+                this.$http.get('/api/API.ashx',{
+                    params:{
+                        apicommand:'gethouseinfo',
+                        houseid:this.houseId,
+                        userid:this.userId
+                    }
+                }).then(function(data){
+                    this.houseInfoAll=data.body.houseinfo[0];
+                    this.getrecommendbyfilter();
+                    this.houseFeatures=this.splitStr(this.houseInfoAll.housefeature, ',');
+                    this.houseInfoAll.checkin=this.splitStr(this.houseInfoAll.checkin,' ')[0];
+                    //获取当前房源是否被收藏
+                    if(this.houseInfoAll.collectid){
+                        this.collectStatus=true;
+                    }else{
+                        this.collectStatus=false;
+                    }
+                    
+                    
+                })
+            },
+            //查看是否约看
+            getlook(){
+                //查看是否已经约看当前房源
+                this.$http.get('/api/API.ashx',{
+                    params:{
+                        apicommand:'isappointment',
+                        houseid:this.houseId,
+                        userid:this.userId
+                    }
+                }).then(function(data){
+                    console.info(data.body.result)
+                    if(data.body.result=="Y"){
+                        this.orderLookStatus=true;
+                    }else{
+                        this.orderLookStatus=false;
+                    }
+                })
+            },
 			//拨打电话
 			call(){
 				$("#callBottom").show();

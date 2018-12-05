@@ -5,10 +5,10 @@
         </div>
 
         <div class="jk-infoPageTit">
-            发布完成
+            “恭喜！您的房源已经发布成功。
         </div>
         <div class="jk-infoPageDesc">
-            <p>您发布的房源可以到<router-link :to="{name: 'minehouseList'}">“房源管理”</router-link>中查看</p>
+            <p>需要工作人员后台审核完才能优先推荐，请您关注提交房源时的所填写的联系方式，保持畅通，工作人员会尽快和您核实信息</p>
         </div>
 
 

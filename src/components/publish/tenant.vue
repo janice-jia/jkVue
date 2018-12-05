@@ -438,7 +438,7 @@
                 popHouse: false,
                 //朝向
                 towardSlots: [{
-                    values: ['','东', '南','西','北'],
+                    values: ['','东', '南','西','北','南北','东西','东北','东南','西北','西南'],
 
                 }],
                 popToward:false,
