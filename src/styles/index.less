@@ -274,7 +274,7 @@ a:focus{
     position:absolute;
     padding: 0 0.15rem 0 0.15rem;
     width:100%;
-    top:4.1rem;//一般页面有header的时候需要留出header的高度
+    top:3.1rem;//一般页面有header的时候需要留出header的高度
     bottom:1.15rem;
     z-index: 0;
     left: 0;
@@ -1035,6 +1035,7 @@ a:focus{
                     font-size: 0.3rem;
                     color: rgb(110, 101, 101);
                     margin-bottom: 0.15rem;
+                    height: 0.4rem;
 
                     // 限制一行
                     display: -webkit-box;
@@ -1576,7 +1577,14 @@ a:focus{
         line-height: 0.8rem;
         p{
             line-height: 0.4rem;
+            &.c1{
+                color: rgb(119, 119, 119);
+                b{
+                    color: rgb(0,0,0);
+                }
+            }
         }
+        
         a{
             color: rgb(0,0,0);
         }

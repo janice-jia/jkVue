@@ -52,15 +52,33 @@
                 menuImg2: menuImg2,
                 iconRight: iconRight,
                 imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
+                isauth:false
             }
         },
         components: {
             bottomCom
         },
+        mounted(){
+            this.isauthFn();
+        },
         methods:{
+            //判断是否认证
+            isauthFn(){
+                this.$http.get('/api/API.ashx?apicommand=isauth&userid='+this.GLOBAL.userid).then(function(data) {
+                    console.info(data)
+                    if(data.body.result == 'Y'){
+                        this.isauth = true;
+                    }else{
+                        this.isauth = false;
+                    }
+                })
+            },
             toPublishPage(page){
-                this.$router.push({ name:'tenant',params: { renttype:page}})
-
+                if(!this.isauth){
+                    this.$router.push({ name:'noAuth',params: { renttype:page}})
+                }else{
+                    this.$router.push({ name:'tenant',params: { renttype:page}})
+                }
             }
         }
 

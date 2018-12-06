@@ -21,7 +21,8 @@
                             </span>
                             <span>
                             	<!--2/6层-->
-                            	{{houseBasicInfo.floor+'/'+houseBasicInfo.floorcount+'层'}}
+                            	{{houseBasicInfo.floordesc ? houseBasicInfo.floordesc+'/' : ''}}
+                                {{houseBasicInfo.floorcount ? '共'+houseBasicInfo.floorcount : ''}}
                             </span>
                         </p>
                     </div>
@@ -39,7 +40,7 @@
                 <div class="jkFlex">
                     <div class="tl jklookaddlabel">性别</div>
                     <div class="jkFlexItem">
-                        <div class="jk-checkBoxSkin jk-checkBoxVal">
+                        <div class="jk-checkBoxSkin jk-checkBoxVal" @click="changesex">
                             <input id="sex" class="jk-checkbox" name="check" type="checkbox" v-model="sex" checked/>
                             <label for="sex" class="trigger"></label>
                             <span class="jk-checkbox-checkVal1">男士</span>
@@ -129,6 +130,9 @@
 			
 		},
 		methods:{
+			changesex(){
+				this.sex = !this.sex;
+			},
 			//转换期望看房时间为日期
 			transferLookDay(lookDay){
 				var myDate=new Date();

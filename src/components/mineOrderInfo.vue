@@ -21,7 +21,7 @@
                             </span>
                             <span>
                             	<!--2/6层-->
-                            	{{appointmentDeatil.floor+'/'+appointmentDeatil.floorcount+'层'}}
+                                {{appointmentDeatil.floordesc ? appointmentDeatil.floordesc+'/' : ''}}{{appointmentDeatil.floorcount ? '共'+appointmentDeatil.floorcount : ''}}
                             </span>
                         </p>
                     </div>

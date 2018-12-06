@@ -183,11 +183,11 @@
                     <input class="jk-group-input" type="text" placeholder="请填写姓名"
                            v-model="sendDataInfo.realname"/>
                 </div>
-                <div class="jk-checkBoxSkin jk-checkBoxVal">
+                <div class="jk-checkBoxSkin jk-checkBoxVal"  @click="changesex">
                     <input id="ownersex" class="jk-checkbox" name="check3" type="checkbox" checked
                            v-model="sendDataInfo.ownersex"/>
                     <label for="ownersex" class="trigger"></label>
-                    <span class="jk-checkbox-checkVal1">男士</span>
+                    <span class="jk-checkbox-checkVal1">先生</span>
                     <span class="jk-checkbox-checkVal2">女士</span>
                 </div>
             </div>
@@ -584,14 +584,14 @@
                     rentcontent:'',
                     ownermobile:'',
                     floorcount:'',
-                    ownersex:'男士'
+                    ownersex:true
                 },
                 //图片上传 and 预览 and 删
                 picValue:'',
                 picArr:[],
                 sendImgArr:[],
-                //男士女士
-                // sexy:'男士',
+                //先生女士
+                // sexy:'先生',
 
                 cityList:[],
 
@@ -657,7 +657,10 @@
             checkon: function(){
                 // console.log(this.rentcontentvalue)
             },
-
+            changesex(){
+                this.sendDataInfo.ownersex = !this.sendDataInfo.ownersex;
+				// this.sex = !this.sex;
+			},
             //picker组件的change事件，进行取值赋值
             addressChange(picker, values){
                 //取值并赋值
@@ -1155,6 +1158,12 @@
                     delete this.sendDataInfo.carport;  //车位
                     delete this.sendDataInfo.occupancynum; //宜住人数
                     delete this.sendDataInfo.rentcontent; //租金包含项目
+                }
+
+                if(this.sendDataInfo.ownersex){
+                    this.sendDataInfo.ownersex = '先生'
+                }else{
+                    this.sendDataInfo.ownersex = '女士'
                 }
 
 

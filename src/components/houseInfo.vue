@@ -268,6 +268,10 @@
                             {{item.POI ? item.POI :''}}
                             {{item.community ? item.community :''}}
                         </div>
+                        <div class="jk-recommend-conPrice">
+                            <!-- 1860元/月 -->
+                            {{item.rent+'元/月'}}
+                        </div>
                         <div class="jk-recommend-conDesc">
                             <span>
                                 <!-- 4室1厅 -->
@@ -279,10 +283,7 @@
                                 {{item.area ? item.area+'m²' : ''}}
                             </span>
                         </div>
-                        <!-- <div class="jk-recommend-conPrice">
-                            1860元/月
-                            {{item.rent+'元/月'}}
-                        </div> -->
+                        
                         <!-- <div class="jk-recommend-tag tag-parent">
                             <div class="jk-tag-2 " 
                             v-for="featureItem in item.housefeature" 

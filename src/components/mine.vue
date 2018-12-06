@@ -2,7 +2,7 @@
 <div>
     <div class="jk-my">
         <div class="jk-avatar">
-            <a href="javaacript:;" class="jk-change-my" @click="goMine">
+            <a href="javascript:;" class="jk-change-my" @click="goMine">
                 转为{{islandlord ? '房东' : '租客'}}
             </a>
             <div class="jk-avatar-img">

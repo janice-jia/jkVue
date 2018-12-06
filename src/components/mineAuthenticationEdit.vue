@@ -148,14 +148,14 @@ export default {
                 sendData.idCard = this.idCard;
                 sendData.userid = this.GLOBAL.userid;
                 this.$http.get('/api/API.ashx',{params:sendData}).then(function (data) {
-                    console.info(data)
+                    // console.info(data)
                     if(data.body.result == "Y"){
                         Toast({
                             message: '认证成功',
                             position: 'middle',
                             duration: 2000
                         });
-                        this.$router.push({name: 'mine', params:{'type':2}});
+                        this.$router.push({name: 'mineAuthFinis'});
                     }else{
                         Toast({
                             message: '认证失败',

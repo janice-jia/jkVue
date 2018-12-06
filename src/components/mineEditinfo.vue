@@ -21,7 +21,7 @@
             <div class="jk-group">
                 <div class="jk-group-tit">真实姓名：</div>
                 <div class="jk-group-inputInfo jkInfotr">
-                    <input type="input" v-model="userinfo.realname" class="jk-group-select" placeholder="请填写内容"/>
+                    <input  v-bind:disabled="isauth" type="input" v-model="userinfo.realname" class="jk-group-select" placeholder="请填写内容"/>
                 </div>
             </div>
             <div class="jk-group">
@@ -50,7 +50,7 @@
             <div class="jk-group">
                 <div class="jk-group-tit">身份证：</div>
                 <div class="jk-group-inputInfo jkInfotr">
-                    <input type="input" v-model="userinfo.idcard" class="jk-group-select" placeholder="请填写内容"/>
+                    <input  v-bind:disabled="isauth" type="input" v-model="userinfo.idcard" class="jk-group-select" placeholder="请填写内容"/>
                 </div>
             </div>
         </div>
@@ -72,12 +72,24 @@ export default {
             userinfo:{},
             popBirth: false,
             startDate: new Date(),
+            isauth:false
         }
     },
     created(){
         this.getUserInfo();
+        this.isauthFn();
     },
     methods:{
+        isauthFn(){
+            this.$http.get('/api/API.ashx?apicommand=isauth&userid='+this.GLOBAL.userid).then(function(data) {
+                console.info(data)
+                if(data.body.result == 'Y'){
+                    this.isauth = true;
+                }else{
+                    this.isauth = false;
+                }
+            })
+        },
         getUserInfo(){
             this.$http.get('/api/API.ashx?apicommand=getuserinfo&userid='+this.GLOBAL.userid).then(function (data) {
                 if (data.body) {

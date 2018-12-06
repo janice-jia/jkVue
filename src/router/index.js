@@ -15,12 +15,14 @@ import mineEditinfo from '@/components/mineEditinfo'
 import mineAdviceAdd from '@/components/mineAdviceAdd'
 import mineAuthentication from '@/components/mineAuthentication'
 import mineAuthenticationEdit from '@/components/mineAuthenticationEdit'
+import mineAuthFinis from '@/components/mineAuthFinis'
 
 //发布 by zqy
 import publish from '@/components/publish/publish'
 import tenant from '@/components/publish/tenant'
 import secondStep from '@/components/publish/secondStep'
 import publishFinis from '@/components/publish/publishFinis'
+import noAuth from '@/components/publish/noAuth'
 
 
 
@@ -123,6 +125,17 @@ export default new Router({
         path: '/publishfinis',
         name: 'publishFinis',
         component: publishFinis
+    },
+    {
+        path: '/noAuth/:renttype',
+        name: 'noAuth',
+        component: noAuth
+    },
+    {
+        path: '/mineAuthFinis/',
+        name: 'mineAuthFinis',
+        component: mineAuthFinis
     }
+    
   ]
 })
