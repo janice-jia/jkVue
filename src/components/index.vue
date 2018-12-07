@@ -99,6 +99,9 @@
                             <div class="jk-cont-item-media">
                                 <img :src="imgWenSiteUrl+item.thumbnailurl" alt="" />
                             </div>
+                            <div class="jk-isrecommend" v-show="item.isrecommend">
+                                推荐
+                            </div>
                             <div class="jk-cont-item-main jkFlexItem">
                                 <div class="jk-cont-item-tit oneLine">
                                     <!-- 合租。丰西北里3居室-南卧 -->

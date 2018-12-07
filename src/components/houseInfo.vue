@@ -437,8 +437,11 @@
     　　　　 },
             //获取推荐
             getrecommendbyfilter(){
+                var getrecommendbyfilter = '/api/API.ashx?apicommand=getrecommendbyfilter&filter=rent';
+                if(this.houseInfoAll.rent) getrecommendbyfilter += '&value='+this.houseInfoAll.rent;
+                if(this.houseInfoAll.renttype) getrecommendbyfilter += '&renttype='+this.houseInfoAll.renttype;
                 //获取推荐房源
-                this.$http.get('/api/API.ashx?apicommand=getrecommendbyfilter&filter=rent&value='+this.houseInfoAll.rent).then(function(data){
+                this.$http.get(getrecommendbyfilter).then(function(data){
                     if(data.body){
                         for(var i=0;i<data.body.houseinfo.length;i++){
                             data.body.houseinfo[i].housefeature=this.splitStr(data.body.houseinfo[i].housefeature,',');
