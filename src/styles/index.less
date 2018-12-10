@@ -763,17 +763,15 @@ a:focus{
     left: 0;
     display: none;
     padding: 0 0.15rem 0 0.15rem;
-    z-index: 200;
+    z-index: 1000;
     overflow:auto;
-    form{
-        height: 100%;
+    .jkScreenBox{
+        width: 100%;
+        height: auto;
+        overflow: auto;
     }
     .jkScreenItem{
         display: none;
-        height: 100%;
-        form{
-            height: 100%;
-        }
 
         // 户型、筛选
         .jkscreenHouseType,.jkscreenScreen{
@@ -799,13 +797,11 @@ a:focus{
             
         }
     }
-    .jk-screen-form{
-        height: 100%;
-    }
+    
     .jk-screen-box{
-        height: 100%;
+        height: auto;
         .jk-screen-cont{
-            height: 100%;
+            height: auto;
             .jk-screen-ui{
                 padding-bottom: 1.5rem;
                 li{
@@ -957,6 +953,9 @@ a:focus{
                     overflow: hidden;
                     font-size: 0.26rem;
                     line-height: 0.52rem;
+                }
+                .em-4{
+                    width: 4.2em;
                 }
                 .desccon{
                     font-size: 0.26rem;

@@ -27,7 +27,9 @@
         </div>
         <div class="jk-house-price">
             <!--3000元/每月-->
-            {{houseInfoAll.rent ? houseInfoAll.rent : '0'}}元/每月
+            {{houseInfoAll.rent ? houseInfoAll.rent : '0'}}
+            <span v-show="houseInfoAll.rentunit=='日租'">元/天</span>
+            <span v-show="houseInfoAll.rentunit=='月租'">元/月</span>
         </div>
        
         <div class="jk-house-tagbox tag-parent" >
@@ -94,10 +96,10 @@
                         </span>
                 </div>
                 <div class="houseinfoitem">
-                        <span class="desclabel">入住</span>
+                        <span class="desclabel em-4">付款方式</span>
                         <span class="desccon">
-                        	<!--2018.10.12-->
-                        	{{houseInfoAll.checkin}}
+                        	<!--押一付三-->
+                        	{{houseInfoAll.payment}}
                         </span>
                 </div>
             </div>

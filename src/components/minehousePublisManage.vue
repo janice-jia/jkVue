@@ -27,7 +27,9 @@
                         {{item.area}}m²| {{item.floor}}/{{item.floorcount}}
                     </div>
                     <div class="jk-cont-item-price oneLine" style="color:#888888;">
-                        {{item.rent}}元/月
+                        {{item.rent}}
+                        <span v-show="item.rentunit=='日租'">元/天</span>
+                        <span v-show="item.rentunit=='月租'">元/月</span>
                     </div>
                     <div class="jk-cont-item-tag oneLine" v-show="publishType == 1">
                         <router-link class="jk-tag-Link" v-show="!isauth" :to="{name: 'mineAuthenticationEdit'}"> 

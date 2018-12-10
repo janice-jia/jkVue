@@ -12,7 +12,9 @@
                         </p>
                         <p class="price">
                         	<!--1830元/月-->
-                        	{{houseBasicInfo.rent+'元/月'}}
+                        	{{houseBasicInfo.rent}}
+							<span v-show="houseBasicInfo.rentunit=='日租'">元/天</span>
+							<span v-show="houseBasicInfo.rentunit=='月租'">元/月</span>
                         </p>
                         <p class="info">
                             <span>

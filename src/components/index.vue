@@ -100,7 +100,7 @@
                                 <img :src="imgWenSiteUrl+item.thumbnailurl" alt="" />
                             </div>
                             <div class="jk-isrecommend" v-show="item.isrecommend">
-                                推荐
+                                优选
                             </div>
                             <div class="jk-cont-item-main jkFlexItem">
                                 <div class="jk-cont-item-tit oneLine">
@@ -110,7 +110,9 @@
                                 </div>
                                 <div class="jk-cont-item-price oneLine">
                                     <!-- 1700元/月 -->
-                                    {{item.rent + '元/月'}}
+                                    {{item.rent}}
+                                    <span v-show="item.rentunit=='日租'">元/天</span>
+                                    <span v-show="item.rentunit=='月租'">元/月</span>
                                 </div>
                                 <div class="jk-cont-item-desc oneLine">
                                     <!-- 15m²|南|看丹桥 -->
@@ -144,6 +146,8 @@
 
     <!-- 筛选 弹层 start-->
     <div class="jkScreen" id="jkScreen">
+        <div class="jkScreenBox">
+        
         <form action="/" id="searchForm">
             <!--筛选的类型 Area区域 Price租金 HouseType户型 Screen筛选 Sort排序-->
             <input type="hidden" name="searchType" id="searchType">
@@ -281,6 +285,11 @@
                         <div class="jk-tag-4"><p class="jk-ca-tag" data-id="3">西</p></div>
                         <div class="jk-tag-4"><p class="jk-ca-tag" data-id="4">北</p></div>
                         <div class="jk-tag-4"><p class="jk-ca-tag" data-id="5">南北</p></div>
+                        <div class="jk-tag-4"><p class="jk-ca-tag" data-id="6">东西</p></div>
+                        <div class="jk-tag-4"><p class="jk-ca-tag" data-id="7">东北</p></div>
+                        <div class="jk-tag-4"><p class="jk-ca-tag" data-id="8">东南</p></div>
+                        <div class="jk-tag-4"><p class="jk-ca-tag" data-id="9">西北</p></div>
+                        <div class="jk-tag-4"><p class="jk-ca-tag" data-id="10">西南</p></div>
                     </div>
                     <input type="hidden" name="rendTowardVal" id="rendTowardVal" />
 
@@ -321,11 +330,11 @@
                             <li v-bind:class="[asctypeClass=='rentdesc' ? 'shover' : '']">
                                 <button type="button" @click="setasctype('rentdesc')" value="rentdesc">价格从高到低</button>
                             </li>
-                            <li v-bind:class="[asctypeClass=='rentdesc' ? 'shover' : '']">
-                                <button type="button" @click="setasctype('adddatetimeasc')" value="adddatetimeasc">发布从新到旧</button>
+                            <li v-bind:class="[asctypeClass=='adddatetimedesc' ? 'shover' : '']">
+                                <button type="button" @click="setasctype('adddatetimedesc')" value="adddatetimedesc">发布从新到旧</button>
                             </li>
-                            <li v-bind:class="[asctypeClass=='rentdesc' ? 'adddatetimedesc' : '']">
-                                <button type="button" @click="setasctype('adddatetimedesc')"  value="adddatetimedesc">发布从旧到新</button>
+                            <li v-bind:class="[asctypeClass=='adddatetimeasc' ? 'shover' : '']">
+                                <button type="button" @click="setasctype('adddatetimeasc')"  value="adddatetimeasc">发布从旧到新</button>
                             </li>
                         </ul>
                     </div>
@@ -333,6 +342,7 @@
             </div>
             <!-- 排序  end-->
         </form>
+        </div>
     </div>
     <!-- 筛选 弹层 end-->
       

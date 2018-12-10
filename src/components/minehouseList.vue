@@ -2,7 +2,7 @@
     <div class="jk-publish">
 
         <!-- 未发布 -->
-        <div class="jk-publish-item">
+        <!-- <div class="jk-publish-item">
             <router-link class="houseLink" :to="{name: 'minehousePublisManage', params: {publishType: 1}}"></router-link>
             <div class="jk-publish-itemImg w45">
                  <img :src="noPublish" alt="未发布"/>
@@ -14,7 +14,7 @@
             <div class="jk-publish-itemRight">
                  <img :src="iconRight" alt="" />
             </div>
-        </div>
+        </div> -->
 
         <!-- 已发布 -->
         <div class="jk-publish-item">
@@ -24,7 +24,7 @@
             </div>
             <div class="jk-publish-itemType">
                 <p class="publishtit">已发布</p>
-                <p class="publishcon">发布成功吧，可再次查看详细信息</p>
+                <p class="publishcon">发布成功，可随时查看已发布信息</p>
             </div>
             <div class="jk-publish-itemRight">
                 <img :src="iconRight" alt="" />

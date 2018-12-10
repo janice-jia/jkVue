@@ -41,7 +41,7 @@
                     <input class="jk-group-input" type="text" placeholder="例:曙光小区" v-model="sendDataInfo.community"/>
                 </div>
             </div>
-            <div class="jk-group" v-show="rentType==1">
+            <div class="jk-group">
                 <div class="jk-group-tit">门牌号：</div>
                 <div class="jk-group-inputInfo">
                     <input class="jk-group-input" type="text" v-model="sendDataInfo.housenumber" name="roomNum" placeholder="例:1-2-203"/>
@@ -108,7 +108,7 @@
                     </div>
                 </div>
             </div>
-            <div class="jk-group"  v-show="rentType==1">
+            <div class="jk-group">
                 <div class="jk-group-tit">车位：</div>
                 <div class="jk-group-inputInfo">
                     <div class="jk-checkBoxSkin">
@@ -644,7 +644,15 @@
             }
         },
         created(){
-            console.info("uderid=="+this.GLOBAL.userid+',,openid='+this.GLOBAL.openid)
+            console.info("uderid=="+this.GLOBAL.userid+',,openid='+this.GLOBAL.openid);
+
+            //判断是否是短租。。如果是短租更新选项
+            if(this.$route.params.renttype == 3){
+                //最小租期
+                this.periodSlots = [{
+                    values:['','一天','七天','十五天','一个月']
+                }]
+            }
         },
         mounted(){
             this.getProvince();
@@ -1151,11 +1159,15 @@
                     this.sendDataInfo.carport = '无';
                 };
 
+                if(this.$route.params.renttype == 1) this.sendDataInfo.renttype='整租';
+                if(this.$route.params.renttype == 2) this.sendDataInfo.renttype='合租';
+                if(this.$route.params.renttype == 3) this.sendDataInfo.renttype='短租';
+
                 console.info('ssss',this.sendDataInfo);
                 //根据类型处理不同的验证
-                if(this.rentType == 2){
-                    delete this.sendDataInfo.housenumber;//门牌号
-                    delete this.sendDataInfo.carport;  //车位
+                if(this.rentType == 2 || this.rentType == 3){
+                    // delete this.sendDataInfo.housenumber;//门牌号
+                    // delete this.sendDataInfo.carport;  //车位
                     delete this.sendDataInfo.occupancynum; //宜住人数
                     delete this.sendDataInfo.rentcontent; //租金包含项目
                 }
@@ -1188,6 +1200,7 @@
                 };
 
                 sendData.userid = this.userid;
+                
                 // this.$http.post(apiUrl,{params:sendData}).then(function () {
                 this.$http.get(apiUrl,{params:sendData}).then(function () {
                     this.$router.push({ name:'secondStep',params: { houseid:sendData.houseid}});

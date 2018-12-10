@@ -29,6 +29,20 @@
             </div>
         </div>
 
+        <!-- 短租 -->
+        <div class="jk-publish-item" @click="toPublishPage(3)">
+            <div class="jk-publish-itemImg">
+                <img :src="menuImg3" alt="短租" />
+            </div>
+            <div class="jk-publish-itemType">
+                <p class="publishtit">短租</p>
+                <p class="publishcon">最短一天起租</p>
+            </div>
+            <div class="jk-publish-itemRight">
+                <img :src="iconRight" alt="" />
+            </div>
+        </div>
+
         <!-- 底部导航 start-->
         <bottomCom></bottomCom>
         <!-- 底部导航 end-->
@@ -40,6 +54,7 @@
 
     import menuImg1 from '../../assets/menu-item-1.png';
     import menuImg2 from '../../assets/menu-item-2.png';
+    import menuImg3 from '../../assets/menu-item-3.png';
     import iconRight from '../../assets/icon-right.png';
 
 
@@ -50,6 +65,7 @@
             return {
                 menuImg1: menuImg1,
                 menuImg2: menuImg2,
+                menuImg3: menuImg3,
                 iconRight: iconRight,
                 imgWenSiteUrl:this.GLOBAL.imgWenSiteUrl,
                 isauth:false

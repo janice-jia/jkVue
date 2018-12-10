@@ -28,7 +28,9 @@
                     </div>
                     <div class="jk-cont-item-price oneLine">
                         <!-- 2000元/月 -->
-                        {{item.rent + '元/月'}}
+                        {{item.rent}}
+                        <span v-show="item.rentunit=='日租'">元/天</span>
+                        <span v-show="item.rentunit=='月租'">元/月</span>
                     </div>
                     <div class="jk-cont-item-tag oneLine">
                         <router-link class="jk-tag-Link" :to="{name: 'mineOrderInfo', params: {houseid: item.houseid}}">
