@@ -67,7 +67,7 @@
                     <span class="desclabel">楼层</span>
                     <span class="desccon">
                     	<!--高层/15层-->
-                        {{houseInfoAll.floordesc ? houseInfoAll.floordesc+'/' : ''}}{{houseInfoAll.floorcount ? '共'+houseInfoAll.floorcount : ''}}
+                        {{houseInfoAll.floordesc ? houseInfoAll.floordesc+'/' : ''}}{{houseInfoAll.floorcount ? '总'+houseInfoAll.floorcount : ''}}
                     </span>
                 </div>
             </div>
@@ -272,7 +272,9 @@
                         </div>
                         <div class="jk-recommend-conPrice">
                             <!-- 1860元/月 -->
-                            {{item.rent+'元/月'}}
+                            {{item.rent ? item.rent : '0'}}
+                            <span v-show="item.rentunit=='日租'">元/天</span>
+                            <span v-show="item.rentunit=='月租'">元/月</span>
                         </div>
                         <div class="jk-recommend-conDesc">
                             <span>

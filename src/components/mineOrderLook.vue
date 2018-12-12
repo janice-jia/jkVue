@@ -24,7 +24,7 @@
                             <span>
                             	<!--2/6层-->
                             	{{houseBasicInfo.floordesc ? houseBasicInfo.floordesc+'/' : ''}}
-                                {{houseBasicInfo.floorcount ? '共'+houseBasicInfo.floorcount : ''}}
+                                {{houseBasicInfo.floorcount ? '总'+houseBasicInfo.floorcount : ''}}
                             </span>
                         </p>
                     </div>

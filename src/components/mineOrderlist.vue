@@ -24,7 +24,7 @@
                         {{item.renttype+' . '}}{{item.community}}{{item.housestructure}}
                     </div>
                     <div class="jk-cont-item-desc oneLine">
-                        {{item.area}}m² | {{item.floordesc ? item.floordesc+'/' : ''}}{{item.floorcount ? '共'+item.floorcount : ''}}
+                        {{item.area}}m² | {{item.floordesc ? item.floordesc+'/' : ''}}{{item.floorcount ? '总'+item.floorcount : ''}}
                     </div>
                     <div class="jk-cont-item-price oneLine">
                         <!-- 2000元/月 -->
