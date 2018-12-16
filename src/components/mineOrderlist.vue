@@ -21,7 +21,8 @@
                 <div class="jk-cont-item-main jkFlexItem">
                     <div class="jk-cont-item-tit oneLine">
                         <!-- 合租。丰西北里3居室-南卧 -->
-                        {{item.renttype+' . '}}{{item.community}}{{item.housestructure}}
+                        {{item.title}}
+                        <!-- {{item.renttype+' . '}}{{item.community}}{{item.housestructure}} -->
                     </div>
                     <div class="jk-cont-item-desc oneLine">
                         {{item.area}}m² | {{item.floordesc ? item.floordesc+'/' : ''}}{{item.floorcount ? '总'+item.floorcount : ''}}

@@ -20,7 +20,7 @@
                 <div class="jk-cont-item-main jkFlexItem">
                     <div class="jk-cont-item-tit oneLine">
                         <!-- 合租。丰西北里3居室-南卧 -->
-                        {{item.community}}
+                        {{item.title}}
                     </div>
                     <div class="jk-cont-item-desc oneLine">
                         <!-- 15m²| 2/6 -->

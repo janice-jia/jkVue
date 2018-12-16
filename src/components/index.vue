@@ -152,7 +152,7 @@
             <!--筛选的类型 Area区域 Price租金 HouseType户型 Screen筛选 Sort排序-->
             <input type="hidden" name="searchType" id="searchType">
             <!-- 筛选 nav start-->
-            <div class="jk-screen">
+            <div class="jk-screen" id="showJkScreen">
                 <div class="jk-screen-menu jkFlex">
                     <div class="jk-screen-menu-item">
                         <p class="jkScreenNav menuArea" data-show-screen="Area">
@@ -415,7 +415,7 @@ export default {
         this.setQuery();
 
         //吸顶条效果
-        indexJs.fixed(200);
+        // indexJs.fixed(200);
     },
     mounted(){
         // 首页展示筛选效果

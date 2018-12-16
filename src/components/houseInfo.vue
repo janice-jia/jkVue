@@ -21,9 +21,10 @@
     <div class="jk-house">
         <div class="jk-house-name">
             <!--整租·新潮嘉园二区1室1厅1卫-->
-            {{houseInfoAll.renttype ? houseInfoAll.renttype +' · ' : ''}}
+            {{houseInfoAll.title}}
+            <!-- {{houseInfoAll.renttype ? houseInfoAll.renttype +' · ' : ''}}
             {{houseInfoAll.community ? houseInfoAll.community : ''}}
-            {{houseInfoAll.housestructure ? houseInfoAll.housestructure : ''}}
+            {{houseInfoAll.housestructure ? houseInfoAll.housestructure : ''}} -->
         </div>
         <div class="jk-house-price">
             <!--3000元/每月-->
@@ -267,8 +268,9 @@
                         <div class="jk-recommend-conTit">
                             <!-- 新悦家园4居室-北卧 -->
                             <!-- {{item.title}} -->
-                            {{item.POI ? item.POI :''}}
-                            {{item.community ? item.community :''}}
+                            {{item.title}}
+                            <!-- {{item.POI ? item.POI :''}}
+                            {{item.community ? item.community :''}} -->
                         </div>
                         <div class="jk-recommend-conPrice">
                             <!-- 1860元/月 -->

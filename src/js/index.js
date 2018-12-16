@@ -91,10 +91,10 @@ export default {
         for(var i=0; i<jkScreenNav.length; i++){
             jkScreenNav[i].onclick = function(){
                 $('#jkScreen').show();
-                document.addEventListener("touchmove",function(e){
-                    e.preventDefault();
-                    e.stopPropagation();
-                },false);
+                // document.addEventListener("touchmove",function(e){
+                //     e.preventDefault();
+                //     e.stopPropagation();
+                // },false);
                 var ScreenItemId = this.getAttribute('data-show-screen');
                 //设置当前筛选的类型
                 $('#searchType').val(ScreenItemId)

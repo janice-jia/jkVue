@@ -661,10 +661,20 @@ a:focus{
 
 /*筛选弹层 start*/
 // 筛选nav
+#showJkScreen{
+    .jk-screen-menu{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 0 0.15rem 0 0.15rem;
+        background: rgb(255, 255, 255);
+    }
+}
 .jk-screen{
     /*滚过初始位置时自动吸顶*/
-    position: -webkit-sticky;
-    position: sticky;
+    // position: -webkit-sticky;
+    // position: sticky;
     /*吸顶时的定位*/
     top: 0;
     left: 0;
@@ -674,6 +684,7 @@ a:focus{
     .jk-screen-menu{
         border-bottom:2px solid rgb(214,214,214);
         height: 0.9rem;
+        
         .jk-screen-menu-item {
             text-align: left;
             -webkit-box-flex: 1;
@@ -713,7 +724,7 @@ a:focus{
                         right: 0;
                         top: 0;
                         width: 0.2rem;
-                        height: 98%;
+                        height: 95%;
                         background: url("../assets/icon-down.png") rgb(255, 255, 255) no-repeat center;
                         background-size: 0.1rem 0.07rem;
                     }
@@ -765,6 +776,9 @@ a:focus{
     padding: 0 0.15rem 0 0.15rem;
     z-index: 1000;
     overflow:auto;
+    #searchForm{
+        margin-top: 0.9rem;
+    }
     .jkScreenBox{
         width: 100%;
         height: auto;
@@ -775,6 +789,7 @@ a:focus{
 
         // 户型、筛选
         .jkscreenHouseType,.jkscreenScreen{
+            margin-top: 1.2rem;
             padding-bottom: 1.5rem;
             .jk-screenScreen-tit,
             .jk-houseType-tit{
