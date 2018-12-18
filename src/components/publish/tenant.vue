@@ -1180,22 +1180,97 @@
 
 
                 let sendData = this.sendDataInfo,
-                    isDataNull = false;
+                    isDataNull = false,
+                    nullItem = '';
                 sendData.houseid = this.houseId;
                 for(let item in sendData){//遍历json对象的每个key/value对,item为key
                     if(!sendData[item]){
                         isDataNull = true;
+                        if(item == 'province' || item == 'city' || item=='county' ){
+                            nullItem = '请选择地区'
+                        }
+                        switch(item) {
+                            case 'community':
+                                nullItem = '请填写小区名称'; 
+                                break;
+                            case 'housenumber':
+                                nullItem = '请填写门牌号'; 
+                                break;
+                            case 'POI':
+                                nullItem = '请选择所在POI';
+                                break;
+                            case 'area':
+                                nullItem = '请填写面积';
+                                break;
+                            case 'decorated':
+                                nullItem = '请选择装修';
+                                break;
+                            case 'housestructure':
+                                nullItem = '请选择厅室';
+                                break;
+                            case 'direction':
+                                nullItem = '请选择朝向';
+                                break;
+                            case 'floor':
+                                nullItem = '请选择楼层'; 
+                                break;
+                            case 'floorcount':
+                                nullItem = '请选择总楼层';
+                                break;
+                            case 'checkin':
+                                nullItem = '请选择入住时间';
+                                break;
+                            case 'occupancynum':
+                                nullItem = '请选择宜住人数'; 
+                                break;
+                            case 'openhomedate':
+                                nullItem = '请选择看房时间';
+                                break;
+                            case 'rentunit':
+                                nullItem = '请选择租金形式'; 
+                                break;
+                            case 'period':
+                                nullItem = '请选择最小租期';
+                                break;
+                            case 'rent':
+                                nullItem = '请填写租金';
+                                break;
+                            case 'payment':
+                                nullItem = '请选择付款方式';
+                                break;
+                            case 'rentcontent':
+                                nullItem = '请选择租金包含费用';
+                                break;
+                            case 'realname':
+                                nullItem = '请填写联系人姓名';
+                                break;
+                            case 'ownermobile':
+                                nullItem = '请填写联系电话';
+                                break;
+                            case 'houseid':
+                                nullItem = '请上传照片';
+                                break;
+                        }
                     }
                 };
                 
                 
 
                 if(isDataNull == true || !this.houseId){
-                    Toast({
-                        message: '您有未选择的选项，请检查',
-                        position: 'middle',
-                        duration: 2000
-                    });
+                    if(nullItem){
+                        Toast({
+                            message: nullItem,
+                            position: 'middle',
+                            duration: 2000
+                        });
+                    }else{
+                        Toast({
+                            message: '您有未选择的选项，请检查',
+                            position: 'middle',
+                            duration: 2000
+                        });
+                    }
+                    
                     return false;
                 };
 
