@@ -308,10 +308,9 @@
         <!-- 玖快租房 start-->
         <div class="jk-icon" v-if="userId">
             <div class="jk-icon-jk">
-                <img src="../assets/icon-jk.png" alt="玖快租房" />
-                玖快租房
+                <img src="../assets/iconJk.jpg" alt="玖快租房" />
             </div>
-            <div class="jk-icon-desc">租房就是快</div>
+            <!--<div class="jk-icon-desc">租房就是快</div>-->
         </div>
 
         <div class="jk-icon" v-show="!userId">
