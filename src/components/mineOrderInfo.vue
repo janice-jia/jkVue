@@ -1,10 +1,12 @@
 <template>
     <div class="jk-lookbox">
     	<div class="jk-lookcon">
-                <div class="jk-lookconImg">
+                <div class="jk-lookconImg" style="position: relative">
+                    <router-link class="houseLink" :to="{name: 'houseInfo', params: {houseid: appointmentDeatil.houseid}}"></router-link>
                     <img :src="imgWenSiteUrl+appointmentDeatil.thumbnailurl" alt="" />
                 </div>
-                <div class="jk-lookDesc">
+                <div class="jk-lookDesc" style="position: relative">
+                    <router-link class="houseLink" :to="{name: 'houseInfo', params: {houseid: appointmentDeatil.houseid}}"></router-link>
                     <div class="jkFlex">
                         <p class="tit">
                         	<!--[订]新悦家园-3居-->

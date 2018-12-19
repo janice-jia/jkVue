@@ -36,7 +36,8 @@
                         <span v-show="item.rentunit=='月租'">元/月</span>
                     </div>
                     <div class="jk-cont-item-tag oneLine">
-                        <p>八通线/梨园</p>     
+                        <!--<p>八通线/梨园</p>     -->
+                        <!--<p>{{item.area+'m²'}}{{'|'+item.direction}}{{'|'+item.POI?item.POI:''}}</p>-->
                     </div>
                 </div>
             </div>
