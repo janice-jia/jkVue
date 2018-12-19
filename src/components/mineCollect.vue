@@ -37,7 +37,7 @@
                     </div>
                     <div class="jk-cont-item-tag oneLine">
                         <!--<p>八通线/梨园</p>     -->
-                        <!--<p>{{item.area+'m²'}}{{'|'+item.direction}}{{'|'+item.POI?item.POI:''}}</p>-->
+                        <p>{{item.POI}}</p>
                     </div>
                 </div>
             </div>
