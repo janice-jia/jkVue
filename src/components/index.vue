@@ -2,10 +2,10 @@
 <div>
 <div class="jk-wap">
         <!-- 搜索 start-->
-        <!-- <div class="jk-search jkFlex">
+        <div class="jk-search jkFlex">
             <a href="javascript:;" class="jk-search-address">邯郸</a>
             <input class="jk-search-text jkFlexItem" id="searchText" type="text" placeholder="您想住哪？" @focus="goSearchPage"/>
-        </div> -->
+        </div>
         <!-- 搜索 end-->
 
         <!-- 导航 start-->
@@ -616,6 +616,8 @@ export default {
             queryData.apicommand = 'gethousepage'; 
             if(this.keyword){
                 queryData.keyword = this.keyword; //类型
+            }else if(this.$route.query.keyword){
+                queryData.keyword = this.$route.query.keyword; //搜索关键字
             }else if(this.isrecommend){
                 queryData.isrecommend = this.isrecommend; //类型
             }else{

@@ -3,13 +3,13 @@
     <div class="jk-wap">
         <div class="jk-searchbox">
             <form action="/">
-                <input type="text" placeholder="您想住哪？" id="searchVal" name="keyword" value="海淀"/>
+                <input type="text" placeholder="您想住哪？" id="searchVal" name="keyword" value=""/>
                 <a class="jk-search-clear" id="clearSearch" href="javascript:;"></a>
             </form>
         </div>
 
         <!-- 搜索历史 -->
-        <div class="jk-searchList" id="searchList">
+        <!-- <div class="jk-searchList" id="searchList">
             <ul>
                 <li class="jkFlex">
                     <div class="jk-search-tit jkFlexItem gray">历史记录</div>
@@ -24,7 +24,7 @@
                         <div class="jk-search-desc">不限制房型/不限</div>
                     </li>
             </ul>
-        </div>
+        </div> -->
 
         <!-- 搜索推荐 -->
         <!-- <div class="jk-searchList">
