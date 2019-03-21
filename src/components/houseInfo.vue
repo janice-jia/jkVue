@@ -193,9 +193,9 @@
                 <p class="jk-house-conTit">燃气灶</p>
             </div>
             <div class="jk-house-config-tag-item" 
-            v-if="iscontains(houseInfoAll.housecontent,'抽油烟机')">
+            v-if="iscontains(houseInfoAll.housecontent,'抽烟机')">
                 <p class="jk-house-conimg"><img src="../assets/config-kitchen-ventilator.png" alt="抽油烟机" /></p>
-                <p class="jk-house-conTit">抽油烟机</p>
+                <p class="jk-house-conTit">抽烟机</p>
             </div>
             <div class="jk-house-config-tag-item" 
             v-if="iscontains(houseInfoAll.housecontent,'独卫')">
