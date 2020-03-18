@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "acorn": ">=5.7.4",
     "es6-promise": "^4.2.5",
     "mint-ui": "^2.2.13",
     "vue": "^2.5.2",
