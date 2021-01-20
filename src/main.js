@@ -9,7 +9,11 @@ import VueResource from 'vue-resource'
 import VueScroller from 'vue-scroller'
 // 引入全部组件
 import Mint from 'mint-ui';
+
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(Mint);
+Vue.use(ElementUI);
 import 'mint-ui/lib/style.css';
 import global_ from './global'//引用文件
 Vue.prototype.GLOBAL = global_//挂载到Vue实例上面
