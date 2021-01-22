@@ -16,34 +16,42 @@
 
     <div class="nav">
         <el-breadcrumb separator="/" class="">
-            <el-breadcrumb-item :to="{ path: '/' }">宿管管理</el-breadcrumb-item>
+            <!--<el-breadcrumb-item :to="{ path: '/' }">宿管管理</el-breadcrumb-item>-->
+            宿管管理
         </el-breadcrumb>
     </div>
 
     <el-row type="flex" class="home-nav">
         <el-col :span="6">
-            <router-link class="houseLink" :to="{name: 'publish'}">
+            <router-link class="houseLink" :to="{name: 'dormitoryCheck'}">
                 <i class="el-icon-time"></i>
                 <div class="grid-content bg-purple">实时查寝</div>
             </router-link>
         </el-col>
         <el-col :span="6">
-            <i class="el-icon-circle-plus"></i>
-            <div class="grid-content bg-purple">实习请加上报</div>
+            <router-link class="houseLink" :to="{name: 'internshipReport'}">
+                <i class="el-icon-circle-plus"></i>
+                <div class="grid-content bg-purple">实习请加上报</div>
+            </router-link>
         </el-col>
         <el-col :span="6">
-            <i class="el-icon-document-copy"></i>
-            <div class="grid-content bg-purple">宿管综合报表</div>
+            <router-link class="houseLink" :to="{name: 'dormitoryReport'}">
+                <i class="el-icon-document-copy"></i>
+                <div class="grid-content bg-purple">宿管综合报表</div>
+            </router-link>
         </el-col>
         <el-col :span="6">
-            <i class="el-icon-tickets"></i>
-            <div class="grid-content bg-purple">学院宿管报表</div>
+            <router-link class="houseLink" :to="{name: 'dormitory'}">
+                <i class="el-icon-tickets"></i>
+                <div class="grid-content bg-purple">学院宿管报表</div>
+            </router-link>
         </el-col>
     </el-row>
 
     <div class="nav">
         <el-breadcrumb separator="/" class="">
-            <el-breadcrumb-item :to="{ path: '/' }">更多</el-breadcrumb-item>
+            <!--<el-breadcrumb-item :to="{ path: '/' }">更多</el-breadcrumb-item>-->
+            更多
         </el-breadcrumb>
     </div>
 
@@ -65,7 +73,6 @@
 <script type="text/ecmascript-6">
 import bottomCom from './bottomCom.vue';
 
-import {Toast, Cell} from 'mint-ui';
 export default {
     name: 'index',
     data () {

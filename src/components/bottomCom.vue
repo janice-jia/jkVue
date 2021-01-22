@@ -6,7 +6,9 @@
             <div class="jk-nav-item-icon nav-icon01"></div>
             <p>首页</p>
               -->
-            <i class="el-icon-s-home"></i>
+            <router-link class="houseLink" :to="{name: 'index'}">
+                <i class="el-icon-s-home"></i>
+            </router-link>
         </div>
         <!-- <div v-bind:class="[routeName=='publish' ? 'jk-nav-item jkFlexItem nav-hover' : 'jk-nav-item jkFlexItem']">
             <router-link class="houseLink" :to="{name: 'publish'}"></router-link>
