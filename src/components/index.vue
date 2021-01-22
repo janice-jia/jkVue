@@ -28,12 +28,12 @@
                 <div class="grid-content bg-purple">实时查寝</div>
             </router-link>
         </el-col>
-        <el-col :span="6">
-            <router-link class="houseLink" :to="{name: 'internshipReport'}">
-                <i class="el-icon-circle-plus"></i>
-                <div class="grid-content bg-purple">实习请加上报</div>
-            </router-link>
-        </el-col>
+        <!--<el-col :span="6">-->
+            <!--<router-link class="houseLink" :to="{name: 'internshipReport'}">-->
+                <!--<i class="el-icon-circle-plus"></i>-->
+                <!--<div class="grid-content bg-purple">实习请加上报</div>-->
+            <!--</router-link>-->
+        <!--</el-col>-->
         <el-col :span="6">
             <router-link class="houseLink" :to="{name: 'dormitoryReport'}">
                 <i class="el-icon-document-copy"></i>
@@ -42,7 +42,7 @@
         </el-col>
         <el-col :span="6">
             <router-link class="houseLink" :to="{name: 'dormitory'}">
-                <i class="el-icon-tickets"></i>
+                <i class="el-icon-reading"></i>
                 <div class="grid-content bg-purple">学院宿管报表</div>
             </router-link>
         </el-col>
