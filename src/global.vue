@@ -1,5 +1,5 @@
 <script>
-const  imgWenSiteUrl = 'http://admin.9kuaiz.com';
+const  imgWenSiteUrl = 'http://XXX';
 let userid=getCookie('userid');
 const openid=getCookie('openid');
 const telNumber = '13111304441'

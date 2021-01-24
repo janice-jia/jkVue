@@ -2,7 +2,7 @@
 <div class="container">
     <el-row class="avatar">
         <el-col :span="6">
-            <el-avatar :size="size" :src="circleUrl"></el-avatar>
+            <el-avatar size="medium" :src="circleUrl"></el-avatar>
         </el-col>
         <el-col :span="18">
              <div class="text item">
