@@ -65,6 +65,7 @@
             <div class="grid-content bg-purple">登录/退出</div>
         </el-col>
     </el-row>
+    输出信息：
     {{rData}}
     <bottomCom></bottomCom>
 </div>
@@ -99,11 +100,9 @@ export default {
     },
     methods: {
         setUserInfo(){
-            this.$http.get('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5463e0c4f2ed8fca&redirect_uri=http%3a%2f%2ffacereocgnition.bjzdyh.com%2fWxAPI%2fWxUserAPI.ashx%3fwxcommand%3dGetUser&response_type=code&scope=snsapi_base&state=123#wechat_redirect').then(function (res) {
-                this.rData = res.body;
-                if (res.body.code == '200') {
-                    var data = res.body.data || {};
-                }
+            this.rData = {test:'请求前'};
+            this.$http.get('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5463e0c4f2ed8fca&redirect_uri=http%3a%2f%2ffacereocgnition.bjzdyh.com%2fWxAPI%2fWxUserAPI.ashx%3fcommand%3dGetUser&response_type=code&scope=snsapi_base&state=123#wechat_redirect').then(function (res) {
+                this.rData = res || {test:'请求成功了'};
             })
         }
     }
