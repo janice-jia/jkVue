@@ -2,14 +2,14 @@
 <div class="container">
     <el-row class="avatar">
         <el-col :span="6">
-            <el-avatar size="medium" :src="circleUrl"></el-avatar>
+            <el-avatar size="medium" :src="headimgurl"></el-avatar>
         </el-col>
         <el-col :span="18">
              <div class="text item">
-                XXXXX工
+                {{nickname}}
             </div>
             <div class="text item">
-                【公寓科】
+                【 {{sex}} 】
             </div>
         </el-col>
     </el-row>
@@ -41,7 +41,7 @@
             </router-link>
         </el-col>
         <el-col :span="6">
-            <router-link class="houseLink" :to="{name: 'dormitory'}">
+            <router-link class="houseLink" :to="{name: 'dormitoryReport1'}">
                 <i class="el-icon-reading"></i>
                 <div class="grid-content bg-purple">学院宿管报表</div>
             </router-link>
@@ -65,6 +65,7 @@
             <div class="grid-content bg-purple">登录/退出</div>
         </el-col>
     </el-row>
+    {{rData}}
     <bottomCom></bottomCom>
 </div>
 
@@ -77,7 +78,10 @@ export default {
     name: 'index',
     data () {
         return {
-            circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+            rData: {},
+            nickname: this.GLOBAL.nickname || '微信名称',
+            sex: this.GLOBAL.sex || '未知',
+            headimgurl: this.GLOBAL.headimgurl || "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
         }
     },
     beforeCreated(){
@@ -85,6 +89,7 @@ export default {
         // this.getCity();
     },
     created () {
+        this.setUserInfo()
     },
     mounted(){
        
@@ -93,7 +98,14 @@ export default {
         bottomCom
     },
     methods: {
-        
+        setUserInfo(){
+            this.$http.get('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5463e0c4f2ed8fca&redirect_uri=http%3a%2f%2ffacereocgnition.bjzdyh.com%2fWxAPI%2fWxUserAPI.ashx%3fwxcommand%3dGetUser&response_type=code&scope=snsapi_base&state=123#wechat_redirect').then(function (res) {
+                this.rData = res.body;
+                if (res.body.code == '200') {
+                    var data = res.body.data || {};
+                }
+            })
+        }
     }
 }
 </script>

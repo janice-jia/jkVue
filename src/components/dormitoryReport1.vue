@@ -2,20 +2,20 @@
     <div class="container">
         <div class="nav blue">
             <el-breadcrumb separator="/" class="">
-                宿管综合报表
+                学院宿管报表
             </el-breadcrumb>
         </div>
         <el-row style="margin:10px 14px;font-size:12px;font-weight:bold;color:gray;">
-            <el-col :span="12">宿舍楼：</el-col>
+            <el-col :span="12">学院：</el-col>
             <el-col :span="12" >报表日期：</el-col>
         </el-row>
         <el-row>
             <el-col :span="12"  style="padding:0 10px">
-                <el-select v-model="form.dormbuildingid" @change="DormitoryReport" placeholder="请选择宿舍楼">
+                <el-select v-model="form.majorid" @change="DormitoryReport" placeholder="请选择学院">
                     <el-option 
-                        v-for="item in dormbuilding"
+                        v-for="item in majorList"
                         :key="item.id"
-                        :label="item.dormbuildingname"
+                        :label="item.majorname"
                         :value="item.id"
                     >
                     </el-option>
@@ -75,8 +75,8 @@
         created () {
             // var date = new Date()
             // this.form.currentdate = date.getTime() + '';
-            // 获取宿舍楼
-            this.GetAllDormbuilding();
+            // 获取学院
+            this.GetMajorList();
         },
         mounted(){
 
@@ -85,16 +85,16 @@
             bottomCom
         },
         methods: {
-            // 获取宿舍楼
-            GetAllDormbuilding(){
-                this.$http.get('/WxAPI/DormitoryManageAPI.ashx?command=GetAllDormbuilding').then(function (res) {
+            // 获取学院
+            GetMajorList(){
+                this.$http.get('/WxAPI/DormitoryManageAPI.ashx?command=GetMajorList').then(function (res) {
                     if (res.body.code == '200') {
-                        this.dormbuilding = res.body.data || [];
+                        this.majorList = res.body.data || [];
                     }
                 })
             },
             DormitoryReport() {
-                if(!this.form.dormbuildingid){
+                if(!this.form.majorid){
                     // this.$message.error('请选择宿舍楼');
                     return
                 }else if(!this.form.currentdate){
@@ -102,7 +102,7 @@
                     return
                 }
                 this.resultData = {}
-                this.$http.get('WxAPI/DormitoryManageAPI.ashx?command=DormitoryReport&dormbuildingid='+this.form.dormbuildingid+'&currentdate='+this.form.currentdate).then(function (res) {
+                this.$http.get('WxAPI/DormitoryManageAPI.ashx?command=MajorReport&majorid='+this.form.majorid+'&currentdate='+this.form.currentdate).then(function (res) {
                     if (res.body.code == '200') {
                         this.resultData = res.body.data || {};
                     }else{

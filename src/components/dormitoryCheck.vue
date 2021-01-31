@@ -151,6 +151,8 @@
                 this.$http.get('/WxAPI/DormitoryManageAPI.ashx?command=RealTimeHeadCount&dormbuildingid=2&majorid=29&floor=2层&dormitoryno=102&page=1&limit=10').then(function (res) {
                     if (res.body.code == '200') {
                         this.resultData = res.body || {};
+                    }else{
+                        this.$message.error(res.msg || '查询失败！');
                     }
                 })
             }

@@ -1,10 +1,16 @@
 <script>
-const  imgWenSiteUrl = 'http://XXX';
+const  imgWenSiteUrl = 'http://facereocgnition.bjzdyh.com';
+document.cookie='nickname=janice';
+
 let userid=getCookie('userid');
 const openid=getCookie('openid');
-const telNumber = '13111304441'
+const nickname=getCookie('nickname');
+const headimgurl=getCookie('headimgurl');
+const sex=getCookie('sex');
+// const telNumber = '13111304441'
 // if(!userid) userid = 15
 // if(!userid) userid = 12
+
 
 function getCookie(cookie_name){
     // 定义一个函数，用来读取特定的cookie值。
@@ -24,9 +30,8 @@ function getCookie(cookie_name){
 }
   export default
   {
-    imgWenSiteUrl, //图片路径前缀
-    userid,//用户id
-    openid,//用户openid
-    telNumber
+    nickname, 
+    headimgurl,
+    sex
   }
 </script>

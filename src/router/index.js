@@ -3,12 +3,13 @@ import Router from 'vue-router'
 import index from '@/components/index'
 import dormitoryCheck from '@/components/dormitoryCheck'
 import dormitoryReport from '@/components/dormitoryReport'
+import dormitoryReport1 from '@/components/dormitoryReport1'
 
 
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
     {
       path: '/',
@@ -24,6 +25,11 @@ export default new Router({
       path: '/dormitoryReport',
       name:'dormitoryReport',
       component: dormitoryReport
+    },
+    {
+      path: '/dormitoryReport1',
+      name:'dormitoryReport1',
+      component: dormitoryReport1
     }
     
   ]
