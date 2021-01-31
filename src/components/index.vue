@@ -5,7 +5,7 @@
             <el-avatar size="medium" :src="headimgurl"></el-avatar>
         </el-col>
         <el-col :span="18">
-             <div class="text item">
+             <div class="text item" :v-bind="nickname">
                 {{nickname}}
             </div>
             <div class="text item">
@@ -65,8 +65,10 @@
             <div class="grid-content bg-purple">登录/退出</div>
         </el-col>
     </el-row>
+    <!-- 所有的cookie
+    {{allcookies}}
     输出信息：
-    {{rData}}
+    {{rData}} -->
     <bottomCom></bottomCom>
 </div>
 
@@ -79,7 +81,9 @@ export default {
     name: 'index',
     data () {
         return {
+            url:'',
             rData: {},
+            allcookies: this.GLOBAL.allcookies,
             nickname: this.GLOBAL.nickname || '微信名称',
             sex: this.GLOBAL.sex || '未知',
             headimgurl: this.GLOBAL.headimgurl || "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -101,9 +105,33 @@ export default {
     methods: {
         setUserInfo(){
             this.rData = {test:'请求前'};
-            this.$http.get('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5463e0c4f2ed8fca&redirect_uri=http%3a%2f%2ffacereocgnition.bjzdyh.com%2fWxAPI%2fWxUserAPI.ashx%3fcommand%3dGetUser&response_type=code&scope=snsapi_base&state=123#wechat_redirect').then(function (res) {
-                this.rData = res || {test:'请求成功了'};
-            })
+            var _this = this;
+
+            _this.url = window.location.href
+            _this.nickname = _this.GetQueryString('nickname') || '微信名称'
+            if(_this.nickname) _this.nickname = decodeURIComponent(_this.GetQueryString('nickname'))
+            if(_this.nickname == 'undefined') _this.nickname = '微信名称'
+            _this.sex = _this.GetQueryString('sex')
+            if(_this.sex) _this.sex = _this.sex == 2 ? '女' : '男'
+            
+            if(!_this.nickname || _this.nickname == '微信名称'){
+                console.info('重定向')
+                var path = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5463e0c4f2ed8fca&redirect_uri=http%3a%2f%2ffacereocgnition.bjzdyh.com%2fWxAPI%2fWxUserAPI.ashx%3fcommand%3dGetUser&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect'
+                var a = document.createElement("a");
+                a.setAttribute("href", path);
+                a.click();
+            }
+            
+        },
+        GetQueryString(name){
+            var search = location.search.slice(1); //得到get方式提交的查询字符串
+            var arr = search.split("&");
+            for (var i = 0; i < arr.length; i++) {
+            var ar = arr[i].split("=");
+            if (ar[0] == name) {
+                return ar[1];
+            }
+            }
         }
     }
 }

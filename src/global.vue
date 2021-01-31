@@ -1,12 +1,13 @@
 <script>
 const  imgWenSiteUrl = 'http://facereocgnition.bjzdyh.com';
-document.cookie='nickname=janice';
+// document.cookie='nickname=janice';
 
 let userid=getCookie('userid');
 const openid=getCookie('openid');
 const nickname=getCookie('nickname');
 const headimgurl=getCookie('headimgurl');
 const sex=getCookie('sex');
+const allcookies = getCookie();
 // const telNumber = '13111304441'
 // if(!userid) userid = 15
 // if(!userid) userid = 12
@@ -15,6 +16,7 @@ const sex=getCookie('sex');
 function getCookie(cookie_name){
     // 定义一个函数，用来读取特定的cookie值。
     var allcookies = document.cookie;
+    if(!cookie_name) return allcookies;
     var cookie_start = allcookies.indexOf(cookie_name); //寻找名第一次出现的位置
     // 如果找到了就代表cookie存在
     // 反之，就说明不存在。  
@@ -32,6 +34,7 @@ function getCookie(cookie_name){
   {
     nickname, 
     headimgurl,
-    sex
+    sex,
+    allcookies
   }
 </script>
