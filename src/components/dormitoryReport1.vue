@@ -46,7 +46,8 @@
                 <p class="num">{{resultData.inoutcount || 0}}</p>
             </el-col>
         </el-row>
-        <!--输出结果：{{resultData}}-->
+        <!--请求参数：<br>{{form}}<br>-->
+        <!--输出结果：<br>{{resultData}}<br>-->
         <!--<bottomCom></bottomCom>-->
     </div>
 
@@ -102,8 +103,9 @@
                     // this.$message.error('请选择时间');
                     return
                 }
-                this.resultData = {}
-                this.$http.get('WxAPI/DormitoryManageAPI.ashx?command=MajorReport&majorid='+this.form.majorid+'&currentdate='+this.form.currentdate).then(function (res) {
+                // this.resultData = {test:'查询前：'}
+                this.$http.get('/WxAPI/DormitoryManageAPI.ashx?command=MajorReport&majorid='+this.form.majorid+'&currentdate='+this.form.currentdate).then(function (res) {
+                    this.resultData = res || {};
                     if (res.body.code == '200') {
                         this.resultData = res.body.data || {};
                     }else{

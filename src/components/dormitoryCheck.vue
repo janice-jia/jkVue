@@ -93,7 +93,7 @@
                 </el-table-column>
             </el-table>
         </div>
-        <bottomCom></bottomCom>
+        <!--<bottomCom></bottomCom>-->
     </div>
 
 </template>
