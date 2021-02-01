@@ -15,9 +15,9 @@
             <div class="jk-nav-item-icon nav-icon02"></div>
             <p>预留</p>
         </div> -->
-        <div  v-bind:class="[routeName=='mine' ? 'jk-nav-item jkFlexItem nav-hover' : 'jk-nav-item jkFlexItem']">
-            <i class="el-icon-user"></i>
-        </div>
+        <!--<div  v-bind:class="[routeName=='mine' ? 'jk-nav-item jkFlexItem nav-hover' : 'jk-nav-item jkFlexItem']">-->
+            <!--<i class="el-icon-user"></i>-->
+        <!--</div>-->
     </div>
     <!-- 底部导航 end-->
 </template>

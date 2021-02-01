@@ -48,28 +48,28 @@
         </el-col>
     </el-row>
 
-    <div class="nav">
-        <el-breadcrumb separator="/" class="">
-            <!--<el-breadcrumb-item :to="{ path: '/' }">更多</el-breadcrumb-item>-->
-            更多
-        </el-breadcrumb>
-    </div>
+    <!--<div class="nav">-->
+        <!--<el-breadcrumb separator="/" class="">-->
+            <!--&lt;!&ndash;<el-breadcrumb-item :to="{ path: '/' }">更多</el-breadcrumb-item>&ndash;&gt;-->
+            <!--更多-->
+        <!--</el-breadcrumb>-->
+    <!--</div>-->
 
-    <el-row type="flex" class="home-nav">
-        <el-col :span="6">
-            <i class="el-icon-phone-outline"></i>
-            <div class="grid-content bg-purple">联系技术人员</div>
-        </el-col>
-        <el-col :span="6">
-            <i class="el-icon-user-solid"></i>
-            <div class="grid-content bg-purple">登录/退出</div>
-        </el-col>
-    </el-row>
+    <!--<el-row type="flex" class="home-nav">-->
+        <!--<el-col :span="6">-->
+            <!--<i class="el-icon-phone-outline"></i>-->
+            <!--<div class="grid-content bg-purple">联系技术人员</div>-->
+        <!--</el-col>-->
+        <!--<el-col :span="6">-->
+            <!--<i class="el-icon-user-solid"></i>-->
+            <!--<div class="grid-content bg-purple">登录/退出</div>-->
+        <!--</el-col>-->
+    <!--</el-row>-->
     <!-- 所有的cookie
     {{allcookies}}
     输出信息：
     {{rData}} -->
-    <bottomCom></bottomCom>
+    <!--<bottomCom></bottomCom>-->
 </div>
 
 </template>
@@ -113,6 +113,8 @@ export default {
             if(_this.nickname == 'undefined') _this.nickname = '微信名称'
             _this.sex = _this.GetQueryString('sex')
             if(_this.sex) _this.sex = _this.sex == 2 ? '女' : '男'
+            _this.headimgurl = _this.GetQueryString('headimgurl')
+            if(_this.headimgurl == 'undefined') _this.headimgurl = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
             
             if(!_this.nickname || _this.nickname == '微信名称'){
                 console.info('重定向')

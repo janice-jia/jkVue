@@ -6,9 +6,9 @@
             </el-breadcrumb>
         </div>
 
-        <el-form ref="form" class="zjForm" :model="form" label-width="100px">
+        <el-form ref="form" class="zjForm" :model="form" label-width="120px">
             <el-form-item label="请选择宿舍楼">
-                <el-select v-model="form.dormbuildingid" @change="selectChanged" placeholder="请选择宿舍楼">
+                <el-select v-model="form.dormbuildingid" @change="selectChangeddormbuildingid" placeholder="请选择宿舍楼">
                     <el-option 
                         v-for="item in dormbuilding"
                         :key="item.id"
@@ -60,6 +60,38 @@
             <p>校内学生总数： {{resultData.total}} 人</p>
             <p>在寝人数： {{resultData.in}} 人</p>
             <p>在外人数： {{resultData.out}} 人</p>
+        </div>
+
+        <div class="search-table">
+            <el-table
+                :data="resultData.data"
+                style="width: 100%">
+                <el-table-column
+                    prop="realname"
+                    label="姓名"
+                    width="80">
+                </el-table-column>
+                <el-table-column
+                    prop="dormbuildingname"
+                    label="宿舍楼"
+                    width="70">
+                </el-table-column>
+                <el-table-column
+                    prop="dormitoryno"
+                    label="房间号"
+                    width="70">
+                </el-table-column>
+                <el-table-column
+                    prop="bunkno"
+                    label="位置"
+                    width="60">
+                </el-table-column>
+                <el-table-column
+                    prop="在寝状态"
+                    label="在寝状态"
+                    width="90">
+                </el-table-column>
+            </el-table>
         </div>
         <bottomCom></bottomCom>
     </div>
@@ -117,8 +149,19 @@
                     }
                 })
             },
+            // 更改宿舍楼
+            selectChangeddormbuildingid(){
+                // 学院
+                if(this.form.hasOwnProperty('majorid')) this.form.majorid = ''
+                // 楼层
+                if(this.form.hasOwnProperty('floor')) this.form.floor = ''
+                //房间号
+                if(this.form.hasOwnProperty('dormitoryno')) this.form.dormitoryno = ''
+            },
             selectChanged(){
                 console.info('111')
+                // 房间号
+                if(this.form.hasOwnProperty('dormitoryno')) this.form.dormitoryno = ''
                 this.GetDormitorynoByDormbuildingId()
             },
             // 获取楼层
@@ -148,7 +191,7 @@
                 }else if(!this.form.dormitoryno){
                     this.$message.error('请选择房间号');
                 }
-                this.$http.get('/WxAPI/DormitoryManageAPI.ashx?command=RealTimeHeadCount&dormbuildingid=2&majorid=29&floor=2层&dormitoryno=102&page=1&limit=10').then(function (res) {
+                this.$http.get('/WxAPI/DormitoryManageAPI.ashx?command=RealTimeHeadCount&dormbuildingid='+this.form.dormbuildingid+'&majorid='+this.form.majorid+'&floor='+this.form.floor+'&dormitoryno='+this.form.dormitoryno+'&page=1&limit=10').then(function (res) {
                     if (res.body.code == '200') {
                         this.resultData = res.body || {};
                     }else{

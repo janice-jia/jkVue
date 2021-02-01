@@ -46,7 +46,8 @@
                 <p class="num">{{resultData.inoutcount || 0}}</p>
             </el-col>
         </el-row>
-        <bottomCom></bottomCom>
+        <!--输出结果：{{resultData}}-->
+        <!--<bottomCom></bottomCom>-->
     </div>
 
 </template>
