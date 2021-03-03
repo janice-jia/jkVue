@@ -18,7 +18,7 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="请选择学院">
+            <!-- <el-form-item label="请选择学院">
                 <el-select v-model="form.majorid" placeholder="请选择学院">
                     <el-option 
                         v-for="item in majorList"
@@ -28,7 +28,7 @@
                     >
                     </el-option>
                 </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="请选择楼层">
                 <el-select v-model="form.floor" @change="selectChanged" placeholder="请选择楼层">
                     <el-option 
@@ -152,7 +152,7 @@
             // 更改宿舍楼
             selectChangeddormbuildingid(){
                 // 学院
-                if(this.form.hasOwnProperty('majorid')) this.form.majorid = ''
+                // if(this.form.hasOwnProperty('majorid')) this.form.majorid = ''
                 // 楼层
                 if(this.form.hasOwnProperty('floor')) this.form.floor = ''
                 //房间号
@@ -184,14 +184,12 @@
             dormitoryManage() {
                 if(!this.form.dormbuildingid){
                     this.$message.error('请选择宿舍楼');
-                }else if(!this.form.majorid){
-                    this.$message.error('请选择学院');
                 }else if(!this.form.floor){
                     this.$message.error('请选择楼层');
                 }else if(!this.form.dormitoryno){
                     this.$message.error('请选择房间号');
                 }
-                this.$http.get('/WxAPI/DormitoryManageAPI.ashx?command=RealTimeHeadCount&dormbuildingid='+this.form.dormbuildingid+'&majorid='+this.form.majorid+'&floor='+this.form.floor+'&dormitoryno='+this.form.dormitoryno+'&page=1&limit=10').then(function (res) {
+                this.$http.get('/WxAPI/DormitoryManageAPI.ashx?command=RealTimeHeadCount&dormbuildingid='+this.form.dormbuildingid+'&floor='+this.form.floor+'&dormitoryno='+this.form.dormitoryno+'&page=1&limit=10').then(function (res) {
                     if (res.body.code == '200') {
                         this.resultData = res.body || {};
                     }else{
